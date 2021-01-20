@@ -1,5 +1,5 @@
 import { isA, isEntity, Node } from '@stencila/schema'
-import { spawn } from 'child_process'
+import { spawnSync } from 'child_process'
 import fs from 'fs'
 import { promisify } from 'util'
 import { record } from '../utilities/changes'
@@ -9,7 +9,6 @@ import { Method } from './method'
 
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
-const spawnAsync = promisify(spawn)
 
 /**
  * Build a stencil
@@ -59,7 +58,8 @@ export const build = async (node: Node): Promise<Node> => {
       repository: '-',
       license: 'Apache-2.0',
       ...pkg,
-      // TODO: Consider how to specify package semver requirements
+      // TODO: Only insert dependencies that are not in package.json
+      // TODO: Don't use star, instead get current version from NPM
       dependencies: packages.reduce(
         (prev, name) => ({ ...prev, [name]: '*' }),
         {}
@@ -71,8 +71,8 @@ export const build = async (node: Node): Promise<Node> => {
   await writeFileAsync('package.json', json, 'utf8')
 
   // Ask `npm` to install the packages
-  await spawnAsync('npm', ['install'], {
-    // TODO: Transform output form stdout and stderr into log entries
+  spawnSync('npm', ['install'], {
+    // TODO: Transform output from stdout and stderr into log entries
     stdio: ['ignore', 'inherit', 'inherit'],
   })
   // TODO: Consider running `npm audit fix` if necessary
