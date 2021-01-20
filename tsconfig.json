@@ -1,0 +1,4 @@
+{
+  "extends": "@stencila/dev-config/tsconfig.json",
+  "include": ["src/**/*.ts"]
+}

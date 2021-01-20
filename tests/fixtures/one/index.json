@@ -1,0 +1,35 @@
+{
+  "type": "Article",
+  "content": [
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "const stats = require('simple-statistics')"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "import {head, tail} from 'lodash'"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "const a = 1\nlet b = 2\nvar c = 3"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "let d = a + b"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "d = 4 + c"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "// @imports lodash simple-statistics\n// @uses a b c"
+    }
+  ]
+}
