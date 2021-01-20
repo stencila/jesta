@@ -2,28 +2,28 @@ import { JSONSchema7 } from 'json-schema'
 import os from 'os'
 import path from 'path'
 
+type MethodSchema = JSONSchema7
+
 export interface Manifest {
   name: string
   version: string
   description: string
   command: string
   methods: {
-    decode?: Method
-    encode?: Method
+    decode?: MethodSchema
+    encode?: MethodSchema
 
-    select?: Method
+    select?: MethodSchema
 
-    validate?: Method
-    reshape?: Method
-    enrich?: Method
+    validate?: MethodSchema
+    reshape?: MethodSchema
+    enrich?: MethodSchema
 
-    compile?: Method
-    build?: Method
-    execute?: Method
+    compile?: MethodSchema
+    build?: MethodSchema
+    execute?: MethodSchema
   }
 }
-
-type Method = JSONSchema7
 
 interface System {
   os: 'linux' | 'macos' | 'windows' | 'other'

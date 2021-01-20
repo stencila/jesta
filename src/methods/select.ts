@@ -4,8 +4,10 @@ export const select = (node: Node, query: string, lang: string): Node => {
   if (lang === 'dotpath') {
     let value = node
     for (const property of query.split('.')) {
+      // eslint-disable-next-line
       // @ts-ignore
-      if (value) value = value[property]
+      // eslint-disable-next-line
+      if (value !== undefined) value = value[property]
     }
     return value
   }

@@ -35,7 +35,9 @@ export const readHttp = async (input: string): Promise<string> => {
         if (response.statusCode !== 200)
           reject(
             new Error(
-              `Server responded with status code ${response.statusCode}`
+              `Server responded with status code ${
+                response.statusCode ?? 'unknown'
+              }`
             )
           )
         let data = ''

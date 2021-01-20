@@ -2,6 +2,17 @@ import { Entity } from '@stencila/schema'
 import { Method } from '../methods/method'
 import crypto from 'crypto'
 
+interface Entry {
+  plugin: string
+  time: string
+  seconds: number
+  md5json: string
+}
+
+type History = {
+  [key in Method]: Entry
+}
+
 const md5json = (entity: Entity): string => {
   const json = JSON.stringify(
     entity,
@@ -14,10 +25,10 @@ const md5json = (entity: Entity): string => {
 
 export const needed = (entity: Entity, method: Method): boolean => {
   const { meta = {}, ...rest } = entity
-  const { history = {} } = meta
+  const { history = {} } = meta as { history: Record<string, Entry> }
   const previous = history[method]
   if (previous === undefined) return true
-  return previous.md5json !== md5json(entity)
+  return previous.md5json !== md5json(rest)
 }
 
 export const record = (
@@ -31,7 +42,7 @@ export const record = (
     meta: {
       ...metaRest,
       history: {
-        ...history,
+        ...(history as History),
         [method]: {
           plugin: 'noda',
           time: new Date().toISOString(),

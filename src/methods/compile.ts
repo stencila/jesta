@@ -55,7 +55,7 @@ export const compileCode = (
     VariableDeclaration(node) {
       const { declarations } = (node as unknown) as estree.VariableDeclaration
       for (const decl of declarations) {
-        const { id, init } = decl
+        const { id } = decl
         const { name } = id as estree.Identifier
         declares.push(name)
       }
@@ -67,8 +67,8 @@ export const compileCode = (
       if (!declares.includes(name)) assigns.push(name)
     },
 
-    AssignmentExpression(node, state) {
-      const { left, right } = (node as unknown) as estree.AssignmentExpression
+    AssignmentExpression(node) {
+      const { left } = (node as unknown) as estree.AssignmentExpression
       const { name } = left as estree.Identifier
       if (!assigns.includes(name)) assigns.push(name)
     },

@@ -12,7 +12,7 @@ export const clean = (entity: Entity): Entity => {
   }
 
   delete entity.meta?.history
-  if (entity.meta && Object.keys(entity.meta).length == 0) delete entity.meta
+  if (entity.meta && Object.keys(entity.meta).length === 0) delete entity.meta
 
   return mutate(entity, clean)
 }

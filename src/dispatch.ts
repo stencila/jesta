@@ -17,7 +17,7 @@ import { pipe } from './methods/pipe'
 export type DispatchFunction = (
   method: Method,
   params: Record<string, unknown>
-) => Node
+) => Promise<Node>
 
 export const dispatch: DispatchFunction = async (
   method: Method,

@@ -4,7 +4,7 @@ import { DispatchFunction } from './dispatch'
 /**
  * Serve the plugin.
  */
-export const serve = (dispatchFunction: DispatchFunction) => {
+export const serve = (dispatcher: DispatchFunction): void => {
   const reader = readline.createInterface({
     input: process.stdin,
     terminal: false,

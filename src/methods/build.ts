@@ -9,6 +9,7 @@ import { Method } from './method'
 
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
+const spawnAsync = promisify(spawn)
 
 /**
  * Build a stencil
@@ -41,9 +42,9 @@ export const build = async (entity: Entity): Promise<Entity> => {
   let pkg
   try {
     const json = await readFileAsync('package.json', 'utf8')
-    pkg = JSON.parse(json)
+    pkg = JSON.parse(json) as Record<string, unknown>
   } catch (error) {
-    if (error.code === 'ENOENT') pkg = {}
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') pkg = {}
     else throw error
   }
 
@@ -68,7 +69,7 @@ export const build = async (entity: Entity): Promise<Entity> => {
   await writeFileAsync('package.json', json, 'utf8')
 
   // Ask `npm` to install the packages
-  await spawn('npm', ['install'], {
+  await spawnAsync('npm', ['install'], {
     // TODO: Transform output form stdout and stderr into log entries
     stdio: ['ignore', 'inherit', 'inherit'],
   })

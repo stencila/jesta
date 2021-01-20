@@ -53,7 +53,7 @@ export const cli = (
       : `file://${path.resolve(value)}`
   }
 
-  function cd(url: string) {
+  function cd(url: string): void {
     if (url.startsWith('file://')) process.chdir(path.dirname(url.slice(7)))
   }
 
@@ -71,7 +71,7 @@ export const cli = (
       case 'manifest':
         return console.log(manifest)
       case 'register':
-        return await register(manifest)
+        return await register(manifester)
       case 'serve':
         return serve(dispatcher)
 
@@ -115,7 +115,8 @@ export const cli = (
 
         const node = await dispatcher(Method.decode, { input, from })
         const child = await dispatcher(Method.select, { node, query, lang })
-        if (output) await dispatcher(Method.encode, { node: child, output })
+        if (output !== undefined)
+          await dispatcher(Method.encode, { node: child, output, to })
         else console.log(node)
 
         return
