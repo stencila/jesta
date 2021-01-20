@@ -43,8 +43,8 @@ export const manifest: ManifestFunction = (
     description: 'Develop Stencila plugins using Node.js',
     command: command(cliPath),
     methods: {
-      //execute: true,
-      //compile: true,
+      // execute: true,
+      // compile: true,
       select: {
         required: ['node', 'query', 'lang'],
         properties: {
@@ -53,8 +53,8 @@ export const manifest: ManifestFunction = (
           lang: { const: 'dotpath' },
         },
       },
-      //convert: true,
-      //decode: true,
+      // convert: true,
+      // decode: true,
       encode: {
         required: ['node'],
         properties: {

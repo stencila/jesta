@@ -13,7 +13,7 @@ export const write = async (content: string, url: string): Promise<void> => {
         return writeFile(content, match[2])
       case 'http':
       case 'https':
-        break //return writeHttp(content, url)
+        break // return writeHttp(content, url)
       default:
         throw new CapabilityError(
           `Incapable of write over protocol "${protocol}"`

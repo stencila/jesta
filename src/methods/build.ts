@@ -29,7 +29,7 @@ export const build = async (entity: Entity): Promise<Entity> => {
       const { programmingLanguage, imports = [] } = entity
       if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
         for (const pkg of imports) {
-          let name = typeof pkg === 'string' ? pkg : pkg.name
+          const name = typeof pkg === 'string' ? pkg : pkg.name
           if (name !== undefined && !packages.includes(name))
             packages.push(name)
         }
