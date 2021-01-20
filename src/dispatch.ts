@@ -63,7 +63,11 @@ export const dispatch: DispatchFunction = async (
     case Method.decode: {
       const { input, format } = params
       assert(typeof input === 'string', 'input', 'should be a string')
-      assert(typeof format === 'string', 'format', 'should be a string')
+      assert(
+        format === undefined || typeof format === 'string',
+        'format',
+        'should be a string'
+      )
       return decode(input, format)
     }
 
@@ -71,7 +75,11 @@ export const dispatch: DispatchFunction = async (
       const { node, output, format } = params
       assert(node !== undefined, 'node')
       assert(typeof output === 'string', 'output', 'should be a string')
-      assert(typeof format === 'string', 'format', 'should be a string')
+      assert(
+        format === undefined || typeof format === 'string',
+        'format',
+        'should be a string'
+      )
       return encode(node, output, format)
     }
 

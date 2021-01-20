@@ -81,7 +81,7 @@ export const cli = (
         const input = url(args[0])
         const from = args[1]
 
-        const node = await dispatcher(Method.decode, { input, from })
+        const node = await dispatcher(Method.decode, { input, format: from })
 
         return console.log(node)
       }
@@ -91,7 +91,11 @@ export const cli = (
         const output = url(args[0])
         const to = args[1]
 
-        const content = await dispatcher(Method.encode, { node, output, to })
+        const content = await dispatcher(Method.encode, {
+          node,
+          output,
+          format: to,
+        })
 
         return console.log(content)
       }
@@ -102,8 +106,8 @@ export const cli = (
         const from = args[2]
         const to = args[3]
 
-        const node = await dispatcher(Method.decode, { input, from })
-        await dispatcher(Method.encode, { node, output, to })
+        const node = await dispatcher(Method.decode, { input, format: from })
+        await dispatcher(Method.encode, { node, output, format: to })
 
         return
       }
@@ -113,12 +117,11 @@ export const cli = (
         const query = required(1, 'query')
         const lang = required(2, 'lang')
         const output = url(optional(3))
-        const { from, to } = options
 
-        const node = await dispatcher(Method.decode, { input, from })
+        const node = await dispatcher(Method.decode, { input })
         const selected = await dispatcher(Method.select, { node, query, lang })
         if (output !== undefined)
-          await dispatcher(Method.encode, { node: selected, output, to })
+          await dispatcher(Method.encode, { node: selected, output })
         else console.log(selected)
 
         return
@@ -139,9 +142,9 @@ export const cli = (
 
         cd(input)
 
-        const node = await dispatcher(Method.decode, { input, from })
+        const node = await dispatcher(Method.decode, { input, format: from })
         const result = await dispatcher(method, { node, methods })
-        await dispatcher(Method.encode, { result, output, to })
+        await dispatcher(Method.encode, { node: result, output, format: to })
 
         return
       }
@@ -150,7 +153,7 @@ export const cli = (
         const input = url(required(0, 'in'))
         const from = args[2]
 
-        const node = await dispatcher(Method.decode, { input, from })
+        const node = await dispatcher(Method.decode, { input, format: from })
         await dispatcher(Method.execute, { node })
         serve(dispatcher)
 
