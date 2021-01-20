@@ -12,16 +12,17 @@ import {
   select,
   validate,
 } from './methods'
+import { pipe } from './methods/pipe'
 
 export type DispatchFunction = (
   method: Method,
   params: Record<string, unknown>
 ) => Node
 
-export const dispatch: DispatchFunction = (
+export const dispatch: DispatchFunction = async (
   method: Method,
   params: Record<string, unknown>
-): Node => {
+): Promise<Node> => {
   switch (method) {
     case Method.build: {
       const { node } = params
@@ -50,6 +51,10 @@ export const dispatch: DispatchFunction = (
     case Method.execute: {
       const { node } = params
       return execute(node as Entity)
+    }
+    case Method.pipe: {
+      const { node, methods } = params
+      return pipe(node as Entity, methods as Method[], dispatch)
     }
     case Method.reshape: {
       const { node } = params

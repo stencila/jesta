@@ -1,18 +1,6 @@
 import path from 'path'
 import { DispatchFunction } from './dispatch'
 import { ManifestFunction, system } from './manifest'
-import {
-  build,
-  clean,
-  compile,
-  decode,
-  encode,
-  enrich,
-  execute,
-  reshape,
-  select,
-  validate,
-} from './methods'
 import { Method } from './methods/method'
 import { register } from './register'
 import { serve } from './serve'
@@ -33,20 +21,14 @@ import { serve } from './serve'
  */
 export const cli = (
   filePath: string,
-  manifestFunction: ManifestFunction,
-  dispatchFunction: DispatchFunction
+  manifester: ManifestFunction,
+  dispatcher: DispatchFunction
 ): void => {
-  const manifest = manifestFunction(system(), filePath)
+  const manifest = manifester(system(), filePath)
   const { name, version, description, command } = manifest
 
-  const method = process.argv[2] as
-    | Method
-    | 'register'
-    | 'serve'
-    | 'run'
-    | 'manifest'
-    | 'convert'
-    | 'help'
+  const methods = process.argv[2].split('+')
+  const method: Method | string = methods.length > 1 ? Method.pipe : methods[0]
 
   const args = process.argv.slice(3)
   const options: Record<string, string> = {}
@@ -83,36 +65,43 @@ export const cli = (
   // of objects
   async function run(): Promise<void> {
     switch (method) {
+      // Methods are arranged in groups below according to the
+      // arguments they require
+
+      case 'manifest':
+        return console.log(manifest)
       case 'register':
         return await register(manifest)
       case 'serve':
-        return serve(dispatchFunction)
+        return serve(dispatcher)
 
       case Method.decode: {
         const input = url(args[0])
         const from = args[1]
 
-        const stencil = await decode(input, from)
+        const node = await dispatcher(Method.decode, { input, from })
 
-        return console.log(stencil)
+        return console.log(node)
       }
+
       case Method.encode: {
-        const stencil = JSON.parse(await stdin()) as Node
+        const node = JSON.parse(await stdin()) as Node
         const output = url(args[0])
         const to = args[1]
 
-        const content = await encode(stencil, output, to)
+        const content = await dispatcher(Method.encode, { node, output, to })
 
         return console.log(content)
       }
+
       case 'convert': {
         const input = url(args[0])
         const output = url(args[1])
         const from = args[2]
         const to = args[3]
 
-        const stencil = await decode(input, from)
-        await encode(stencil, output, to)
+        const node = await dispatcher(Method.decode, { input, from })
+        await dispatcher(Method.encode, { node, output, to })
 
         return
       }
@@ -124,9 +113,9 @@ export const cli = (
         const output = url(optional(3))
         const { from, to } = options
 
-        const stencil = await decode(input, from)
-        const node = await select(stencil, query, lang)
-        if (output) await encode(node, output)
+        const node = await dispatcher(Method.decode, { input, from })
+        const child = await dispatcher(Method.select, { node, query, lang })
+        if (output) await dispatcher(Method.encode, { node: child, output })
         else console.log(node)
 
         return
@@ -137,6 +126,7 @@ export const cli = (
       case Method.compile:
       case Method.enrich:
       case Method.execute:
+      case Method.pipe:
       case Method.reshape:
       case Method.validate: {
         const input = url(required(0, 'in'))
@@ -146,9 +136,9 @@ export const cli = (
 
         cd(input)
 
-        const node = await decode(input, from)
-        const result = dispatchFunction(method, { node })
-        await encode(result, output, to)
+        const node = await dispatcher(Method.decode, { input, from })
+        const result = await dispatcher(method, { node, methods })
+        await dispatcher(Method.encode, { result, output, to })
 
         return
       }
@@ -157,15 +147,12 @@ export const cli = (
         const input = url(required(0, 'in'))
         const from = args[2]
 
-        const stencil = await decode(input, from)
-        await execute(stencil)
-        serve(dispatchFunction)
+        const node = await dispatcher(Method.decode, { input, from })
+        await dispatcher(Method.execute, { node })
+        serve(dispatcher)
 
         return
       }
-
-      case 'manifest':
-        return console.log(manifest)
 
       case 'help':
       case undefined:
@@ -221,6 +208,7 @@ and use it from there:
     stencila install ${name}
         `.trim()
         )
+
       default:
         console.error(`Unknown command "${method}"`)
     }

@@ -6,14 +6,14 @@ export const encode = async (
   node: Node,
   output?: string,
   format?: string
-): Promise<string | undefined> => {
+): Promise<string> => {
   format = format ?? path.extname(output ?? '').slice(1)
 
   if (format === 'json' || format.startsWith('application/json')) {
     const json = JSON.stringify(node, null, '  ')
     if (output !== undefined) {
       await write(json, output)
-      return
+      return ''
     } else return Promise.resolve(json)
   }
 
