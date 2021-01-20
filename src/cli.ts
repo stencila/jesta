@@ -13,6 +13,7 @@ import {
   select,
   validate,
 } from './methods'
+import { Method } from './methods/method'
 import { register } from './register'
 import { serve } from './serve'
 
@@ -38,7 +39,15 @@ export const cli = (
   const manifest = manifestFunction(system(), filePath)
   const { name, version, description, command } = manifest
 
-  const sub = process.argv[2]
+  const method = process.argv[2] as
+    | Method
+    | 'register'
+    | 'serve'
+    | 'run'
+    | 'manifest'
+    | 'convert'
+    | 'help'
+
   const args = process.argv.slice(3)
   const options: Record<string, string> = {}
 
@@ -73,13 +82,13 @@ export const cli = (
   // When outputting nodes, using `console.log` because of built-in pretty-printing
   // of objects
   async function run(): Promise<void> {
-    switch (sub) {
+    switch (method) {
       case 'register':
         return await register(manifest)
       case 'serve':
         return serve(dispatchFunction)
 
-      case 'decode': {
+      case Method.decode: {
         const input = url(args[0])
         const from = args[1]
 
@@ -87,7 +96,7 @@ export const cli = (
 
         return console.log(stencil)
       }
-      case 'encode': {
+      case Method.encode: {
         const stencil = JSON.parse(await stdin()) as Node
         const output = url(args[0])
         const to = args[1]
@@ -108,7 +117,7 @@ export const cli = (
         return
       }
 
-      case 'select': {
+      case Method.select: {
         const input = url(required(0, 'in'))
         const query = required(1, 'query')
         const lang = required(2, 'lang')
@@ -123,13 +132,13 @@ export const cli = (
         return
       }
 
-      case 'build':
-      case 'clean':
-      case 'compile':
-      case 'enrich':
-      case 'execute':
-      case 'reshape':
-      case 'validate': {
+      case Method.build:
+      case Method.clean:
+      case Method.compile:
+      case Method.enrich:
+      case Method.execute:
+      case Method.reshape:
+      case Method.validate: {
         const input = url(required(0, 'in'))
         const output = url(optional(1) ?? input)
         const from = optional(2)
@@ -137,18 +146,9 @@ export const cli = (
 
         cd(input)
 
-        const stencil = await decode(input, from)
-        const method = {
-          build,
-          clean,
-          compile,
-          enrich,
-          execute,
-          reshape,
-          validate,
-        }[sub]
-        const modified = await method(stencil)
-        await encode(modified, output, to)
+        const node = await decode(input, from)
+        const result = dispatchFunction(method, { node })
+        await encode(result, output, to)
 
         return
       }
@@ -222,7 +222,7 @@ and use it from there:
         `.trim()
         )
       default:
-        console.error(`Unknown command "${sub}"`)
+        console.error(`Unknown command "${method}"`)
     }
   }
 
