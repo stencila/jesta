@@ -1,13 +1,13 @@
-import { Entity, isEntity, isPrimitive, Node } from '@stencila/schema'
+import { isEntity, isPrimitive, Node } from '@stencila/schema'
 
-export const visit = (node: Node, visitor: (entity: Entity) => void): void => {
+export const visit = (node: Node, visitor: (node: Node) => void): void => {
   if (isPrimitive(node)) return
   for (const child of Object.values(node)) {
     isEntity(child) ? visitor(child) : visit(child, visitor)
   }
 }
 
-export const mutate = <T>(node: T, mutator: (entity: Entity) => Entity): T => {
+export const mutate = <T>(node: T, mutator: (node: Node) => Node): T => {
   if (isPrimitive(node)) return node
   for (const [key, child] of Object.entries(node)) {
     // eslint-disable-next-line

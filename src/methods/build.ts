@@ -1,4 +1,4 @@
-import { Entity, isA } from '@stencila/schema'
+import { isA, isEntity, Node } from '@stencila/schema'
 import { spawn } from 'child_process'
 import fs from 'fs'
 import { promisify } from 'util'
@@ -20,14 +20,16 @@ const spawnAsync = promisify(spawn)
  *
  * @param entity The stencil to build.
  */
-export const build = async (entity: Entity): Promise<Entity> => {
+export const build = async (node: Node): Promise<Node> => {
+  if (!isEntity(node)) return node
+
   const start = timer.start()
 
   // Collect a list of packages imported within the stencil
   const packages: string[] = []
-  visit(entity, (entity: Entity) => {
-    if (isA('CodeChunk', entity)) {
-      const { programmingLanguage, imports = [] } = entity
+  visit(node, (node: Node) => {
+    if (isA('CodeChunk', node)) {
+      const { programmingLanguage, imports = [] } = node
       if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
         for (const pkg of imports) {
           const name = typeof pkg === 'string' ? pkg : pkg.name
@@ -76,5 +78,5 @@ export const build = async (entity: Entity): Promise<Entity> => {
   // TODO: Consider running `npm audit fix` if necessary
 
   // Record the method
-  return record(entity, Method.build, timer.seconds(start))
+  return record(node, Method.build, timer.seconds(start))
 }

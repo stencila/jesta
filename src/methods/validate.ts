@@ -1,5 +1,5 @@
-import { Entity } from '@stencila/schema'
+import { Node } from '@stencila/schema'
 
-export const validate = (entity: Entity): Entity => {
-  return entity
+export const validate = (node: Node): Node => {
+  return node
 }

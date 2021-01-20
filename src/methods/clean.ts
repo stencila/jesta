@@ -1,18 +1,20 @@
-import { Entity, isA } from '@stencila/schema'
+import { Node, isA, isEntity } from '@stencila/schema'
 import { mutate } from '../utilities/walk'
 
-export const clean = (entity: Entity): Entity => {
-  if (isA('CodeChunk', entity)) {
-    delete entity.alters
-    delete entity.assigns
-    delete entity.declares
-    delete entity.imports
-    delete entity.reads
-    delete entity.uses
+export const clean = (node: Node): Node => {
+  if (!isEntity(node)) return node
+
+  if (isA('CodeChunk', node)) {
+    delete node.alters
+    delete node.assigns
+    delete node.declares
+    delete node.imports
+    delete node.reads
+    delete node.uses
   }
 
-  delete entity.meta?.history
-  if (entity.meta && Object.keys(entity.meta).length === 0) delete entity.meta
+  delete node.meta?.history
+  if (node.meta && Object.keys(node.meta).length === 0) delete node.meta
 
-  return mutate(entity, clean)
+  return mutate(node, clean)
 }

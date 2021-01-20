@@ -1,5 +1,5 @@
-import { Entity } from '@stencila/schema'
+import { Node } from '@stencila/schema'
 
-export const enrich = (entity: Entity): Entity => {
-  return entity
+export const enrich = (node: Node): Node => {
+  return node
 }

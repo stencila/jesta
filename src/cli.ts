@@ -202,7 +202,7 @@ Notes:
   - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
 
-For a more advanced command line inteface install ${name} as a Stencila plugin
+For a more advanced command line interface install ${name} as a Stencila plugin
 and use it from there:
 
     stencila install ${name}

@@ -1,4 +1,4 @@
-import { CodeChunk, Entity, isA } from '@stencila/schema'
+import { CodeChunk, Node, isA } from '@stencila/schema'
 import { mutate } from '../utilities/walk'
 import * as timer from '../utilities/timer'
 import { Method } from './method'
@@ -7,21 +7,21 @@ import * as acorn from 'acorn'
 import * as acornWalk from 'acorn-walk'
 import * as estree from 'estree'
 
-export const compile = (entity: Entity): Entity => {
+export const compile = (node: Node): Node => {
   // Compile code chunks and expressions
-  if (isA('CodeChunk', entity) || isA('CodeExpression', entity)) {
-    const { programmingLanguage, text } = entity
+  if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
+    const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
-      if (!needed(entity, Method.compile)) return entity
+      if (!needed(node, Method.compile)) return node
       const start = timer.start()
       const props = compileCode(text)
-      const compiled = { ...entity, ...props }
+      const compiled = { ...node, ...props }
       return record(compiled, Method.compile, timer.seconds(start))
     }
   }
 
   // Walk over other node types
-  return mutate(entity, compile)
+  return mutate(node, compile)
 }
 
 export const compileCode = (

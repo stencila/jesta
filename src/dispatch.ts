@@ -1,4 +1,4 @@
-import { Entity, Node } from '@stencila/schema'
+import { Node } from '@stencila/schema'
 import { Method } from './methods/method'
 import {
   build,
@@ -13,60 +13,88 @@ import {
   validate,
 } from './methods'
 import { pipe } from './methods/pipe'
+import { InvalidParamError, MethodNotFoundError } from './utilities/errors'
 
 export type DispatchFunction = (
-  method: Method,
-  params: Record<string, unknown>
+  method: string,
+  params: Record<string, Node | undefined>
 ) => Promise<Node>
 
 export const dispatch: DispatchFunction = async (
-  method: Method,
-  params: Record<string, unknown>
+  method: string,
+  params: Record<string, Node | undefined>
 ): Promise<Node> => {
+  function assert(
+    condition: boolean,
+    param: string,
+    message = 'missing'
+  ): asserts condition {
+    if (!condition) throw new InvalidParamError(method, param, message)
+  }
   switch (method) {
-    case Method.build: {
-      const { node } = params
-      return build(node as Entity)
-    }
-    case Method.clean: {
-      const { node } = params
-      return clean(node as Entity)
-    }
-    case Method.compile: {
-      const { node } = params
-      return compile(node as Entity)
-    }
-    case Method.decode: {
-      const { input, format } = params
-      return decode(input as string, format as string)
-    }
-    case Method.encode: {
-      const { node, output, format } = params
-      return encode(node as Entity, output as string, format as string)
-    }
-    case Method.enrich: {
-      const { node } = params
-      return enrich(node as Entity)
-    }
-    case Method.execute: {
-      const { node } = params
-      return execute(node as Entity)
-    }
-    case Method.pipe: {
-      const { node, methods } = params
-      return pipe(node as Entity, methods as Method[], dispatch)
-    }
-    case Method.reshape: {
-      const { node } = params
-      return reshape(node as Entity)
-    }
-    case Method.select: {
-      const { node, query, lang } = params
-      return select(node as Entity, query as string, lang as string)
-    }
+    case Method.build:
+    case Method.clean:
+    case Method.compile:
+    case Method.enrich:
+    case Method.execute:
+    case Method.reshape:
     case Method.validate: {
       const { node } = params
-      return validate(node as Entity)
+      assert(node !== undefined, 'node')
+      switch (method) {
+        case Method.build:
+          return build(node)
+        case Method.clean:
+          return clean(node)
+        case Method.compile:
+          return compile(node)
+        case Method.enrich:
+          return enrich(node)
+        case Method.execute:
+          return execute(node)
+        case Method.reshape:
+          return reshape(node)
+        case Method.validate:
+          return validate(node)
+      }
+      break
     }
+
+    case Method.decode: {
+      const { input, format } = params
+      assert(typeof input === 'string', 'input', 'should be a string')
+      assert(typeof format === 'string', 'format', 'should be a string')
+      return decode(input, format)
+    }
+
+    case Method.encode: {
+      const { node, output, format } = params
+      assert(node !== undefined, 'node')
+      assert(typeof output === 'string', 'output', 'should be a string')
+      assert(typeof format === 'string', 'format', 'should be a string')
+      return encode(node, output, format)
+    }
+
+    case Method.pipe: {
+      const { node, methods } = params
+      assert(node !== undefined, 'node')
+      assert(
+        Array.isArray(methods),
+        'methods',
+        'should be an array of method names'
+      )
+      return pipe(node, methods, dispatch)
+    }
+
+    case Method.select: {
+      const { node, query, lang } = params
+      assert(node !== undefined, 'node')
+      assert(typeof query === 'string', 'query', 'should be a string')
+      assert(typeof lang === 'string', 'lang', 'should be a string')
+      return select(node, query, lang)
+    }
+
+    default:
+      throw new MethodNotFoundError(method)
   }
 }

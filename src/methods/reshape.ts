@@ -1,5 +1,5 @@
-import { Entity } from '@stencila/schema'
+import { Node } from '@stencila/schema'
 
-export const reshape = (entity: Entity): Entity => {
-  return entity
+export const reshape = (node: Node): Node => {
+  return node
 }
