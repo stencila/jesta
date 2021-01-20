@@ -2,14 +2,51 @@ import { JSONSchema7 } from 'json-schema'
 import os from 'os'
 import path from 'path'
 
-type MethodSchema = JSONSchema7
-
-export interface Manifest {
+/**
+ * A description of the package that implements the plugin
+ */
+export interface Package {
   name: string
   version: string
   description: string
+  url?: string
+}
+
+export interface BaseAddress {
+  transport: 'stdio' | 'http' | 'ws'
+  framing?: 'nld' | 'vlp'
+  serialization: 'json' | 'cbor' | 'bincode'
+}
+
+export interface StdioAddress extends BaseAddress {
+  transport: 'stdio'
   command: string
-  methods: {
+  args: string[]
+  framing: 'nld' | 'vlp'
+}
+
+export interface HttpAddress extends BaseAddress {
+  transport: 'http'
+  url: string
+}
+
+export interface WebsocketAddress extends BaseAddress {
+  transport: 'ws'
+  url: string
+}
+
+export type Address = StdioAddress | HttpAddress | WebsocketAddress
+
+export type MethodSchema = JSONSchema7
+
+/**
+ * A plugin manifest
+ */
+export interface Manifest {
+  version: 1
+  package: Package
+  addresses: Address[]
+  capabilities: {
     decode?: MethodSchema
     encode?: MethodSchema
 
@@ -37,14 +74,29 @@ export const manifest: ManifestFunction = (
   system: System,
   cliPath: string
 ): Manifest => {
+  const { name, ext } = path.parse(cliPath)
+  const [command, ...args] = `${ext === '.js' ? 'node' : 'npm start --'} ${
+    name === 'index' ? path.dirname(cliPath) : cliPath
+  }`.split(/\s+/)
+
   return {
-    name: 'jesta',
-    version: '0.1.0',
-    description: 'Stencila plugin for Node.js',
-    command: command(cliPath),
-    methods: {
-      // execute: true,
-      // compile: true,
+    version: 1,
+    package: {
+      // TODO: Populate from the plugin's package.json
+      name: 'jesta',
+      version: '0.1.0',
+      description: 'Stencila plugin for Node.js',
+    },
+    addresses: [
+      {
+        transport: 'stdio',
+        command,
+        args,
+        framing: 'nld',
+        serialization: 'json',
+      },
+    ],
+    capabilities: {
       select: {
         required: ['node', 'query', 'lang'],
         properties: {
@@ -53,8 +105,6 @@ export const manifest: ManifestFunction = (
           lang: { const: 'dotpath' },
         },
       },
-      // convert: true,
-      // decode: true,
       encode: {
         required: ['node'],
         properties: {
@@ -88,27 +138,4 @@ export const system = (): System => {
     endianness,
     hostname,
   }
-}
-
-/**
- * Generate a `command` string for a plugin's manifest.
- *
- * This function provides a convienient way to generate the `command`
- * property of a plugin's manifest. Use it in the `manifest` function like this:
- *
- * ```js
- * {
- *   name: "exampla",
- *   description: "An example Stencila plugin developed using Node.js",
- *   command: command(__filename)
- * }
- * ```
- *
- * @param filePath The absolute path to the plugin's main file
- */
-export const command = (filePath: string): string => {
-  const { name, ext } = path.parse(filePath)
-  return `${ext === '.js' ? 'node' : 'npx ts-node'} ${
-    name === 'index' ? path.dirname(filePath) : filePath
-  }`
 }

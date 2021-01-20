@@ -11,19 +11,21 @@ const mkdirAsync = promisify(fs.mkdir)
  * Register the plugin.
  */
 export const register = async (manifest: Manifest): Promise<void> => {
-  const { name } = manifest
+  const {
+    package: { name },
+  } = manifest
   const { env, platform } = process
 
   // Based on https://github.com/sindresorhus/env-paths/blob/master/index.js
   const dir = path.join(
     ...(platform === 'win32'
       ? [
-          env.APPDATA || path.join(homedir(), 'AppData', 'Roaming'),
+          env.APPDATA ?? path.join(homedir(), 'AppData', 'Roaming'),
           'Stencila',
           'Config',
           'Plugins',
         ]
-      : platform == 'darwin'
+      : platform === 'darwin'
       ? [homedir(), 'Library', 'Preferences', 'Stencila', 'Plugins']
       : [homedir(), '.config', 'stencila', 'plugins'])
   )

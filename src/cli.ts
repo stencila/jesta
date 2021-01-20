@@ -25,7 +25,9 @@ export const cli = (
   dispatcher: DispatchFunction
 ): void => {
   const manifest = manifester(system(), filePath)
-  const { name, version, description, command } = manifest
+  const {
+    package: { name, version, description },
+  } = manifest
 
   const methods = process.argv[2]?.split('+') ?? []
   const method: Method | string = methods.length > 1 ? Method.pipe : methods[0]
@@ -162,7 +164,7 @@ export const cli = (
 ${name} ${version}: ${description}
 
 Usage:
-  ${command} <command>
+  ${name} <command>
 
 Primary commands (required for plugin integration)
 
