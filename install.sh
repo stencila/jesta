@@ -1,2 +1,2 @@
 #!/bin/sh
-npm install --global @stencila/noda
+npm install --global @stencila/jesta
