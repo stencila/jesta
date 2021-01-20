@@ -40,7 +40,7 @@ export const manifest: ManifestFunction = (
   return {
     name: 'jesta',
     version: '0.1.0',
-    description: 'Develop Stencila plugins using Node.js',
+    description: 'Stencila plugin for Node.js',
     command: command(cliPath),
     methods: {
       // execute: true,
@@ -104,12 +104,11 @@ export const system = (): System => {
  * }
  * ```
  *
- * @param filePathAbs The absolute path to the plugin's main file
+ * @param filePath The absolute path to the plugin's main file
  */
-export const command = (filePathAbs: string): string => {
-  let filePathRel = path.relative(process.cwd(), filePathAbs)
-  const { name, ext } = path.parse(filePathRel)
-  if (name === 'index') filePathRel = path.dirname(filePathRel)
-
-  return `${ext === '.js' ? 'node' : 'npx ts-node'} ${filePathRel}`
+export const command = (filePath: string): string => {
+  const { name, ext } = path.parse(filePath)
+  return `${ext === '.js' ? 'node' : 'npx ts-node'} ${
+    name === 'index' ? path.dirname(filePath) : filePath
+  }`
 }
