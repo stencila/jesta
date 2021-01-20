@@ -1,19 +1,20 @@
 {
-  "name": "@stencila/noda",
+  "name": "@stencila/jesta",
   "version": "0.1.0",
   "description": "Stencila plugin for Node.js",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "format": "npx prettier --write './**/*.{js,md,ts}'",
     "lint": "eslint --fix './**/*.{js,ts}'",
     "test": "jest",
-    "test:cover": "npm run test -- --collectCoverage"
+    "test:cover": "npm run test -- --collectCoverage",
+    "start": "npx ts-node src"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stencila/stencila/noda"
+    "url": "https://github.com/stencila/stencila/jesta"
   },
-  "homepage": "https://github.com/stencila/stencila/noda#readme",
+  "homepage": "https://github.com/stencila/stencila/jesta#readme",
   "keywords": [
     "Stencila",
     "plugin"

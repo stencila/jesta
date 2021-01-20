@@ -44,7 +44,7 @@ export const record = (
       history: {
         ...(history as History),
         [method]: {
-          plugin: 'noda',
+          plugin: 'jesta',
           time: new Date().toISOString(),
           seconds,
           md5json: md5json(entityRest),

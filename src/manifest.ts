@@ -38,8 +38,8 @@ export const manifest: ManifestFunction = (
   cliPath: string
 ): Manifest => {
   return {
-    name: 'noda',
-    version: '1.0.0',
+    name: 'jesta',
+    version: '0.1.0',
     description: 'Develop Stencila plugins using Node.js',
     command: command(cliPath),
     methods: {
