@@ -114,10 +114,10 @@ export const cli = (
         const { from, to } = options
 
         const node = await dispatcher(Method.decode, { input, from })
-        const child = await dispatcher(Method.select, { node, query, lang })
+        const selected = await dispatcher(Method.select, { node, query, lang })
         if (output !== undefined)
-          await dispatcher(Method.encode, { node: child, output, to })
-        else console.log(node)
+          await dispatcher(Method.encode, { node: selected, output, to })
+        else console.log(selected)
 
         return
       }
@@ -197,10 +197,9 @@ Other
 Notes:
 
   - check the plugin's \`manifest\` for it's capabilities
-  - if the plugin does not have a particular capability it will throw
-    a \`CapabilityError\` for that method
   - \`in\` and \`out\` are file paths or URLs (e.g. http://..., file://...);
-    only some URL protocols are supported by \`read\` (for \`in\`) and \`write\` (for \`out\`)
+    but only some URL protocols are supported by the plugin (see manifest)
+  - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
 
 For a more advanced command line inteface install ${name} as a Stencila plugin
