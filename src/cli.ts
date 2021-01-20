@@ -27,7 +27,7 @@ export const cli = (
   const manifest = manifester(system(), filePath)
   const { name, version, description, command } = manifest
 
-  const methods = process.argv[2].split('+')
+  const methods = process.argv[2]?.split('+') ?? []
   const method: Method | string = methods.length > 1 ? Method.pipe : methods[0]
 
   const args = process.argv.slice(3)
@@ -71,7 +71,7 @@ export const cli = (
       case 'manifest':
         return console.log(manifest)
       case 'register':
-        return await register(manifester)
+        return await register(manifest)
       case 'serve':
         return serve(dispatcher)
 
