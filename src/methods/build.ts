@@ -2,7 +2,7 @@ import { isA, isEntity, Node } from '@stencila/schema'
 import { spawnSync } from 'child_process'
 import fs from 'fs'
 import { promisify } from 'util'
-import { record } from '../utilities/changes'
+import { needed, record } from '../utilities/changes'
 import * as timer from '../utilities/timer'
 import { visit } from '../utilities/walk'
 import { Method } from './method'
@@ -20,7 +20,7 @@ const writeFileAsync = promisify(fs.writeFile)
  * @param entity The stencil to build.
  */
 export const build = async (node: Node): Promise<Node> => {
-  if (!isEntity(node)) return node
+  if (!isEntity(node) || !needed(node, Method.build)) return node
 
   const start = timer.start()
 
