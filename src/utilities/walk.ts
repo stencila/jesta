@@ -8,7 +8,7 @@ export const visit = (node: Node, visitor: (node: Node) => void): void => {
 }
 
 export const mutate = <T>(node: T, mutator: (node: Node) => Node): T => {
-  if (isPrimitive(node)) return node
+  if (node === undefined || isPrimitive(node)) return node
   for (const [key, child] of Object.entries(node)) {
     // eslint-disable-next-line
     ;(node as any)[key] = isEntity(child)
