@@ -1,4 +1,4 @@
-import { Node, isA, isEntity } from '@stencila/schema'
+import { isA, isEntity, Node } from '@stencila/schema'
 import { mutate } from '../utilities/walk'
 
 export const clean = (node: Node): Node => {
@@ -11,6 +11,11 @@ export const clean = (node: Node): Node => {
     delete node.imports
     delete node.reads
     delete node.uses
+    delete node.outputs
+    delete node.errors
+  } else if (isA('CodeExpression', node)) {
+    delete node.output
+    delete node.errors
   }
 
   delete node.meta?.history

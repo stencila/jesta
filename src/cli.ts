@@ -1,7 +1,7 @@
 import path from 'path'
 import { DispatchFunction } from './dispatch'
 import { ManifestFunction, system } from './manifest'
-import { Method } from './methods/method'
+import { Method } from './methods'
 import { register } from './register'
 import { serve } from './serve'
 
@@ -33,7 +33,6 @@ export const cli = (
   const method: Method | string = methods.length > 1 ? Method.pipe : methods[0]
 
   const args = process.argv.slice(3)
-  const options: Record<string, string> = {}
 
   function required(index: number, name: string): string {
     const value = args[index]
@@ -75,7 +74,7 @@ export const cli = (
       case 'register':
         return await register(manifest)
       case 'serve':
-        return serve(dispatcher)
+        return serve(manifest, dispatcher)
 
       case Method.decode: {
         const input = url(args[0])
@@ -149,13 +148,22 @@ export const cli = (
         return
       }
 
-      case 'run': {
+      case 'run':
+      case Method.vars:
+      case Method.get:
+      case Method.set: {
         const input = url(required(0, 'in'))
-        const from = args[2]
+        const name = args[1]
+        const value = args[2]
 
-        const node = await dispatcher(Method.decode, { input, format: from })
+        const node = await dispatcher(Method.decode, { input })
         await dispatcher(Method.execute, { node })
-        serve(dispatcher)
+
+        if (method === 'run') serve(manifest, dispatcher)
+        else {
+          const result = await dispatcher(method, { name, value })
+          console.log(result)
+        }
 
         return
       }
@@ -185,14 +193,18 @@ Secondary commands (for testing plugin methods)
   enrich <in> [out]                   Enrich stencil <in> (save as [out])
 
   select <in> <query> <lang> [out]    Select nodes from stencil <in> (save as [out])
-  get <in> <name>                     Get a variable from a stencil
-  set <in> <name>                     Set a variable in a stencil
 
   compile <in> [out]                  Compile stencil <in> (save as [out]) 
   build <in> [out]                    Build stencil <in> (save as [out])
   clean <in> [out]                    Clean stencil <in> (save as [out])
   execute <in> [out]                  Execute stencil <in> (save as [out])
+
+  vars <in>                           List variables in executed stencil <in>
+  get <in> <name>                     Get a variable from executed stencil <in>
+  set <in> <name> <value>             Set a variable in executed stencil <in>
+
   run <in>                            Run stencil <in>
+
 
 Other
 

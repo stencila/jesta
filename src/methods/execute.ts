@@ -1,20 +1,34 @@
-import { Node, isA } from '@stencila/schema'
-// import repl from 'repl'
+import { codeError, isA, Node } from '@stencila/schema'
 import { record } from '../utilities/changes'
+import { enter } from '../utilities/session'
 import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
 import { Method } from './method'
 
-// TODO: Use this or `vm` module?
-// let session: repl.REPLServer
-
 export const execute = (node: Node): Node => {
-  if (isA('CodeExpression', node) || isA('CodeBlock', node)) {
-    const { programmingLanguage } = node
+  if (isA('CodeChunk', node)) {
+    const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
       const start = timer.start()
 
-      // TODO: Perform execution
+      // Enter code into REPL
+      const [outputs, errors] = enter(text)
+
+      // Update outputs
+      if (outputs.length > 0) node.outputs = outputs
+      else delete node.outputs
+
+      // Update errors
+      if (errors.length > 0)
+        node.errors = errors.map((error) => {
+          const { name, message, stack } = error
+          return codeError({
+            errorType: name,
+            errorMessage: message,
+            stackTrace: stack?.split('\n').slice(2).join('\n'),
+          })
+        })
+      else delete node.errors
 
       return record(node, Method.execute, timer.seconds(start))
     }

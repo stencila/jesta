@@ -1,5 +1,4 @@
 import { Node } from '@stencila/schema'
-import { Method } from './methods/method'
 import {
   build,
   clean,
@@ -8,11 +7,15 @@ import {
   encode,
   enrich,
   execute,
+  get,
+  Method,
+  pipe,
   reshape,
   select,
+  set,
   validate,
+  vars,
 } from './methods'
-import { pipe } from './methods/pipe'
 import { InvalidParamError, MethodNotFoundError } from './utilities/errors'
 
 export type DispatchFunction = (
@@ -100,6 +103,24 @@ export const dispatch: DispatchFunction = async (
       assert(typeof query === 'string', 'query', 'should be a string')
       assert(typeof lang === 'string', 'lang', 'should be a string')
       return select(node, query, lang)
+    }
+
+    case Method.vars: {
+      return vars()
+    }
+
+    case Method.get: {
+      const { name } = params
+      assert(typeof name === 'string', 'name', 'should be a string')
+      return get(name)
+    }
+
+    case Method.set: {
+      const { name, value } = params
+      assert(typeof name === 'string', 'name', 'should be a string')
+      assert(value !== undefined, 'value')
+      set(name, value)
+      return null
     }
 
     default:

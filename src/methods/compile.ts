@@ -1,11 +1,11 @@
-import { CodeChunk, Node, isA } from '@stencila/schema'
-import { mutate } from '../utilities/walk'
-import * as timer from '../utilities/timer'
-import { Method } from './method'
-import { needed, record } from '../utilities/changes'
+import { CodeChunk, isA, Node } from '@stencila/schema'
 import * as acorn from 'acorn'
 import * as acornWalk from 'acorn-walk'
 import * as estree from 'estree'
+import { needed, record } from '../utilities/changes'
+import * as timer from '../utilities/timer'
+import { mutate } from '../utilities/walk'
+import { Method } from './method'
 
 export const compile = (node: Node): Node => {
   // Compile code chunks and expressions
@@ -42,11 +42,19 @@ export const compileCode = (
   }
 
   const comments: acorn.Comment[] = []
-  const ast = acorn.parse(code, {
-    sourceType: 'module',
-    ecmaVersion: 'latest',
-    onComment: comments,
-  })
+  let ast
+  try {
+    ast = acorn.parse(code, {
+      sourceType: 'module',
+      ecmaVersion: 'latest',
+      onComment: comments,
+    })
+  } catch (error) {
+    // Syntax error when parsing code, so just return undefined
+    // for all properties
+    return {}
+  }
+
   acornWalk.ancestor(ast, {
     // TODO: See if there is a way to reduce the following casts
     // Some may be necessary, are definitely unsafe

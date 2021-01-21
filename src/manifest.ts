@@ -1,6 +1,7 @@
 import { JSONSchema7 } from 'json-schema'
 import os from 'os'
 import path from 'path'
+import { Method } from './methods'
 
 /**
  * A description of the package that implements the plugin
@@ -37,7 +38,11 @@ export interface WebsocketAddress extends BaseAddress {
 
 export type Address = StdioAddress | HttpAddress | WebsocketAddress
 
-export type MethodSchema = JSONSchema7
+export type MethodSchema = JSONSchema7 & { interruptible: boolean }
+
+type Capabilities = {
+  [key in Method]?: MethodSchema
+}
 
 /**
  * A plugin manifest
@@ -46,20 +51,7 @@ export interface Manifest {
   version: 1
   package: Package
   addresses: Address[]
-  capabilities: {
-    decode?: MethodSchema
-    encode?: MethodSchema
-
-    select?: MethodSchema
-
-    validate?: MethodSchema
-    reshape?: MethodSchema
-    enrich?: MethodSchema
-
-    compile?: MethodSchema
-    build?: MethodSchema
-    execute?: MethodSchema
-  }
+  capabilities: Capabilities
 }
 
 interface System {
@@ -104,6 +96,7 @@ export const manifest: ManifestFunction = (
           query: { type: 'string' },
           lang: { const: 'dotpath' },
         },
+        interruptible: false,
       },
       encode: {
         required: ['node'],
@@ -112,6 +105,16 @@ export const manifest: ManifestFunction = (
           output: { type: 'string', pattern: '^(file|https?):\\/\\/.+' },
           format: { const: 'json' },
         },
+        interruptible: false,
+      },
+      execute: {
+        required: ['node'],
+        properties: {
+          node: { type: 'object' },
+          output: { type: 'string', pattern: '^(file|https?):\\/\\/.+' },
+          format: { const: 'json' },
+        },
+        interruptible: true,
       },
     },
   }

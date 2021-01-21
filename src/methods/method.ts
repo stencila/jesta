@@ -6,8 +6,11 @@ export enum Method {
   encode = 'encode',
   enrich = 'enrich',
   execute = 'execute',
+  get = 'get',
   pipe = 'pipe',
   reshape = 'reshape',
   select = 'select',
+  set = 'set',
   validate = 'validate',
+  vars = 'vars',
 }
