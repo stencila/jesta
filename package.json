@@ -2,9 +2,6 @@
   "name": "@stencila/jesta",
   "version": "0.1.0",
   "description": "Stencila plugin for Node.js",
-  "files": [
-    "dist"
-  ],
   "bin": "dist/src/index.js",
   "main": "dist/src/index.js",
   "scripts": {

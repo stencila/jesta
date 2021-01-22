@@ -1,0 +1,5 @@
+# When packaging ignore everything except dist folder
+# We need to use this approach instead of using `files` in `package.json`
+# because of a bug associated with having a `dist/package.json`
+*
+!dist/**/*
