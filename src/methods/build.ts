@@ -19,8 +19,8 @@ const writeFileAsync = promisify(fs.writeFile)
  *
  * @param entity The stencil to build.
  */
-export const build = async (node: Node): Promise<Node> => {
-  if (!isEntity(node) || !needed(node, Method.build)) return node
+export const build = async (node: Node, force = false): Promise<Node> => {
+  if (!isEntity(node) || (!force && !needed(node, Method.build))) return node
 
   const start = timer.start()
 

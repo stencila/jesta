@@ -7,12 +7,13 @@ import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
 import { Method } from './method'
 
-export const compile = (node: Node): Node => {
+export const compile = (node: Node, force = false): Node => {
   // Compile code chunks and expressions
   if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
-      if (!needed(node, Method.compile)) return node
+      if (!force && !needed(node, Method.compile)) return node
+
       const start = timer.start()
       const props = compileCode(text)
       const compiled = { ...node, ...props }
@@ -21,7 +22,7 @@ export const compile = (node: Node): Node => {
   }
 
   // Walk over other node types
-  return mutate(node, compile)
+  return mutate(node, (child) => compile(child, force))
 }
 
 export const compileCode = (
