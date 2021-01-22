@@ -1,6 +1,6 @@
 import { Node } from '@stencila/schema'
 import readline from 'readline'
-import { DispatchFunction } from './dispatch'
+import { Dispatch } from './dispatch'
 import { Manifest } from './manifest'
 import { Method } from './methods'
 import {
@@ -13,10 +13,7 @@ import {
 /**
  * Serve the plugin.
  */
-export const serve = (
-  manifest: Manifest,
-  dispatcher: DispatchFunction
-): void => {
+export const serve = (manifest: Manifest, dispatcher: Dispatch): void => {
   // Turn on the default signal handler so that an errant SIGINT does
   // not stop the server
   defaultSigIntHandler()

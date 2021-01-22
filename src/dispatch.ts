@@ -18,12 +18,12 @@ import {
 } from './methods'
 import { InvalidParamError, MethodNotFoundError } from './utilities/errors'
 
-export type DispatchFunction = (
+export type Dispatch = (
   method: string,
   params: Record<string, Node | undefined>
 ) => Promise<Node>
 
-export const dispatch: DispatchFunction = async (
+export const dispatch: Dispatch = async (
   method: string,
   params: Record<string, Node | undefined>
 ): Promise<Node> => {

@@ -1,7 +1,7 @@
 import minimist from 'minimist'
 import path from 'path'
-import { DispatchFunction } from './dispatch'
-import { ManifestFunction, system } from './manifest'
+import { Dispatch } from './dispatch'
+import { Manifest } from './manifest'
 import { Method } from './methods'
 import { register } from './register'
 import { serve } from './serve'
@@ -22,13 +22,23 @@ import { serve } from './serve'
  */
 export const cli = (
   filePath: string,
-  manifester: ManifestFunction,
-  dispatcher: DispatchFunction
+  manifest: Manifest,
+  dispatch: Dispatch
 ): void => {
-  const manifest = manifester(system(), filePath)
   const {
     package: { name, version, description },
   } = manifest
+
+  const { base, ext } = path.parse(filePath)
+  const [stdioCommand, ...stdioArgs] = `${
+    ext === '.js' ? 'node' : 'npm start --'
+  } ${base === 'index' ? path.dirname(filePath) : filePath}`.split(/\s+/)
+  for (const address of manifest.addresses) {
+    if (address.transport === 'stdio' && address.command === '') {
+      address.command = stdioCommand
+      address.args.unshift(...stdioArgs)
+    }
+  }
 
   let {
     _: [method, ...args],
@@ -90,12 +100,12 @@ export const cli = (
       case 'register':
         return await register(manifest)
       case 'serve':
-        return serve(manifest, dispatcher)
+        return serve(manifest, dispatch)
 
       case Method.decode: {
         const input = url(required(0, 'in'))
 
-        const node = await dispatcher(Method.decode, { input, ...options })
+        const node = await dispatch(Method.decode, { input, ...options })
 
         return console.log(node)
       }
@@ -105,7 +115,7 @@ export const cli = (
         console.log('Enter a node as JSON and Ctrl+D when finished')
         const node = JSON.parse(await stdin()) as Node
 
-        const content = await dispatcher(Method.encode, {
+        const content = await dispatch(Method.encode, {
           node,
           output,
           ...options,
@@ -118,12 +128,12 @@ export const cli = (
         const input = url(required(0, 'in'))
         const output = url(required(1, 'out'))
 
-        const node = await dispatcher(Method.decode, {
+        const node = await dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        await dispatcher(Method.encode, {
+        await dispatch(Method.encode, {
           node,
           output,
           ...options,
@@ -138,18 +148,18 @@ export const cli = (
         const query = required(1, 'query')
         const output = url(optional(2))
 
-        const node = await dispatcher(Method.decode, {
+        const node = await dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const selected = await dispatcher(Method.select, {
+        const selected = await dispatch(Method.select, {
           node,
           query,
           ...options,
         })
         if (selected !== undefined && output !== undefined)
-          await dispatcher(Method.encode, {
+          await dispatch(Method.encode, {
             node: selected,
             output,
             ...options,
@@ -175,13 +185,13 @@ export const cli = (
 
         cd(input)
 
-        const node = await dispatcher(Method.decode, {
+        const node = await dispatch(Method.decode, {
           input,
           ...options,
           format: from,
         })
-        const result = await dispatcher(method, { node, ...options, methods })
-        await dispatcher(Method.encode, {
+        const result = await dispatch(method, { node, ...options, methods })
+        await dispatch(Method.encode, {
           node: result,
           output,
           ...options,
@@ -199,12 +209,12 @@ export const cli = (
         const name = args[1]
         const value = args[2]
 
-        const node = await dispatcher(Method.decode, { input, ...options })
-        await dispatcher(Method.execute, { node, ...options })
+        const node = await dispatch(Method.decode, { input, ...options })
+        await dispatch(Method.execute, { node, ...options })
 
-        if (method === 'run') serve(manifest, dispatcher)
+        if (method === 'run') serve(manifest, dispatch)
         else {
-          const result = await dispatcher(method, { name, value, ...options })
+          const result = await dispatch(method, { name, value, ...options })
           console.log(result)
         }
 
@@ -256,13 +266,19 @@ Secondary commands (mainly for testing plugin)
 Notes:
 
   - check the plugin's \`manifest\` for it's capabilities
+
   - \`in\` and \`out\` are file paths or URLs (e.g. http://..., file://...);
     but only some URL protocols are supported by the plugin (see manifest)
+  
   - commands with an \`in\` or \`out\` argument support the \`--format\` option
+
   - commands with both \`in\` and \`out\` arguments support \`--from\` and
     \`--to\` options for the respective formats
+
   - \`select\` supports the \`--lang\` option for the query language
+
   - \`validate\`, \`compile\`, and \`build\` support the \`--force\` option
+
   - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
 
