@@ -1,3 +1,4 @@
+import minimist from 'minimist'
 import path from 'path'
 import { DispatchFunction } from './dispatch'
 import { ManifestFunction, system } from './manifest'
@@ -29,10 +30,18 @@ export const cli = (
     package: { name, version, description },
   } = manifest
 
-  const methods = process.argv[2]?.split('+') ?? []
-  const method: Method | string = methods.length > 1 ? Method.pipe : methods[0]
+  let {
+    _: [method, ...args],
+    ...options
+  } = minimist(process.argv.slice(2), {
+    boolean: 'force',
+  })
 
-  const args = process.argv.slice(3)
+  let methods: string[]
+  if (method?.includes('+')) {
+    method = Method.pipe
+    methods = method.split('+')
+  }
 
   function required(index: number, name: string): string {
     const value = args[index]
@@ -69,6 +78,13 @@ export const cli = (
       // Methods are arranged in groups below according to the
       // arguments they require
 
+      // Note: ...options should be sent to all `dispatcher` calls
+      // (although they will often be ignored)
+
+      // Some of the assignments below from options are type unsafe
+      // but we allow these as the dispatch function handles type checking
+      /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
       case 'manifest':
         return console.log(manifest)
       case 'register':
@@ -77,36 +93,42 @@ export const cli = (
         return serve(manifest, dispatcher)
 
       case Method.decode: {
-        const input = url(args[0])
-        const from = args[1]
+        const input = url(required(0, 'in'))
 
-        const node = await dispatcher(Method.decode, { input, format: from })
+        const node = await dispatcher(Method.decode, { input, ...options })
 
         return console.log(node)
       }
 
       case Method.encode: {
-        const node = JSON.parse(await stdin()) as Node
         const output = url(args[0])
-        const to = args[1]
+        console.log('Enter a node as JSON and Ctrl+D when finished')
+        const node = JSON.parse(await stdin()) as Node
 
         const content = await dispatcher(Method.encode, {
           node,
           output,
-          format: to,
+          ...options,
         })
 
         return console.log(content)
       }
 
       case 'convert': {
-        const input = url(args[0])
-        const output = url(args[1])
-        const from = args[2]
-        const to = args[3]
+        const input = url(required(0, 'in'))
+        const output = url(required(1, 'out'))
 
-        const node = await dispatcher(Method.decode, { input, format: from })
-        await dispatcher(Method.encode, { node, output, format: to })
+        const node = await dispatcher(Method.decode, {
+          input,
+          ...options,
+          format: options.from,
+        })
+        await dispatcher(Method.encode, {
+          node,
+          output,
+          ...options,
+          format: options.to,
+        })
 
         return
       }
@@ -114,13 +136,25 @@ export const cli = (
       case Method.select: {
         const input = url(required(0, 'in'))
         const query = required(1, 'query')
-        const lang = required(2, 'lang')
-        const output = url(optional(3))
+        const output = url(optional(2))
 
-        const node = await dispatcher(Method.decode, { input })
-        const selected = await dispatcher(Method.select, { node, query, lang })
-        if (output !== undefined)
-          await dispatcher(Method.encode, { node: selected, output })
+        const node = await dispatcher(Method.decode, {
+          input,
+          ...options,
+          format: options.from,
+        })
+        const selected = await dispatcher(Method.select, {
+          node,
+          query,
+          ...options,
+        })
+        if (selected !== undefined && output !== undefined)
+          await dispatcher(Method.encode, {
+            node: selected,
+            output,
+            ...options,
+            format: options.to,
+          })
         else console.log(selected)
 
         return
@@ -141,9 +175,18 @@ export const cli = (
 
         cd(input)
 
-        const node = await dispatcher(Method.decode, { input, format: from })
-        const result = await dispatcher(method, { node, methods })
-        await dispatcher(Method.encode, { node: result, output, format: to })
+        const node = await dispatcher(Method.decode, {
+          input,
+          ...options,
+          format: from,
+        })
+        const result = await dispatcher(method, { node, ...options, methods })
+        await dispatcher(Method.encode, {
+          node: result,
+          output,
+          ...options,
+          format: to,
+        })
 
         return
       }
@@ -156,17 +199,19 @@ export const cli = (
         const name = args[1]
         const value = args[2]
 
-        const node = await dispatcher(Method.decode, { input })
-        await dispatcher(Method.execute, { node })
+        const node = await dispatcher(Method.decode, { input, ...options })
+        await dispatcher(Method.execute, { node, ...options })
 
         if (method === 'run') serve(manifest, dispatcher)
         else {
-          const result = await dispatcher(method, { name, value })
+          const result = await dispatcher(method, { name, value, ...options })
           console.log(result)
         }
 
         return
       }
+
+      /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
       case 'help':
       case undefined:
@@ -179,43 +224,45 @@ Usage:
 
 Primary commands (required for plugin integration)
 
-  register                            Register ${name}
-  serve                               Serve ${name} over stdin/stdout
+  register                     Register ${name}
+  serve                        Serve ${name} over stdin/stdout
 
-Secondary commands (for testing plugin methods)
+Secondary commands (mainly for testing plugin)
 
-  decode <in>                         Decode a stencil from <in> to stdout
-  encode <out>                        Encode a stencil from stdin to <out>
-  convert <in> <out>                  Convert stencil <in> to <out>
+  help                         Print this message
+  manifest                     Display ${name}'s manifest
 
-  validate <in> [out]                 Validate stencil <in> (save as [out])
-  reshape <in> [out]                  Reshape stencil <in> (save as [out])
-  enrich <in> [out]                   Enrich stencil <in> (save as [out])
+  decode <in>                  Decode a stencil from <in> to stdout
+  encode <out>                 Encode a stencil from stdin to <out>
+  convert <in> <out>           Convert stencil <in> to <out>
 
-  select <in> <query> <lang> [out]    Select nodes from stencil <in> (save as [out])
+  validate <in> [out]          Validate stencil <in> (save as [out])
+  reshape <in> [out]           Reshape stencil <in> (save as [out])
+  enrich <in> [out]            Enrich stencil <in> (save as [out])
 
-  compile <in> [out]                  Compile stencil <in> (save as [out]) 
-  build <in> [out]                    Build stencil <in> (save as [out])
-  clean <in> [out]                    Clean stencil <in> (save as [out])
-  execute <in> [out]                  Execute stencil <in> (save as [out])
+  select <in> <query> [out]    Select nodes from stencil <in> (save as [out])
 
-  vars <in>                           List variables in executed stencil <in>
-  get <in> <name>                     Get a variable from executed stencil <in>
-  set <in> <name> <value>             Set a variable in executed stencil <in>
+  clean <in> [out]             Clean stencil <in> (save as [out])
+  compile <in> [out]           Compile stencil <in> (save as [out]) 
+  build <in> [out]             Build stencil <in> (save as [out])
+  execute <in> [out]           Execute stencil <in> (save as [out])
 
-  run <in>                            Run stencil <in>
+  vars <in>                    List variables in stencil <in>
+  get <in> <name>              Get a variable from stencil <in>
+  set <in> <name> <value>      Set a variable in stencil <in>
 
-
-Other
-
-  manifest                            Display ${name}'s manifest
-  help                                Prints this message
+  run <in>                     Run stencil <in> (execute and serve)
 
 Notes:
 
   - check the plugin's \`manifest\` for it's capabilities
   - \`in\` and \`out\` are file paths or URLs (e.g. http://..., file://...);
     but only some URL protocols are supported by the plugin (see manifest)
+  - commands with an \`in\` or \`out\` argument support the \`--format\` option
+  - commands with both \`in\` and \`out\` arguments support \`--from\` and
+    \`--to\` options for the respective formats
+  - \`select\` supports the \`--lang\` option for the query language
+  - \`validate\`, \`compile\`, and \`build\` support the \`--force\` option
   - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
 
@@ -232,7 +279,7 @@ and use it from there:
   }
 
   run().catch((error) => {
-    console.error(error)
+    console.error(error instanceof Error ? error.message : error)
     process.exit(1)
   })
 }

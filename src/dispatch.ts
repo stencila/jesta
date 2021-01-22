@@ -42,15 +42,20 @@ export const dispatch: DispatchFunction = async (
     case Method.execute:
     case Method.reshape:
     case Method.validate: {
-      const { node } = params
+      const { node, force } = params
       assert(node !== undefined, 'node')
+      assert(
+        force === undefined || typeof force === 'boolean',
+        'force',
+        'should be a boolean'
+      )
       switch (method) {
         case Method.build:
-          return build(node)
+          return build(node, force)
         case Method.clean:
           return clean(node)
         case Method.compile:
-          return compile(node)
+          return compile(node, force)
         case Method.enrich:
           return enrich(node)
         case Method.execute:
@@ -58,7 +63,7 @@ export const dispatch: DispatchFunction = async (
         case Method.reshape:
           return reshape(node)
         case Method.validate:
-          return validate(node)
+          return validate(node, force)
       }
       break
     }
@@ -77,7 +82,11 @@ export const dispatch: DispatchFunction = async (
     case Method.encode: {
       const { node, output, format } = params
       assert(node !== undefined, 'node')
-      assert(typeof output === 'string', 'output', 'should be a string')
+      assert(
+        output === undefined || typeof output === 'string',
+        'output',
+        'should be a string'
+      )
       assert(
         format === undefined || typeof format === 'string',
         'format',
@@ -101,7 +110,11 @@ export const dispatch: DispatchFunction = async (
       const { node, query, lang } = params
       assert(node !== undefined, 'node')
       assert(typeof query === 'string', 'query', 'should be a string')
-      assert(typeof lang === 'string', 'lang', 'should be a string')
+      assert(
+        lang === undefined || typeof lang === 'string',
+        'lang',
+        'should be a string'
+      )
       return select(node, query, lang)
     }
 
