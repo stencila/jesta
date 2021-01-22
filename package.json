@@ -8,7 +8,7 @@
   "bin": "dist/src/index.js",
   "main": "dist/src/index.js",
   "scripts": {
-    "format": "npx prettier --write './**/*.{js,md,ts}'",
+    "format": "npx prettier --write 'src/**/*.{js,ts}'",
     "lint": "eslint --fix 'src/**/*.{js,ts}'",
     "test": "jest",
     "cover": "npm run test -- --collectCoverage",
