@@ -5,9 +5,13 @@ import * as estree from 'estree'
 import { needed, record } from '../utilities/changes'
 import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
-import { Method } from './method'
+import { Compile, Method } from './types'
 
-export const compile = (node: Node, force = false): Node => {
+/* eslint-disable @typescript-eslint/require-await */
+export const compile: Compile = async (
+  node: Node,
+  force = false
+): Promise<Node> => {
   // Compile code chunks and expressions
   if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
     const { programmingLanguage, text } = node

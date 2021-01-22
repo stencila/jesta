@@ -1,7 +1,9 @@
 import { isA, isEntity, Node } from '@stencila/schema'
 import { mutate } from '../utilities/walk'
+import { Clean } from './types'
 
-export const clean = (node: Node): Node => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const clean: Clean = async (node: Node): Promise<Node> => {
   if (!isEntity(node)) return node
 
   if (isA('CodeChunk', node)) {

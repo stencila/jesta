@@ -1,6 +1,12 @@
 import { Node } from '@stencila/schema'
+import { Select } from './types'
 
-export const select = (node: Node, query: string, lang = 'jspath'): Node => {
+/* eslint-disable @typescript-eslint/require-await */
+export const select: Select = async (
+  node: Node,
+  query: string,
+  lang = 'jspath'
+): Promise<Node> => {
   if (lang === 'jspath') {
     const items = query.replace(/\[(\d+)\]/, '.$1').split('.')
     let value = node

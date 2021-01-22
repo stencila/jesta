@@ -1,32 +1,30 @@
 import { Node } from '@stencila/schema'
-import {
-  build,
-  clean,
-  compile,
-  decode,
-  encode,
-  enrich,
-  execute,
-  get,
-  Method,
-  pipe,
-  reshape,
-  select,
-  set,
-  validate,
-  vars,
-} from './methods'
+import { methods as allMethods } from './methods'
+import { Method, Methods, Dispatch } from './methods/types'
 import { InvalidParamError, MethodNotFoundError } from './utilities/errors'
 
-export type Dispatch = (
+export const dispatch: Dispatch = (
   method: string,
-  params: Record<string, Node | undefined>
-) => Promise<Node>
-
-export const dispatch: Dispatch = async (
-  method: string,
-  params: Record<string, Node | undefined>
+  params: Record<string, Node | undefined>,
+  methods: Methods = allMethods
 ): Promise<Node> => {
+  const {
+    build,
+    clean,
+    compile,
+    decode,
+    encode,
+    enrich,
+    execute,
+    get,
+    pipe,
+    reshape,
+    select,
+    set,
+    validate,
+    vars,
+  } = methods
+
   function assert(
     condition: boolean,
     param: string,
@@ -34,6 +32,7 @@ export const dispatch: Dispatch = async (
   ): asserts condition {
     if (!condition) throw new InvalidParamError(method, param, message)
   }
+
   switch (method) {
     case Method.build:
     case Method.clean:
@@ -96,14 +95,14 @@ export const dispatch: Dispatch = async (
     }
 
     case Method.pipe: {
-      const { node, methods } = params
+      const { node, calls } = params
       assert(node !== undefined, 'node')
       assert(
-        Array.isArray(methods),
-        'methods',
+        Array.isArray(calls),
+        'calls',
         'should be an array of method names'
       )
-      return pipe(node, methods, dispatch)
+      return pipe(node, calls, dispatch, methods)
     }
 
     case Method.select: {
@@ -132,8 +131,7 @@ export const dispatch: Dispatch = async (
       const { name, value } = params
       assert(typeof name === 'string', 'name', 'should be a string')
       assert(value !== undefined, 'value')
-      set(name, value)
-      return null
+      return set(name, value)
     }
 
     default:

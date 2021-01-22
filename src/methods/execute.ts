@@ -3,9 +3,10 @@ import { record } from '../utilities/changes'
 import { enter } from '../utilities/session'
 import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
-import { Method } from './method'
+import { Execute, Method } from './types'
 
-export const execute = (node: Node): Node => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const execute: Execute = async (node: Node): Promise<Node> => {
   if (isA('CodeChunk', node)) {
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {

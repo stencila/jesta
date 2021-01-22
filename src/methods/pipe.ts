@@ -1,14 +1,14 @@
 import { Node } from '@stencila/schema'
-import { Dispatch } from '../dispatch'
-import { Method } from './method'
+import { Dispatch, Method, Methods, Pipe } from './types'
 
-export const pipe = async (
+export const pipe: Pipe = async (
   node: Node,
-  methods: Method[],
-  dispatchFunction: Dispatch
+  calls: Method[],
+  dispatch: Dispatch,
+  methods: Methods
 ): Promise<Node> => {
-  for (const method of methods) {
-    node = await dispatchFunction(method, { node })
+  for (const method of calls) {
+    node = await dispatch(method, { node }, methods)
   }
   return node
 }

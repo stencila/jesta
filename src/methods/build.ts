@@ -5,7 +5,7 @@ import { promisify } from 'util'
 import { needed, record } from '../utilities/changes'
 import * as timer from '../utilities/timer'
 import { visit } from '../utilities/walk'
-import { Method } from './method'
+import { Build, Method } from './types'
 
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
@@ -19,7 +19,10 @@ const writeFileAsync = promisify(fs.writeFile)
  *
  * @param entity The stencil to build.
  */
-export const build = async (node: Node, force = false): Promise<Node> => {
+export const build: Build = async (
+  node: Node,
+  force = false
+): Promise<Node> => {
   if (!isEntity(node) || (!force && !needed(node, Method.build))) return node
 
   const start = timer.start()

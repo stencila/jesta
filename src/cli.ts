@@ -1,8 +1,9 @@
+import { Node } from '@stencila/schema'
 import minimist from 'minimist'
 import path from 'path'
-import { Dispatch } from './dispatch'
+import { dispatch } from './dispatch'
 import { Manifest } from './manifest'
-import { Method } from './methods'
+import { Dispatch, Method, Methods } from './methods/types'
 import { register } from './register'
 import { serve } from './serve'
 
@@ -23,11 +24,17 @@ import { serve } from './serve'
 export const cli = (
   filePath: string,
   manifest: Manifest,
-  dispatch: Dispatch
+  dispatcher: Methods | Dispatch
 ): void => {
   const {
     package: { name, version, description },
   } = manifest
+
+  const call =
+    typeof dispatcher === 'function'
+      ? dispatcher
+      : (method: string, params: Record<string, Node | undefined>) =>
+          dispatch(method, params, dispatcher)
 
   const { name: fileName, ext } = path.parse(filePath)
   const [stdioCommand, ...stdioArgs] = `${
@@ -47,10 +54,10 @@ export const cli = (
     boolean: 'force',
   })
 
-  let methods: string[]
+  let calls: string[]
   if (method?.includes('+')) {
     method = Method.pipe
-    methods = method.split('+')
+    calls = method.split('+')
   }
 
   function required(index: number, name: string): string {
@@ -105,7 +112,7 @@ export const cli = (
       case Method.decode: {
         const input = url(required(0, 'in'))
 
-        const node = await dispatch(Method.decode, { input, ...options })
+        const node = await call(Method.decode, { input, ...options })
 
         return console.log(node)
       }
@@ -115,7 +122,7 @@ export const cli = (
         console.log('Enter a node as JSON and Ctrl+D when finished')
         const node = JSON.parse(await stdin()) as Node
 
-        const content = await dispatch(Method.encode, {
+        const content = await call(Method.encode, {
           node,
           output,
           ...options,
@@ -128,12 +135,12 @@ export const cli = (
         const input = url(required(0, 'in'))
         const output = url(required(1, 'out'))
 
-        const node = await dispatch(Method.decode, {
+        const node = await call(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        await dispatch(Method.encode, {
+        await call(Method.encode, {
           node,
           output,
           ...options,
@@ -148,18 +155,18 @@ export const cli = (
         const query = required(1, 'query')
         const output = url(optional(2))
 
-        const node = await dispatch(Method.decode, {
+        const node = await call(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const selected = await dispatch(Method.select, {
+        const selected = await call(Method.select, {
           node,
           query,
           ...options,
         })
         if (selected !== undefined && output !== undefined)
-          await dispatch(Method.encode, {
+          await call(Method.encode, {
             node: selected,
             output,
             ...options,
@@ -183,13 +190,13 @@ export const cli = (
 
         cd(input)
 
-        const node = await dispatch(Method.decode, {
+        const node = await call(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const result = await dispatch(method, { node, ...options, methods })
-        await dispatch(Method.encode, {
+        const result = await call(method, { node, ...options, methods: calls })
+        await call(Method.encode, {
           node: result,
           output,
           ...options,
@@ -207,12 +214,12 @@ export const cli = (
         const name = args[1]
         const value = args[2]
 
-        const node = await dispatch(Method.decode, { input, ...options })
-        await dispatch(Method.execute, { node, ...options })
+        const node = await call(Method.decode, { input, ...options })
+        await call(Method.execute, { node, ...options })
 
         if (method === 'run') serve(manifest, dispatch)
         else {
-          const result = await dispatch(method, { name, value, ...options })
+          const result = await call(method, { name, value, ...options })
           console.log(result)
         }
 

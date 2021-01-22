@@ -1,8 +1,8 @@
 import { Node } from '@stencila/schema'
 import readline from 'readline'
-import { Dispatch } from './dispatch'
+import { dispatch } from './dispatch'
 import { Manifest } from './manifest'
-import { Method } from './methods'
+import { Dispatch, Method, Methods } from './methods'
 import {
   InvalidRequestError,
   JsonRpcError,
@@ -13,7 +13,16 @@ import {
 /**
  * Serve the plugin.
  */
-export const serve = (manifest: Manifest, dispatcher: Dispatch): void => {
+export const serve = (
+  manifest: Manifest,
+  dispatcher: Methods | Dispatch
+): void => {
+  const call =
+    typeof dispatcher === 'function'
+      ? dispatcher
+      : (method: string, params: Record<string, Node | undefined>) =>
+          dispatch(method, params, dispatcher)
+
   // Turn on the default signal handler so that an errant SIGINT does
   // not stop the server
   defaultSigIntHandler()
@@ -50,7 +59,7 @@ export const serve = (manifest: Manifest, dispatcher: Dispatch): void => {
         if (interruptible) noSigIntHandler()
         else uninterruptibleSigIntHandler(id, method)
 
-        const result = await dispatcher(method, params ?? {})
+        const result = await call(method, params ?? {})
 
         // Turn back on the default SIGINT handling
         defaultSigIntHandler()
