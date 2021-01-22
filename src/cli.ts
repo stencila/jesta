@@ -180,22 +180,20 @@ export const cli = (
       case Method.validate: {
         const input = url(required(0, 'in'))
         const output = url(optional(1) ?? input)
-        const from = optional(2)
-        const to = optional(3) ?? from
 
         cd(input)
 
         const node = await dispatch(Method.decode, {
           input,
           ...options,
-          format: from,
+          format: options.from,
         })
         const result = await dispatch(method, { node, ...options, methods })
         await dispatch(Method.encode, {
           node: result,
           output,
           ...options,
-          format: to,
+          format: options.to,
         })
 
         return
