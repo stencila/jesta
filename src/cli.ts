@@ -29,10 +29,10 @@ export const cli = (
     package: { name, version, description },
   } = manifest
 
-  const { base, ext } = path.parse(filePath)
+  const { name: fileName, ext } = path.parse(filePath)
   const [stdioCommand, ...stdioArgs] = `${
-    ext === '.js' ? 'node' : 'npm start --'
-  } ${base === 'index' ? path.dirname(filePath) : filePath}`.split(/\s+/)
+    ext === '.js' ? 'node' : 'npx ts-node'
+  } ${fileName === 'index' ? path.dirname(filePath) : filePath}`.split(/\s+/)
   for (const address of manifest.addresses) {
     if (address.transport === 'stdio' && address.command === '') {
       address.command = stdioCommand
