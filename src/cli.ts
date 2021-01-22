@@ -56,8 +56,8 @@ export const cli = (
 
   let calls: string[]
   if (method?.includes('+')) {
-    method = Method.pipe
     calls = method.split('+')
+    method = Method.pipe
   }
 
   function required(index: number, name: string): string {
@@ -195,7 +195,7 @@ export const cli = (
           ...options,
           format: options.from,
         })
-        const result = await call(method, { node, ...options, methods: calls })
+        const result = await call(method, { node, ...options, calls })
         await call(Method.encode, {
           node: result,
           output,
