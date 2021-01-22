@@ -1,6 +1,6 @@
 import { JSONSchema7 } from 'json-schema'
+import { description, version } from '../package.json'
 import { Method } from './methods'
-
 /**
  * A description of the package that implements the plugin
  */
@@ -54,12 +54,7 @@ export interface Manifest {
 
 export const manifest: Manifest = {
   version: 1,
-  package: {
-    // TODO: Populate from the plugin's package.json
-    name: 'jesta',
-    version: '0.1.0',
-    description: 'Stencila plugin for Node.js',
-  },
+  package: { name: 'jesta', version, description },
   addresses: [
     {
       transport: 'stdio',

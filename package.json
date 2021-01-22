@@ -2,7 +2,11 @@
   "name": "@stencila/jesta",
   "version": "0.1.0",
   "description": "Stencila plugin for Node.js",
-  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "bin": "dist/src/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "format": "npx prettier --write './**/*.{js,md,ts}'",
     "lint": "eslint --fix 'src/**/*.{js,ts}'",
@@ -10,7 +14,7 @@
     "cover": "npm run test -- --collectCoverage",
     "start": "npx ts-node src",
     "build": "tsc -p tsconfig.json",
-    "postbuild": "node dist/index.js register"
+    "postbuild": "node dist/src/index.js register"
   },
   "repository": {
     "type": "git",
