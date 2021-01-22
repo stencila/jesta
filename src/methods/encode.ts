@@ -7,7 +7,8 @@ export const encode = async (
   output?: string,
   format?: string
 ): Promise<string> => {
-  format = format ?? path.extname(output ?? '').slice(1)
+  format =
+    format ?? (output !== undefined ? path.extname(output).slice(1) : 'json')
 
   if (format === 'json' || format.startsWith('application/json')) {
     const json = JSON.stringify(node, null, '  ')
