@@ -1,8 +1,6 @@
 # 🃏 Jesta
 
-#### Stencila plugin for Node.js
-
-> 🚨 This is a work in progress. It is mainly an exploration of how plugins can be developed in Stencila in different languages
+#### Stencila plugin for stencils using Node.js
 
 ## 📦 Install
 
@@ -22,6 +20,29 @@ None of that is possible right now, and this package isn't even on NPM yet, but 
 
 ```sh
 npm install stencila/jesta
+```
+
+## 💪 Extend
+
+Jesta is designed to be extended. You can create your own Stencila plugin by following these steps.
+
+Initialize your package and add Jesta as a development dependency
+
+```sh
+npm init
+npm install --save-dev stencila/jesta
+```
+
+Implement your own `manifest` and `dispatch` functions.
+
+In your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
+
+```ts
+import { cli } from '@stencila/jesta'
+import { dispatch } from './dispatch'
+import { manifest } from './manifest'
+
+if (require.main === module) cli(__filename, manifest, dispatch)
 ```
 
 ## 🛠️ Develop
