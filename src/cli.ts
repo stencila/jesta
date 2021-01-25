@@ -1,6 +1,7 @@
-import { Node } from '@stencila/schema'
+import { CodeChunk, codeChunk, Node } from '@stencila/schema'
 import minimist from 'minimist'
 import path from 'path'
+import readline from 'readline'
 import { Jesta } from '.'
 import { Method } from './plugin'
 
@@ -40,7 +41,7 @@ export function cli(this: Jesta, filePath: string): void {
     _: [method, ...args],
     ...options
   } = minimist(process.argv.slice(2), {
-    boolean: ['force', 'debug'],
+    boolean: ['force', 'debug', 'interact'],
   })
 
   let calls: string[]
@@ -141,27 +142,46 @@ export function cli(this: Jesta, filePath: string): void {
 
       case Method.select: {
         const input = url(required(0, 'in'))
-        const query = required(1, 'query')
-        const output = url(optional(2))
 
         const node = await this.dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const selected = await this.dispatch(Method.select, {
-          node,
-          query,
-          ...options,
-        })
-        if (selected !== undefined && output !== undefined)
-          await this.dispatch(Method.encode, {
-            node: selected,
-            output,
+
+        const run = async (query: string, output?: string): Promise<void> => {
+          const selected = await this.dispatch(Method.select, {
+            node,
+            query,
             ...options,
-            format: options.to,
           })
-        else console.log(selected)
+          if (selected !== undefined && output !== undefined)
+            await this.dispatch(Method.encode, {
+              node: selected,
+              output,
+              ...options,
+              format: options.to,
+            })
+          else console.log(selected)
+        }
+
+        if (options.interact === true) {
+          const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+            prompt: '>> ',
+          })
+          rl.prompt()
+          rl.on('line', (line) => {
+            run(line)
+              .then(() => rl.prompt())
+              .catch(console.error)
+          })
+        } else {
+          const query = required(1, 'query')
+          const output = url(optional(2))
+          await run(query, output)
+        }
 
         return
       }
@@ -185,6 +205,37 @@ export function cli(this: Jesta, filePath: string): void {
           format: options.from,
         })
         const result = await this.dispatch(method, { node, ...options, calls })
+
+        if (options.interact === true && method === Method.execute) {
+          const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+            prompt: 'js> ',
+          })
+          rl.prompt()
+          rl.on('line', (line) => {
+            const node = codeChunk({
+              programmingLanguage: 'js',
+              text: line,
+            })
+            this.dispatch(method, {
+              node,
+              ...options,
+            })
+              .then((node) => {
+                const { outputs, errors } = node as CodeChunk
+                if (outputs) {
+                  for (const output of outputs) console.log(output)
+                }
+                if (errors) {
+                  for (const error of errors) console.log(error)
+                }
+                rl.prompt()
+              })
+              .catch(console.error)
+          })
+        }
+
         await this.dispatch(Method.encode, {
           node: result,
           output,
@@ -275,7 +326,7 @@ Notes:
 
   - \`select\` supports the \`--lang\` option for the query language
 
-  - \`validate\`, \`compile\`, and \`build\` support the \`--force\` option
+  - \`validate\`, \`compile\`, \`build\` and \`execute\` support the \`--force\` option
 
   - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
