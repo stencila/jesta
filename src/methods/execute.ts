@@ -3,13 +3,19 @@ import { record } from '../utilities/changes'
 import { enter } from '../utilities/session'
 import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
-import { Execute, Method } from './types'
+import { Execute, Method, Methods } from './types'
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const execute: Execute = async (node: Node): Promise<Node> => {
+export const execute: Execute = async (
+  methods: Methods,
+  node: Node,
+  force: boolean
+): Promise<Node> => {
   if (isA('CodeChunk', node)) {
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
+      // Ensure node has been built
+      await methods.build(methods, node, force)
+
       const start = timer.start()
 
       // Enter code into REPL
@@ -35,5 +41,5 @@ export const execute: Execute = async (node: Node): Promise<Node> => {
     }
   }
 
-  return mutate(node, execute)
+  return mutate(node, (node) => execute(methods, node, force))
 }

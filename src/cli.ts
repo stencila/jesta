@@ -51,7 +51,7 @@ export const cli = (
     _: [method, ...args],
     ...options
   } = minimist(process.argv.slice(2), {
-    boolean: 'force',
+    boolean: ['force', 'debug'],
   })
 
   let calls: string[]
@@ -286,6 +286,8 @@ Notes:
 
   - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
+  - use the \`--debug\` option to get stack traces etc
+
 
 For a more advanced command line interface install ${name} as a Stencila plugin
 and use it from there:
@@ -300,7 +302,9 @@ and use it from there:
   }
 
   run().catch((error) => {
-    console.error(error instanceof Error ? error.message : error)
+    console.error(
+      error instanceof Error && options.debug === false ? error.message : error
+    )
     process.exit(1)
   })
 }

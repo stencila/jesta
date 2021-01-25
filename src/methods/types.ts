@@ -20,13 +20,20 @@ export enum Method {
 export type Dispatch = (
   method: string,
   params: Record<string, Node | undefined>,
-  // eslint-disable-next-line no-use-before-define
   methods?: Methods
 ) => Promise<Node>
 
-export type Build = (node: Node, force?: boolean) => Promise<Node>
+export type Build = (
+  methods: Methods,
+  node: Node,
+  force: boolean
+) => Promise<Node>
 export type Clean = (node: Node) => Promise<Node>
-export type Compile = (node: Node, force?: boolean) => Promise<Node>
+export type Compile = (
+  methods: Methods,
+  node: Node,
+  force: boolean
+) => Promise<Node>
 export type Decode = (input: string, format?: string) => Promise<Node>
 export type Encode = (
   node: Node,
@@ -34,13 +41,16 @@ export type Encode = (
   format?: string
 ) => Promise<string>
 export type Enrich = (node: Node) => Promise<Node>
-export type Execute = (node: Node) => Promise<Node>
+export type Execute = (
+  methods: Methods,
+  node: Node,
+  force: boolean
+) => Promise<Node>
 export type Get = (name: string) => Promise<Node>
 export type Pipe = (
   node: Node,
   calls: Method[],
   dispatch: Dispatch,
-  // eslint-disable-next-line no-use-before-define
   methods: Methods
 ) => Promise<Node>
 export type Reshape = (node: Node) => Promise<Node>

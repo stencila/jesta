@@ -41,7 +41,7 @@ export const dispatch: Dispatch = (
     case Method.execute:
     case Method.reshape:
     case Method.validate: {
-      const { node, force } = params
+      const { node, force = false } = params
       assert(node !== undefined, 'node')
       assert(
         force === undefined || typeof force === 'boolean',
@@ -50,15 +50,15 @@ export const dispatch: Dispatch = (
       )
       switch (method) {
         case Method.build:
-          return build(node, force)
+          return build(methods, node, force)
         case Method.clean:
           return clean(node)
         case Method.compile:
-          return compile(node, force)
+          return compile(methods, node, force)
         case Method.enrich:
           return enrich(node)
         case Method.execute:
-          return execute(node)
+          return execute(methods, node, force)
         case Method.reshape:
           return reshape(node)
         case Method.validate:

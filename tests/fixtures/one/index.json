@@ -9,11 +9,6 @@
     {
       "type": "CodeChunk",
       "programmingLanguage": "js",
-      "text": "import {head, tail} from 'lodash'"
-    },
-    {
-      "type": "CodeChunk",
-      "programmingLanguage": "js",
       "text": "const a = 1\nlet b = 2\nvar c = 3"
     },
     {

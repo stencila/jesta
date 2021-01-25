@@ -5,17 +5,20 @@ import * as estree from 'estree'
 import { needed, record } from '../utilities/changes'
 import * as timer from '../utilities/timer'
 import { mutate } from '../utilities/walk'
-import { Compile, Method } from './types'
+import { Compile, Method, Methods } from './types'
 
 /* eslint-disable @typescript-eslint/require-await */
 export const compile: Compile = async (
+  methods: Methods,
   node: Node,
-  force = false
+  force: boolean
 ): Promise<Node> => {
   // Compile code chunks and expressions
   if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
+    // Only handle Javascript code
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
+      // Skip if not needed
       if (!force && !needed(node, Method.compile)) return node
 
       const start = timer.start()
@@ -26,7 +29,7 @@ export const compile: Compile = async (
   }
 
   // Walk over other node types
-  return mutate(node, (child) => compile(child, force))
+  return mutate(node, (child) => compile(methods, child, force))
 }
 
 export const compileCode = (

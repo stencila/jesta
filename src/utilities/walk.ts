@@ -7,13 +7,27 @@ export const visit = (node: Node, visitor: (node: Node) => void): void => {
   }
 }
 
-export const mutate = <T>(node: T, mutator: (node: Node) => Node): T => {
+export const mutate = async <T>(
+  node: T,
+  mutator: (node: Node) => Promise<Node>
+): Promise<T> => {
+  if (node === undefined || isPrimitive(node)) return node
+  for (const [key, child] of Object.entries(node)) {
+    // eslint-disable-next-line
+    ;(node as any)[key] = isEntity(child)
+      ? await mutator(child)
+      : await mutate(child, mutator)
+  }
+  return node
+}
+
+export const mutateSync = <T>(node: T, mutator: (node: Node) => Node): T => {
   if (node === undefined || isPrimitive(node)) return node
   for (const [key, child] of Object.entries(node)) {
     // eslint-disable-next-line
     ;(node as any)[key] = isEntity(child)
       ? mutator(child)
-      : mutate(child, mutator)
+      : mutateSync(child, mutator)
   }
   return node
 }
