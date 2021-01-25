@@ -1,11 +1,8 @@
 import { Node } from '@stencila/schema'
 import minimist from 'minimist'
 import path from 'path'
-import { dispatch } from './dispatch'
-import { Manifest } from './manifest'
-import { Dispatch, Method, Methods } from './methods/types'
-import { register } from './register'
-import { serve } from './serve'
+import { Jesta } from '.'
+import { Method } from './plugin'
 
 /**
  * Expose a command line interface for the plugin.
@@ -21,26 +18,18 @@ import { serve } from './serve'
  * if (require.main === module) cli(manifest, dispatch)
  * ```
  */
-export const cli = (
-  filePath: string,
-  manifest: Manifest,
-  dispatcher: Methods | Dispatch
-): void => {
+export function cli(this: Jesta, filePath: string): void {
+  const manifest = this.manifest()
   const {
     package: { name, version, description },
+    addresses,
   } = manifest
-
-  const call =
-    typeof dispatcher === 'function'
-      ? dispatcher
-      : (method: string, params: Record<string, Node | undefined>) =>
-          dispatch(method, params, dispatcher)
 
   const { name: fileName, ext } = path.parse(filePath)
   const [stdioCommand, ...stdioArgs] = `${
     ext === '.js' ? 'node' : 'npx ts-node'
   } ${fileName === 'index' ? path.dirname(filePath) : filePath}`.split(/\s+/)
-  for (const address of manifest.addresses) {
+  for (const address of addresses) {
     if (address.transport === 'stdio' && address.command === '') {
       address.command = stdioCommand
       address.args.unshift(...stdioArgs)
@@ -90,7 +79,7 @@ export const cli = (
   //
   // When outputting nodes, using `console.log` because of built-in pretty-printing
   // of objects
-  async function run(): Promise<void> {
+  const run = async (): Promise<void> => {
     switch (method) {
       // Methods are arranged in groups below according to the
       // arguments they require
@@ -105,14 +94,14 @@ export const cli = (
       case 'manifest':
         return console.log(manifest)
       case 'register':
-        return await register(manifest)
+        return await this.register()
       case 'serve':
-        return serve(manifest, dispatch)
+        return this.serve()
 
       case Method.decode: {
         const input = url(required(0, 'in'))
 
-        const node = await call(Method.decode, { input, ...options })
+        const node = await this.dispatch(Method.decode, { input, ...options })
 
         return console.log(node)
       }
@@ -122,7 +111,7 @@ export const cli = (
         console.log('Enter a node as JSON and Ctrl+D when finished')
         const node = JSON.parse(await stdin()) as Node
 
-        const content = await call(Method.encode, {
+        const content = await this.dispatch(Method.encode, {
           node,
           output,
           ...options,
@@ -135,12 +124,12 @@ export const cli = (
         const input = url(required(0, 'in'))
         const output = url(required(1, 'out'))
 
-        const node = await call(Method.decode, {
+        const node = await this.dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        await call(Method.encode, {
+        await this.dispatch(Method.encode, {
           node,
           output,
           ...options,
@@ -155,18 +144,18 @@ export const cli = (
         const query = required(1, 'query')
         const output = url(optional(2))
 
-        const node = await call(Method.decode, {
+        const node = await this.dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const selected = await call(Method.select, {
+        const selected = await this.dispatch(Method.select, {
           node,
           query,
           ...options,
         })
         if (selected !== undefined && output !== undefined)
-          await call(Method.encode, {
+          await this.dispatch(Method.encode, {
             node: selected,
             output,
             ...options,
@@ -190,13 +179,13 @@ export const cli = (
 
         cd(input)
 
-        const node = await call(Method.decode, {
+        const node = await this.dispatch(Method.decode, {
           input,
           ...options,
           format: options.from,
         })
-        const result = await call(method, { node, ...options, calls })
-        await call(Method.encode, {
+        const result = await this.dispatch(method, { node, ...options, calls })
+        await this.dispatch(Method.encode, {
           node: result,
           output,
           ...options,
@@ -214,12 +203,16 @@ export const cli = (
         const name = args[1]
         const value = args[2]
 
-        const node = await call(Method.decode, { input, ...options })
-        await call(Method.execute, { node, ...options })
+        const node = await this.dispatch(Method.decode, { input, ...options })
+        await this.dispatch(Method.execute, { node, ...options })
 
-        if (method === 'run') serve(manifest, dispatch)
+        if (method === 'run') this.serve()
         else {
-          const result = await call(method, { name, value, ...options })
+          const result = await this.dispatch(method, {
+            name,
+            value,
+            ...options,
+          })
           console.log(result)
         }
 

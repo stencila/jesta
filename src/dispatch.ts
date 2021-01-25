@@ -1,30 +1,13 @@
 import { Node } from '@stencila/schema'
-import { methods as allMethods } from './methods'
-import { Method, Methods, Dispatch } from './methods/types'
-import { InvalidParamError, MethodNotFoundError } from './utilities/errors'
+import { Jesta } from '.'
+import { Method } from './plugin'
+import { InvalidParamError, MethodNotFoundError } from './util/errors'
 
-export const dispatch: Dispatch = (
+export function dispatch(
+  this: Jesta,
   method: string,
-  params: Record<string, Node | undefined>,
-  methods: Methods = allMethods
-): Promise<Node> => {
-  const {
-    build,
-    clean,
-    compile,
-    decode,
-    encode,
-    enrich,
-    execute,
-    get,
-    pipe,
-    reshape,
-    select,
-    set,
-    validate,
-    vars,
-  } = methods
-
+  params: Record<string, Node | undefined>
+): Promise<Node | undefined> {
   function assert(
     condition: boolean,
     param: string,
@@ -50,19 +33,19 @@ export const dispatch: Dispatch = (
       )
       switch (method) {
         case Method.build:
-          return build(methods, node, force)
+          return this.build(node, force)
         case Method.clean:
-          return clean(node)
+          return this.clean(node)
         case Method.compile:
-          return compile(methods, node, force)
+          return this.compile(node, force)
         case Method.enrich:
-          return enrich(node)
+          return this.enrich(node)
         case Method.execute:
-          return execute(methods, node, force)
+          return this.execute(node, force)
         case Method.reshape:
-          return reshape(node)
+          return this.reshape(node)
         case Method.validate:
-          return validate(node, force)
+          return this.validate(node, force)
       }
       break
     }
@@ -75,7 +58,7 @@ export const dispatch: Dispatch = (
         'format',
         'should be a string'
       )
-      return decode(input, format)
+      return this.decode(input, format)
     }
 
     case Method.encode: {
@@ -91,7 +74,7 @@ export const dispatch: Dispatch = (
         'format',
         'should be a string'
       )
-      return encode(node, output, format)
+      return this.encode(node, output, format)
     }
 
     case Method.pipe: {
@@ -102,7 +85,7 @@ export const dispatch: Dispatch = (
         'calls',
         'should be an array of method names'
       )
-      return pipe(node, calls, dispatch, methods)
+      return this.pipe(node, calls)
     }
 
     case Method.select: {
@@ -114,27 +97,25 @@ export const dispatch: Dispatch = (
         'lang',
         'should be a string'
       )
-      return select(node, query, lang)
+      return this.select(node, query, lang)
     }
 
     case Method.vars: {
-      return vars()
+      return this.vars()
     }
 
     case Method.get: {
       const { name } = params
       assert(typeof name === 'string', 'name', 'should be a string')
-      return get(name)
+      return this.get(name)
     }
 
     case Method.set: {
       const { name, value } = params
       assert(typeof name === 'string', 'name', 'should be a string')
       assert(value !== undefined, 'value')
-      return set(name, value)
+      return this.set(name, value)
     }
-
-    default:
-      throw new MethodNotFoundError(method)
   }
+  throw new MethodNotFoundError(method)
 }

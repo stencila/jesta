@@ -1,12 +1,14 @@
 import { Node } from '@stencila/schema'
 import path from 'path'
-import { write } from '../utilities/write'
+import { Jesta } from '.'
+import { write } from './util/write'
 
-export const encode = async (
+export async function encode(
+  this: Jesta,
   node: Node,
   output?: string,
   format?: string
-): Promise<string> => {
+): Promise<string> {
   format =
     format ?? (output !== undefined ? path.extname(output).slice(1) : 'json')
 

@@ -1,8 +1,13 @@
 import { Node } from '@stencila/schema'
 import path from 'path'
-import { read } from '../utilities/read'
+import { Jesta } from '.'
+import { read } from './util/read'
 
-export const decode = async (input: string, format?: string): Promise<Node> => {
+export async function decode(
+  this: Jesta,
+  input: string,
+  format?: string
+): Promise<Node> {
   format = format ?? path.extname(input).slice(1)
 
   if (format === 'json' || format.startsWith('application/json')) {

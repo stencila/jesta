@@ -2,7 +2,7 @@ import fs from 'fs'
 import { homedir } from 'os'
 import path from 'path'
 import { promisify } from 'util'
-import { Manifest } from './manifest'
+import { Jesta } from '.'
 
 const writeFileAsync = promisify(fs.writeFile)
 const mkdirAsync = promisify(fs.mkdir)
@@ -10,7 +10,8 @@ const mkdirAsync = promisify(fs.mkdir)
 /**
  * Register the plugin.
  */
-export const register = async (manifest: Manifest): Promise<void> => {
+export async function register(this: Jesta): Promise<void> {
+  const manifest = this.manifest()
   const {
     package: { name },
   } = manifest

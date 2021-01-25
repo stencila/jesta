@@ -2,17 +2,18 @@ import { CodeChunk, isA, Node } from '@stencila/schema'
 import * as acorn from 'acorn'
 import * as acornWalk from 'acorn-walk'
 import * as estree from 'estree'
-import { needed, record } from '../utilities/changes'
-import * as timer from '../utilities/timer'
-import { mutate } from '../utilities/walk'
-import { Compile, Method, Methods } from './types'
+import { Jesta } from '.'
+import { Method } from './plugin'
+import { needed, record } from './util/changes'
+import * as timer from './util/timer'
+import { mutate } from './util/walk'
 
 /* eslint-disable @typescript-eslint/require-await */
-export const compile: Compile = async (
-  methods: Methods,
+export async function compile(
+  this: Jesta,
   node: Node,
   force: boolean
-): Promise<Node> => {
+): Promise<Node> {
   // Compile code chunks and expressions
   if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
     // Only handle Javascript code
@@ -29,7 +30,7 @@ export const compile: Compile = async (
   }
 
   // Walk over other node types
-  return mutate(node, (child) => compile(methods, child, force))
+  return mutate(node, (child) => this.compile(child, force))
 }
 
 export const compileCode = (

@@ -1,6 +1,6 @@
 import { nodeType } from '@stencila/schema'
-import { context } from '../utilities/session'
-import { Vars } from './types'
+import { Jesta } from '.'
+import { context } from './util/session'
 
 // A list of global variable names e.g. setTimeout which should not
 // be included in the list of variables
@@ -13,7 +13,7 @@ const globals = Object.keys(globalThis)
  * the current stencil's variables.
  */
 // eslint-disable-next-line @typescript-eslint/require-await
-export const vars: Vars = async (): Promise<Record<string, string>> => {
+export async function vars(this: Jesta): Promise<Record<string, string>> {
   return Object.entries(context).reduce(
     (prev, [name, value]) =>
       globals.includes(name) ? prev : { ...prev, [name]: nodeType(value) },

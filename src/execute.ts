@@ -1,20 +1,21 @@
 import { codeError, isA, Node } from '@stencila/schema'
-import { record } from '../utilities/changes'
-import { enter } from '../utilities/session'
-import * as timer from '../utilities/timer'
-import { mutate } from '../utilities/walk'
-import { Execute, Method, Methods } from './types'
+import { Jesta } from '.'
+import { Method } from './plugin'
+import { record } from './util/changes'
+import { enter } from './util/session'
+import * as timer from './util/timer'
+import { mutate } from './util/walk'
 
-export const execute: Execute = async (
-  methods: Methods,
+export async function execute(
+  this: Jesta,
   node: Node,
   force: boolean
-): Promise<Node> => {
+): Promise<Node> {
   if (isA('CodeChunk', node)) {
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
       // Ensure node has been built
-      await methods.build(methods, node, force)
+      await this.build(node, force)
 
       const start = timer.start()
 
@@ -41,5 +42,5 @@ export const execute: Execute = async (
     }
   }
 
-  return mutate(node, (node) => execute(methods, node, force))
+  return mutate(node, (node) => this.execute(node, force))
 }

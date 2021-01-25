@@ -1,9 +1,9 @@
 import { isA, isEntity, Node } from '@stencila/schema'
-import { mutate } from '../utilities/walk'
-import { Clean } from './types'
+import { Jesta } from '.'
+import { mutate } from './util/walk'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const clean: Clean = async (node: Node): Promise<Node> => {
+export async function clean(this: Jesta, node: Node): Promise<Node> {
   if (!isEntity(node)) return node
 
   if (isA('CodeChunk', node)) {
@@ -23,5 +23,5 @@ export const clean: Clean = async (node: Node): Promise<Node> => {
   delete node.meta?.history
   if (node.meta && Object.keys(node.meta).length === 0) delete node.meta
 
-  return mutate(node, clean)
+  return mutate(node, (child) => this.clean(child))
 }

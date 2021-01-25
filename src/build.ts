@@ -2,10 +2,11 @@ import { isA, Node } from '@stencila/schema'
 import { spawnSync } from 'child_process'
 import fs from 'fs'
 import { promisify } from 'util'
-import { needed, record } from '../utilities/changes'
-import * as timer from '../utilities/timer'
-import { mutate } from '../utilities/walk'
-import { Build, Method, Methods } from './types'
+import { Jesta } from '.'
+import { Method } from './plugin'
+import { needed, record } from './util/changes'
+import * as timer from './util/timer'
+import { mutate } from './util/walk'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -19,11 +20,11 @@ const writeFile = promisify(fs.writeFile)
  *
  * @param entity The stencil to build.
  */
-export const build: Build = async (
-  methods: Methods,
+export async function build(
+  this: Jesta,
   node: Node,
   force: boolean
-): Promise<Node> => {
+): Promise<Node> {
   // Build code chunks (code expressions can be ignored)
   if (isA('CodeChunk', node)) {
     // Skip if not not JavaScript code
@@ -34,7 +35,7 @@ export const build: Build = async (
     if (!force && !needed(node, Method.build)) return node
 
     // Ensure node has been compiled
-    await methods.compile(methods, node, force)
+    await this.compile(node, force)
 
     // Start the timer
     const start = timer.start()
@@ -96,6 +97,6 @@ export const build: Build = async (
     return record(node, Method.build, timer.seconds(start))
   } else {
     // Walk over other node types
-    return mutate(node, (child) => build(methods, child, force))
+    return mutate(node, (child) => this.build(child, force))
   }
 }

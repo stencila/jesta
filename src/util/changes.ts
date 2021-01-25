@@ -1,6 +1,6 @@
 import { Entity } from '@stencila/schema'
 import crypto from 'crypto'
-import { Method } from '../methods/types'
+import { Method } from '../plugin'
 
 interface Entry {
   plugin: string

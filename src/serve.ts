@@ -1,27 +1,19 @@
 import { Node } from '@stencila/schema'
 import readline from 'readline'
-import { dispatch } from './dispatch'
-import { Manifest } from './manifest'
-import { Dispatch, Method, Methods } from './methods'
+import { Jesta } from '.'
+import { Method } from './plugin'
 import {
   InvalidRequestError,
   JsonRpcError,
   ParseError,
   ServerError,
-} from './utilities/errors'
+} from './util/errors'
 
 /**
  * Serve the plugin.
  */
-export const serve = (
-  manifest: Manifest,
-  dispatcher: Methods | Dispatch
-): void => {
-  const call =
-    typeof dispatcher === 'function'
-      ? dispatcher
-      : (method: string, params: Record<string, Node | undefined>) =>
-          dispatch(method, params, dispatcher)
+export function serve(this: Jesta): void {
+  const manifest = this.manifest()
 
   // Turn on the default signal handler so that an errant SIGINT does
   // not stop the server
@@ -32,12 +24,7 @@ export const serve = (
     terminal: false,
   })
   reader.on('line', (line) => {
-    respond().catch((error: Error) =>
-      // This should never be reached but keeps eslint happy
-      // and does the right thing in case it is reached
-      send({ error })
-    )
-    async function respond(): Promise<void> {
+    const respond = async (): Promise<void> => {
       let id: number | undefined
       let response
       try {
@@ -59,7 +46,7 @@ export const serve = (
         if (interruptible) noSigIntHandler()
         else uninterruptibleSigIntHandler(id, method)
 
-        const result = await call(method, params ?? {})
+        const result = await this.dispatch(method, params ?? {})
 
         // Turn back on the default SIGINT handling
         defaultSigIntHandler()
@@ -86,6 +73,11 @@ export const serve = (
       }
       send(response)
     }
+    respond().catch((error: Error) =>
+      // This should never be reached but keeps eslint happy
+      // and does the right thing in case it is reached
+      send({ error })
+    )
   })
 }
 
