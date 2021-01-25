@@ -40,6 +40,7 @@ export class Jesta extends Plugin {
   cli = cli
 }
 
+export * as schema from '@stencila/schema'
 export * from './plugin'
 export * as util from './util'
 
