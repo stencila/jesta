@@ -6,9 +6,9 @@ export async function select(
   this: Jesta,
   node: Node,
   query: string,
-  lang = 'jspath'
+  lang = 'simplepath'
 ): Promise<Node> {
-  if (lang === 'jspath') {
+  if (lang === 'simplepath') {
     const items = query.replace(/\[(\d+)\]/, '.$1').split('.')
     let value = node
     for (const property of items) {
