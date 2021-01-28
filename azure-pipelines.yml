@@ -27,7 +27,7 @@ jobs:
         condition: eq(variables['agent.os'], 'Linux')
         displayName: Run linting
 
-      - script: npm run cover
+      - script: npm run test:cover
         displayName: Run Node tests
 
       # Upload coverage on Linux only (unnecessary to duplicate by OS)
