@@ -27,3 +27,12 @@ describe('help', () => {
     expect(consoleLog).toHaveBeenCalledWith(expect.stringMatching(/^jesta /))
   })
 })
+
+test('unknown command', () => {
+  cli(['foo'])
+  expect(consoleLog).toHaveBeenCalledTimes(0)
+  expect(consoleError).toHaveBeenCalledTimes(1)
+  expect(consoleError).toHaveBeenCalledWith(
+    expect.stringMatching(/^Unknown command "foo"/)
+  )
+})
