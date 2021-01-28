@@ -17,9 +17,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stencila/stencila/jesta"
+    "url": "https://github.com/stencila/jesta"
   },
-  "homepage": "https://github.com/stencila/stencila/jesta#readme",
+  "homepage": "https://github.com/stencila/jesta#readme",
   "keywords": [
     "Stencila",
     "plugin"
