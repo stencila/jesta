@@ -5,7 +5,7 @@
 <br>
 
 [![Build Status](https://dev.azure.com/stencila/stencila/_apis/build/status/stencila.jesta?branchName=main)](https://dev.azure.com/stencila/stencila/_build/latest?definitionId=13&branchName=main)
-[![Coverage](https://codecov.io/gh/stencila/jesta/branch/master/graph/badge.svg)](https://codecov.io/gh/stencila/jesta)
+[![Coverage](https://codecov.io/gh/stencila/jesta/branch/main/graph/badge.svg)](https://codecov.io/gh/stencila/jesta)
 [![NPM](https://img.shields.io/npm/v/@stencila/jesta.svg?style=flat)](https://www.npmjs.com/package/@stencila/jesta)
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://stencila.github.io/jesta/)
 
