@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { build } from './build'
 import { clean } from './clean'
 import { cli } from './cli'
