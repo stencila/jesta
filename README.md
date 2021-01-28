@@ -2,6 +2,8 @@
 
 #### Stencila plugin for stencils using Node.js
 
+<br>
+
 [![Build](https://dev.azure.com/stencila/stencila/_apis/build/status/stencila.jesta?branchName=master)](https://dev.azure.com/stencila/stencila/_build/latest?definitionId=4&branchName=master)
 [![Coverage](https://codecov.io/gh/stencila/jesta/branch/master/graph/badge.svg)](https://codecov.io/gh/stencila/jesta)
 [![NPM](https://img.shields.io/npm/v/@stencila/jesta.svg?style=flat)](https://www.npmjs.com/package/@stencila/jesta)
@@ -9,14 +11,17 @@
 
 ## ✨ Features
 
-- Implements `compile`, `build` and `execute` methods for `CodeChunk` or `CodeExpression` nodes with Javascript as their `programmingLanguage`.
+- Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage`.
 
 - Implements `vars`, `get`, and `set` methods for Node.js sessions.
 
-- Implements `decode` and `encode` methods for format `JSON`.
+- Implements `decode` and `encode` methods for `format:json`.
 
-- An ideal base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods (required for integration with Stencila CLI and Desktop)
-- A simple command line interface for running and testing plugin.
+- Implements `select` for `lang:simplepath`.
+
+- A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods (required for integration with Stencila CLI and Desktop)
+
+- A simple command line interface, including interactive modes, for running and testing plugins.
 
 ## 📦 Install
 
@@ -36,6 +41,14 @@ None of that is possible right now, and this package isn't even on NPM yet, but 
 
 ```sh
 npm install stencila/jesta
+```
+
+## 🚀 Use
+
+Most of the time, you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you do want to run Jesta standalone...
+
+```sh
+npx jesta help
 ```
 
 ## 💪 Extend
