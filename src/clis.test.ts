@@ -21,7 +21,7 @@ describe('help', () => {
     expect(consoleLog).toHaveBeenCalledWith(expect.stringMatching(/^jesta /))
   })
 
-  it('is shown if no command is `help`', () => {
+  it('is shown if command is `help`', () => {
     cli(['help'])
     expect(consoleLog).toHaveBeenCalledTimes(1)
     expect(consoleLog).toHaveBeenCalledWith(expect.stringMatching(/^jesta /))
