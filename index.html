@@ -1,0 +1,220 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@stencila/jesta</title>
+	<meta name="description" content="Documentation for @stencila/jesta">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@stencila/jesta</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>Project @stencila/jesta</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#🃏-jesta" id="🃏-jesta" style="color: inherit; text-decoration: none;">
+					<h1>🃏 Jesta</h1>
+				</a>
+				<a href="#stencila-plugin-for-stencils-using-nodejs" id="stencila-plugin-for-stencils-using-nodejs" style="color: inherit; text-decoration: none;">
+					<h4>Stencila plugin for stencils using Node.js</h4>
+				</a>
+				<br>
+				<p><a href="https://dev.azure.com/stencila/stencila/_build/latest?definitionId=13&amp;branchName=main"><img src="https://dev.azure.com/stencila/stencila/_apis/build/status/stencila.jesta?branchName=main" alt="Build Status"></a>
+					<a href="https://codecov.io/gh/stencila/jesta"><img src="https://codecov.io/gh/stencila/jesta/branch/main/graph/badge.svg" alt="Coverage"></a>
+					<a href="https://www.npmjs.com/package/@stencila/jesta"><img src="https://img.shields.io/npm/v/@stencila/jesta.svg?style=flat" alt="NPM"></a>
+				<a href="https://stencila.github.io/jesta/"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs"></a></p>
+				<a href="#✨-features" id="✨-features" style="color: inherit; text-decoration: none;">
+					<h2>✨ Features</h2>
+				</a>
+				<ul>
+					<li><p>Implements <code>compile</code>, <code>build</code> and <code>execute</code> methods for <code>CodeChunk</code> and <code>CodeExpression</code> nodes with Javascript as their <code>programmingLanguage</code>.</p>
+					</li>
+					<li><p>Implements <code>vars</code>, <code>get</code>, and <code>set</code> methods for Node.js sessions.</p>
+					</li>
+					<li><p>Implements <code>decode</code> and <code>encode</code> methods for <code>format:json</code>.</p>
+					</li>
+					<li><p>Implements <code>select</code> for <code>lang:simplepath</code>.</p>
+					</li>
+					<li><p>A base for other plugins written in Javascript or Typescript (implements <code>register</code> and <code>serve</code> methods (required for integration with Stencila CLI and Desktop)</p>
+					</li>
+					<li><p>A simple command line interface, including interactive modes, for running and testing plugins.</p>
+					</li>
+				</ul>
+				<a href="#📦-install" id="📦-install" style="color: inherit; text-decoration: none;">
+					<h2>📦 Install</h2>
+				</a>
+				<p>It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the Stencila CLI,</p>
+				<pre><code class="language-sh"><span style="color: #000000">stencila install nodejs</span>
+</code></pre>
+				<p>Or using the name of this repo directly,</p>
+				<pre><code class="language-sh"><span style="color: #000000">stencila install jesta</span>
+</code></pre>
+				<p>None of that is possible right now, and this package isn&#39;t even on NPM yet, but you could always install it from GitHub directly if you like:</p>
+				<pre><code class="language-sh"><span style="color: #000000">npm install stencila/jesta</span>
+</code></pre>
+				<a href="#🚀-use" id="🚀-use" style="color: inherit; text-decoration: none;">
+					<h2>🚀 Use</h2>
+				</a>
+				<p>Most of the time, you won&#39;t use Jesta directly (it&#39;s more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you do want to run Jesta standalone...</p>
+				<pre><code class="language-sh"><span style="color: #000000">npx jesta </span><span style="color: #795E26">help</span>
+</code></pre>
+				<a href="#💪-extend" id="💪-extend" style="color: inherit; text-decoration: none;">
+					<h2>💪 Extend</h2>
+				</a>
+				<p>Jesta is designed to be extended. You can create your own Stencila plugin by following these steps.</p>
+				<p>Initialize your package and add Jesta as a development dependency:</p>
+				<pre><code class="language-sh"><span style="color: #000000">npm init</span>
+<span style="color: #000000">npm install stencila/jesta</span>
+</code></pre>
+				<p>Implement your own <code>manifest</code> and override any of Jesta&#39;s other methods and in your <code>index.ts</code> or <code>index.js</code>, call Jesta&#39;s <code>cli</code> function e.g.</p>
+				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Jesta</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@stencila/jesta&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">manifest</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./manifest&#039;</span>
+
+<span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyPlugin</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Jesta</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">manifest</span><span style="color: #000000"> = </span><span style="color: #001080">manifest</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyPlugin</span><span style="color: #000000">.</span><span style="color: #267F99">cli</span><span style="color: #000000">(</span><span style="color: #001080">__filename</span><span style="color: #000000">)</span>
+</code></pre>
+				<a href="#🛠️-develop" id="🛠️-develop" style="color: inherit; text-decoration: none;">
+					<h2>🛠️ Develop</h2>
+				</a>
+				<p>Get started by cloning this repository, installing dependencies and running the command line interface:</p>
+				<pre><code class="language-sh"><span style="color: #000000">git clone git@github.com:stencila/jesta</span>
+<span style="color: #795E26">cd</span><span style="color: #000000"> jesta</span>
+<span style="color: #000000">npm install</span>
+<span style="color: #000000">npm start</span>
+</code></pre>
+				<p>Please run the formatting, linting and testing scripts when contributing code e.g.</p>
+				<pre><code class="language-sh"><span style="color: #000000">npm run format</span>
+<span style="color: #000000">npm run lint</span>
+<span style="color: #000000">npm run test::watch</span>
+</code></pre>
+				<p>Alternatively, use <code>make</code> if you prefer,</p>
+				<pre><code class="language-sh"><span style="color: #000000">make format lint </span><span style="color: #795E26">test</span>
+</code></pre>
+				<p>There are also some test fixtures that you can try the CLI out on e.g.</p>
+				<pre><code class="language-sh"><span style="color: #000000">npm start -- compile+build+execute tests/fixtures/one/index.json</span>
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/method.html" class="tsd-kind-icon">Method</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/jesta.html" class="tsd-kind-icon">Jesta</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/plugin.html" class="tsd-kind-icon">Plugin</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/baseaddress.html" class="tsd-kind-icon">Base<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/httpaddress.html" class="tsd-kind-icon">Http<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/manifest.html" class="tsd-kind-icon">Manifest</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/package.html" class="tsd-kind-icon">Package</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/stdioaddress.html" class="tsd-kind-icon">Stdio<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/websocketaddress.html" class="tsd-kind-icon">Websocket<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#address" class="tsd-kind-icon">Address</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#methodschema" class="tsd-kind-icon">Method<wbr>Schema</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
