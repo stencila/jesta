@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/stencila/jesta/compare/v1.0.0...v1.0.1) (2021-01-28)
+
+
+### Bug Fixes
+
+* **Index:** Add shebang ([499be71](https://github.com/stencila/jesta/commit/499be715a035c007d6175c7a3af3a2a775efa2fc))
+
 # 1.0.0 (2021-01-28)
 
 
