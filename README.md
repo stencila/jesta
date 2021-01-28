@@ -2,6 +2,22 @@
 
 #### Stencila plugin for stencils using Node.js
 
+[![Build](https://dev.azure.com/stencila/stencila/_apis/build/status/stencila.jesta?branchName=master)](https://dev.azure.com/stencila/stencila/_build/latest?definitionId=4&branchName=master)
+[![Coverage](https://codecov.io/gh/stencila/jesta/branch/master/graph/badge.svg)](https://codecov.io/gh/stencila/jesta)
+[![NPM](https://img.shields.io/npm/v/@stencila/jesta.svg?style=flat)](https://www.npmjs.com/package/@stencila/jesta)
+[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://stencila.github.io/jesta/)
+
+## ✨ Features
+
+- Implements `compile`, `build` and `execute` methods for `CodeChunk` or `CodeExpression` nodes with Javascript as their `programmingLanguage`.
+
+- Implements `vars`, `get`, and `set` methods for Node.js sessions.
+
+- Implements `decode` and `encode` methods for format `JSON`.
+
+- An ideal base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods (required for integration with Stencila CLI and Desktop)
+- A simple command line interface for running and testing plugin.
+
 ## 📦 Install
 
 It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the Stencila CLI,
@@ -26,23 +42,24 @@ npm install stencila/jesta
 
 Jesta is designed to be extended. You can create your own Stencila plugin by following these steps.
 
-Initialize your package and add Jesta as a development dependency
+Initialize your package and add Jesta as a development dependency:
 
 ```sh
 npm init
-npm install --save-dev stencila/jesta
+npm install stencila/jesta
 ```
 
-Implement your own `manifest` and `dispatch` functions.
-
-In your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
+Implement your own `manifest` and override any of Jesta's other methods and in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
 
 ```ts
-import { cli } from '@stencila/jesta'
-import { dispatch } from './dispatch'
+import { Jesta } from '@stencila/jesta'
 import { manifest } from './manifest'
 
-if (require.main === module) cli(__filename, manifest, dispatch)
+export class MyPlugin extends Jesta {
+  manifest = manifest
+}
+
+if (require.main === module) new MyPlugin.cli(__filename)
 ```
 
 ## 🛠️ Develop
@@ -56,7 +73,21 @@ npm install
 npm start
 ```
 
-There are no unit tests yet but there is a test fixture that you can try things out on e.g.
+Please run the formatting, linting and testing scripts when contributing code e.g.
+
+```sh
+npm run format
+npm run lint
+npm run test::watch
+```
+
+Alternatively, use `make` if you prefer,
+
+```sh
+make format lint test
+```
+
+There are also some test fixtures that you can try the CLI out on e.g.
 
 ```sh
 npm start -- compile+build+execute tests/fixtures/one/index.json
