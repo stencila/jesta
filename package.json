@@ -83,6 +83,9 @@
     ]
   },
   "release": {
-    "extends": "@stencila/semantic-release-config"
+    "extends": "@stencila/semantic-release-config",
+    "branches": [
+      "main"
+    ]
   }
 }
