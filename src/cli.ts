@@ -4,6 +4,7 @@ import path from 'path'
 import readline from 'readline'
 import { Jesta } from '.'
 import { Method, Plugin } from './plugin'
+import { persist } from './util/readline'
 
 /**
  * Expose a command line interface for the plugin.
@@ -139,6 +140,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
           output: process.stdout,
           prompt: '>> ',
         })
+        persist(rl, name, 'select')
         rl.prompt()
         for await (const line of rl) {
           select(line, output)
@@ -178,6 +180,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
           output: process.stdout,
           prompt: 'js> ',
         })
+        persist(rl, name, 'execute')
         rl.prompt()
         for await (const line of rl) {
           const node = codeChunk({

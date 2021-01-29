@@ -6,7 +6,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "format": "npx prettier --write 'src/**/*.{js,ts}'",
-    "lint": "eslint --fix 'src/**/*.{js,ts}'",
+    "lint": "eslint --fix 'src/**/*.ts'",
     "test": "jest",
     "test:watch": "npm run test -- --watchAll",
     "test:cover": "npm run test -- --collectCoverage",
