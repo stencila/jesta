@@ -1,16 +1,23 @@
+import path from 'path'
+
 import { Jesta } from '.'
 import { description, version } from '../package.json'
 import { Manifest } from './plugin'
 
 export function manifest(this: Jesta): Manifest {
+  const { name: fileName, ext } = path.parse(this.file)
+  const [command, ...args] = `${ext === '.js' ? 'node' : 'npx ts-node'} ${
+    fileName === 'index' ? path.dirname(this.file) : this.file
+  }`.split(/\s+/)
+
   return {
     version: 1,
     package: { name: 'jesta', version, description },
     addresses: [
       {
         transport: 'stdio',
-        command: '',
-        args: [],
+        command,
+        args,
         framing: 'nld',
         serialization: 'json',
       },

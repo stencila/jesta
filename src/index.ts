@@ -19,6 +19,10 @@ import { set } from './set'
 import { vars } from './vars'
 
 export class Jesta extends Plugin {
+  constructor(public file: string) {
+    super()
+  }
+
   manifest = manifest
 
   decode = decode
@@ -46,4 +50,5 @@ export * as schema from '@stencila/schema'
 export * from './plugin'
 export * as util from './util'
 
-if (require.main === module) new Jesta().cli(__filename)
+// istanbul ignore next
+if (require.main === module) new Jesta(__filename).cli()

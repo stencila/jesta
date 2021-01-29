@@ -1,21 +1,17 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { Method } from './plugin'
-import { InvalidParamError, MethodNotFoundError } from './util/errors'
+import {
+  assertRequiredParam,
+  assertValidParam,
+  MethodNotFoundError,
+} from './util/errors'
 
 export function dispatch(
   this: Jesta,
   method: string,
   params: Record<string, Node | undefined>
 ): Promise<Node | undefined> {
-  function assert(
-    condition: boolean,
-    param: string,
-    message = 'missing'
-  ): asserts condition {
-    if (!condition) throw new InvalidParamError(method, param, message)
-  }
-
   switch (method) {
     case Method.build:
     case Method.clean:
@@ -25,8 +21,8 @@ export function dispatch(
     case Method.reshape:
     case Method.validate: {
       const { node, force = false } = params
-      assert(node !== undefined, 'node')
-      assert(
+      assertRequiredParam(node !== undefined, 'node')
+      assertValidParam(
         force === undefined || typeof force === 'boolean',
         'force',
         'should be a boolean'
@@ -52,8 +48,9 @@ export function dispatch(
 
     case Method.decode: {
       const { input, format } = params
-      assert(typeof input === 'string', 'input', 'should be a string')
-      assert(
+      assertRequiredParam(input !== undefined, 'input')
+      assertValidParam(typeof input === 'string', 'input', 'should be a string')
+      assertValidParam(
         format === undefined || typeof format === 'string',
         'format',
         'should be a string'
@@ -63,13 +60,13 @@ export function dispatch(
 
     case Method.encode: {
       const { node, output, format } = params
-      assert(node !== undefined, 'node')
-      assert(
+      assertRequiredParam(node !== undefined, 'node')
+      assertValidParam(
         output === undefined || typeof output === 'string',
         'output',
         'should be a string'
       )
-      assert(
+      assertValidParam(
         format === undefined || typeof format === 'string',
         'format',
         'should be a string'
@@ -79,8 +76,8 @@ export function dispatch(
 
     case Method.pipe: {
       const { node, calls } = params
-      assert(node !== undefined, 'node')
-      assert(
+      assertRequiredParam(node !== undefined, 'node')
+      assertValidParam(
         Array.isArray(calls),
         'calls',
         'should be an array of method names'
@@ -90,9 +87,10 @@ export function dispatch(
 
     case Method.select: {
       const { node, query, lang } = params
-      assert(node !== undefined, 'node')
-      assert(typeof query === 'string', 'query', 'should be a string')
-      assert(
+      assertRequiredParam(node !== undefined, 'node')
+      assertRequiredParam(query !== undefined, 'query')
+      assertValidParam(typeof query === 'string', 'query', 'should be a string')
+      assertValidParam(
         lang === undefined || typeof lang === 'string',
         'lang',
         'should be a string'
@@ -106,14 +104,16 @@ export function dispatch(
 
     case Method.get: {
       const { name } = params
-      assert(typeof name === 'string', 'name', 'should be a string')
+      assertRequiredParam(name !== undefined, 'name')
+      assertValidParam(typeof name === 'string', 'name', 'should be a string')
       return this.get(name)
     }
 
     case Method.set: {
       const { name, value } = params
-      assert(typeof name === 'string', 'name', 'should be a string')
-      assert(value !== undefined, 'value')
+      assertRequiredParam(name !== undefined, 'name')
+      assertValidParam(typeof name === 'string', 'name', 'should be a string')
+      assertRequiredParam(value !== undefined, 'value')
       return this.set(name, value)
     }
   }

@@ -46,16 +46,40 @@ export class MethodNotFoundError extends JsonRpcError {
 }
 
 /**
- * An error when a parameters is invalid for the requested method
+ * An error for when a required parameter is missing
+ */
+export class RequiredParamError extends JsonRpcError {
+  constructor(param: string) {
+    super('RequiredParamError', -32602, `Parameter '${param}' is required`)
+  }
+}
+
+export function assertRequiredParam(
+  condition: boolean,
+  param: string
+): asserts condition {
+  if (!condition) throw new RequiredParamError(param)
+}
+
+/**
+ * An error when a parameter is invalid
  */
 export class InvalidParamError extends JsonRpcError {
-  constructor(method: string, param: string, message: string) {
+  constructor(param: string, message: string) {
     super(
       'InvalidParamError',
       -32602,
-      `Parameter '${param}' is invalid for method '${method}': ${message}`
+      `Parameter '${param}' is invalid: ${message}`
     )
   }
+}
+
+export function assertValidParam(
+  condition: boolean,
+  param: string,
+  message: string
+): asserts condition {
+  if (!condition) throw new InvalidParamError(param, message)
 }
 
 /**
