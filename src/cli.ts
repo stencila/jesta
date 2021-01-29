@@ -73,7 +73,8 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
     case Method.encode: {
       const output = url(args[0])
       console.log('Enter a node as JSON and Ctrl+D when finished')
-      const node = JSON.parse(await stdin()) as Node
+      const json = await stdin()
+      const node = JSON.parse(json) as Node
 
       const content = await plugin.dispatch(Method.encode, {
         node,
@@ -107,6 +108,8 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
 
     case Method.select: {
       const input = url(args[0])
+      const query = args[1]
+      const output = url(args[2])
 
       const node = await plugin.dispatch(Method.decode, {
         input,
@@ -114,7 +117,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
         format: options.from,
       })
 
-      const run = async (query: string, output?: string): Promise<void> => {
+      const select = async (query: string, output?: string): Promise<void> => {
         const selected = await plugin.dispatch(Method.select, {
           node,
           query,
@@ -137,15 +140,13 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
           prompt: '>> ',
         })
         rl.prompt()
-        rl.on('line', (line) => {
-          run(line)
+        for await (const line of rl) {
+          select(line, output)
             .then(() => rl.prompt())
             .catch(console.error)
-        })
+        }
       } else {
-        const query = args[1]
-        const output = url(args[2])
-        await run(query, output)
+        await select(query, output)
       }
 
       return
@@ -178,7 +179,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
           prompt: 'js> ',
         })
         rl.prompt()
-        rl.on('line', (line) => {
+        for await (const line of rl) {
           const node = codeChunk({
             programmingLanguage: 'js',
             text: line,
@@ -194,12 +195,12 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
                 for (const output of outputs) console.log(output)
               }
               if (errors) {
-                for (const error of errors) console.log(error)
+                for (const error of errors) console.error(error)
               }
               rl.prompt()
             })
             .catch(console.error)
-        })
+        }
       }
 
       await plugin.dispatch(Method.encode, {
@@ -321,8 +322,8 @@ function url(value: string | undefined): string | undefined {
     : `file://${path.resolve(value)}`
 }
 
-function cd(url: string): void {
-  if (url.startsWith('file://')) process.chdir(path.dirname(url.slice(7)))
+function cd(url?: string): void {
+  if (url?.startsWith('file://')) process.chdir(path.dirname(url.slice(7)))
 }
 
 const stdin = async (): Promise<string> => {

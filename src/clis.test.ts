@@ -1,5 +1,6 @@
 import fs from 'fs'
 import tempy from 'tempy'
+import { stdin as mockStdin } from 'mock-stdin'
 import { Jesta } from '.'
 import { fixture } from '../tests/helpers'
 import { run } from './cli'
@@ -76,6 +77,19 @@ describe('decode', () => {
   })
 })
 
+describe.skip('encode', () => {
+  it('reads node (JSON) from stdin and encodes to stdout', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('{"type": "Paragraph"}')
+      stdin.end()
+    }, 10)
+    await cli(['encode'])
+    expect(consoleLog).toHaveBeenCalledTimes(2)
+    expect(consoleLog).toHaveBeenCalledWith('')
+  })
+})
+
 describe('convert', () => {
   it('converts input to one output', async () => {
     const temp = tempy.file({ extension: 'json' })
@@ -125,6 +139,19 @@ describe('select', () => {
     expect(consoleLog).toHaveBeenCalledTimes(0)
   })
 
+  it('has an interactive mode', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('content[0]\n')
+      stdin.end()
+    }, 10)
+    await cli(['select', one, '--interact'])
+    expect(consoleLog).toHaveBeenCalledTimes(1)
+    expect(consoleLog).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'CodeChunk' })
+    )
+  })
+
   it('requires <in> argument', async () => {
     await expect(cli(['select'])).rejects.toThrow(
       /Parameter 'input' is required/
@@ -134,6 +161,38 @@ describe('select', () => {
   it('requires <query> argument', async () => {
     await expect(cli(['select', one])).rejects.toThrow(
       /Parameter 'query' is required/
+    )
+  })
+})
+
+describe('execute', () => {
+  it('has an interactive mode', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('6 * 7\n')
+      stdin.end()
+    }, 10)
+    const temp = tempy.file({ extension: 'json' })
+    await cli(['execute', one, temp, '--interact'])
+    expect(consoleLog).toHaveBeenCalledTimes(1)
+    expect(consoleLog).toHaveBeenCalledWith(42)
+  })
+
+  it.skip('interactive mode prints errors of stderr', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('foo.bar\n')
+      stdin.end()
+    }, 10)
+    const temp = tempy.file({ extension: 'json' })
+    await cli(['execute', one, temp, '--interact'])
+    expect(consoleError).toHaveBeenCalledTimes(1)
+    expect(consoleError).toHaveBeenCalledWith('an error')
+  })
+
+  it('requires <in> argument', async () => {
+    await expect(cli(['execute'])).rejects.toThrow(
+      /Parameter 'input' is required/
     )
   })
 })
@@ -206,6 +265,30 @@ describe('run', () => {
 
   it('requires <in> argument', async () => {
     await expect(run(jesta, ['run'])).rejects.toThrow(
+      /Parameter 'input' is required/
+    )
+  })
+})
+
+describe('pipe', () => {
+  const jesta = new Jesta('index.js')
+  const cleanMock = jest.fn(() => Promise.resolve(null))
+  jesta.clean = cleanMock
+  const compileMock = jest.fn(() => Promise.resolve(null))
+  jesta.compile = compileMock
+  const buildMock = jest.fn(() => Promise.resolve(null))
+  jesta.build = buildMock
+
+  it('executes and runs the stencil', async () => {
+    const temp = tempy.file({ extension: 'json' })
+    await run(jesta, ['clean+compile+build', one, temp])
+    expect(cleanMock).toHaveBeenCalled()
+    expect(compileMock).toHaveBeenCalled()
+    expect(buildMock).toHaveBeenCalled()
+  })
+
+  it('requires <in> argument', async () => {
+    await expect(run(jesta, ['pipe'])).rejects.toThrow(
       /Parameter 'input' is required/
     )
   })
