@@ -8,6 +8,10 @@ import { persist } from './util/readline'
 
 /**
  * Expose a command line interface for the plugin.
+ *
+ * This function is a simple wrapper around the `run` function that
+ * passes it the args vector and exits on error. It is thus difficult
+ * to test.
  */
 // istanbul ignore next
 export function cli(this: Jesta): void {
@@ -21,12 +25,14 @@ export function cli(this: Jesta): void {
   })
 }
 
-// Using a nested async function like this one allows
-// (a) use of return on cases (b) keeping the `cli` function
-// sync so that eslint does not complain when it is called without awaiting.
-//
-// When outputting nodes, using `console.log` because of built-in pretty-printing
-// of objects
+/**
+ * Run a command.
+ *
+ * This function is separate from the `cli` function to facilitate testing
+ *
+ * @param plugin The plugin to run the command on (Jesta or a derived plugin)
+ * @param argv The vector of string arguments
+ */
 export async function run(plugin: Plugin, argv: string[]): Promise<void> {
   const {
     package: { name, version, description },
@@ -50,7 +56,6 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
     // arguments they require
 
     // Note: ...options should be sent to all `dispatcher` calls
-    // (although they will often be ignored)
 
     // Some of the assignments below from options are type unsafe
     // but we allow these as the dispatch function handles type checking
@@ -198,7 +203,10 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
                 for (const output of outputs) console.log(output)
               }
               if (errors) {
-                for (const error of errors) console.error(error)
+                for (const error of errors) {
+                  const { errorType, errorMessage } = error
+                  console.error(`${errorType ?? 'Error'}: ${errorMessage}`)
+                }
               }
               rl.prompt()
             })
@@ -315,6 +323,14 @@ and use it from there:
   }
 }
 
+/**
+ * Coerce a value to a URL.
+ *
+ * If the value is not yet a URL then assumes that it is
+ * file system path and returns a resolved file:// URL.
+ *
+ * @param value The value to coerce
+ */
 function url(value: undefined): undefined
 function url(value: string): string
 function url(value: string | undefined): string | undefined
@@ -325,15 +341,23 @@ function url(value: string | undefined): string | undefined {
     : `file://${path.resolve(value)}`
 }
 
+/**
+ * Change the working directory to directory of a stencil.
+ */
 function cd(url?: string): void {
   if (url?.startsWith('file://')) process.chdir(path.dirname(url.slice(7)))
 }
 
-const stdin = async (): Promise<string> => {
-  process.stdin.setEncoding('utf8')
-  let data = ''
-  for await (const chunk of process.stdin) {
-    data += chunk
-  }
-  return data
+/**
+ * Read data from standard input.
+ */
+async function stdin(): Promise<string> {
+  const stream = process.stdin
+  stream.setEncoding('utf8')
+  return new Promise((resolve, reject) => {
+    let data = ''
+    stream.on('data', (chunk) => (data += chunk))
+    stream.on('end', () => resolve(data))
+    stream.on('error', (error) => reject(error))
+  })
 }

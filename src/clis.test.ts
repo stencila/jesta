@@ -77,16 +77,19 @@ describe('decode', () => {
   })
 })
 
-describe.skip('encode', () => {
-  it('reads node (JSON) from stdin and encodes to stdout', async () => {
+describe('encode', () => {
+  it('reads node as JSON from stdin and encodes to stdout', async () => {
     const stdin = mockStdin()
-    setTimeout(() => {
+    process.nextTick(() => {
       stdin.send('{"type": "Paragraph"}')
       stdin.end()
-    }, 10)
+    })
     await cli(['encode'])
     expect(consoleLog).toHaveBeenCalledTimes(2)
-    expect(consoleLog).toHaveBeenCalledWith('')
+    expect(consoleLog.mock.calls).toEqual([
+      ['Enter a node as JSON and Ctrl+D when finished'],
+      ['{\n  "type": "Paragraph"\n}'],
+    ])
   })
 })
 
@@ -178,16 +181,18 @@ describe('execute', () => {
     expect(consoleLog).toHaveBeenCalledWith(42)
   })
 
-  it.skip('interactive mode prints errors of stderr', async () => {
+  it('interactive mode prints errors to stderr', async () => {
     const stdin = mockStdin()
     setTimeout(() => {
-      stdin.send('foo.bar\n')
+      stdin.send('% $#\n')
       stdin.end()
     }, 10)
     const temp = tempy.file({ extension: 'json' })
     await cli(['execute', one, temp, '--interact'])
     expect(consoleError).toHaveBeenCalledTimes(1)
-    expect(consoleError).toHaveBeenCalledWith('an error')
+    expect(consoleError).toHaveBeenCalledWith(
+      "SyntaxError: Unexpected token '%'"
+    )
   })
 
   it('requires <in> argument', async () => {

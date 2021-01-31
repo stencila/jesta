@@ -28,7 +28,7 @@ exports.persist = function (rl, plugin, command) {
         .slice(0, 1000)
     : []
 
-  rl.history.push(...history)
+  rl.history = [...(rl.history ?? []), ...history]
 
   var oldAddHistory = rl._addHistory
   rl._addHistory = function () {
