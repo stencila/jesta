@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/stencila/jesta/compare/v1.0.1...v1.1.0) (2021-01-31)
+
+
+### Bug Fixes
+
+* **Execute:** Detect errors across runtime boundary ([15ea4f5](https://github.com/stencila/jesta/commit/15ea4f5ae7a9b63838212346d6dc709c1a4714c1))
+
+
+### Features
+
+* **Interactive modes:** Record history ([9d64dbf](https://github.com/stencila/jesta/commit/9d64dbf730b916c5c40157d80cec594a043a36b5))
+
 ## [1.0.1](https://github.com/stencila/jesta/compare/v1.0.0...v1.0.1) (2021-01-28)
 
 
