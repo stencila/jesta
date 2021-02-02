@@ -1,7 +1,7 @@
 import { CodeChunk, codeChunk, codeError } from '@stencila/schema'
 import { Jesta } from '.'
 
-const jesta = new Jesta('index.js')
+const jesta = new Jesta('')
 
 async function executeCodeChunk(text: string): Promise<CodeChunk> {
   return jesta.execute(

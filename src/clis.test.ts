@@ -6,7 +6,7 @@ import { fixture } from '../tests/helpers'
 import { run } from './cli'
 
 // An instance of jest which we can mock methods on
-const jesta = new Jesta('index.js')
+const jesta = new Jesta('')
 
 // Spies for console output
 const consoleLog = jest.spyOn(console, 'log').mockImplementation()

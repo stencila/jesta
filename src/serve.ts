@@ -12,7 +12,7 @@ import {
 /**
  * Serve the plugin.
  */
-export function serve(this: Jesta): void {
+export async function serve(this: Jesta): Promise<void> {
   const manifest = this.manifest()
 
   // Turn on the default signal handler so that an errant SIGINT does
@@ -23,72 +23,65 @@ export function serve(this: Jesta): void {
     input: process.stdin,
     terminal: false,
   })
-  reader.on('line', (line) => {
-    const respond = async (): Promise<void> => {
-      let id: number | undefined
-      let response
-      try {
-        const request = JSON.parse(line) as {
-          id?: number
-          method?: string
-          params?: Record<string, Node | undefined>
-        }
-        const { id: id_, method, params } = request
-        if (id_ === undefined || method === undefined)
-          throw new InvalidRequestError()
-        id = id_
-
-        // If the method is interruptible then it has it's own SIGINT handling,
-        // so turn off this module's SIGINT handling. Otherwise, add a handler that provides
-        // a notification that this request is not interruptible
-        const { interruptible = false } =
-          manifest.capabilities[method as Method] ?? {}
-        if (interruptible) noSigIntHandler()
-        else uninterruptibleSigIntHandler(id, method)
-
-        const result = await this.dispatch(method, params ?? {})
-
-        // Turn back on the default SIGINT handling
-        defaultSigIntHandler()
-
-        response = {
-          id,
-          result,
-        }
-      } catch (err) {
-        const error =
-          err instanceof JsonRpcError
-            ? err
-            : err instanceof SyntaxError
-            ? new ParseError(err.message)
-            : err instanceof Error
-            ? new ServerError(err.stack ?? err.message)
-            : new ServerError('Unknown error')
-
-        const { code, message } = error
-        response = {
-          id,
-          error: { code, message },
-        }
+  for await (const line of reader) {
+    let id: number | undefined
+    let response
+    try {
+      const request = JSON.parse(line) as {
+        id?: number
+        method?: string
+        params?: Record<string, Node | undefined>
       }
-      send(response)
+      const { id: id_, method, params } = request
+      if (id_ === undefined || method === undefined)
+        throw new InvalidRequestError()
+      id = id_
+
+      // If the method is interruptible then it has it's own SIGINT handling,
+      // so turn off this module's SIGINT handling. Otherwise, add a handler that provides
+      // a notification that this request is not interruptible
+      const { interruptible = false } =
+        manifest.capabilities[method as Method] ?? {}
+      if (interruptible) noSigIntHandler()
+      else uninterruptibleSigIntHandler(id, method)
+
+      const result = await this.dispatch(method, params ?? {})
+
+      // Turn back on the default SIGINT handling
+      defaultSigIntHandler()
+
+      response = {
+        id,
+        result,
+      }
+    } catch (err) {
+      const error =
+        err instanceof JsonRpcError
+          ? err
+          : err instanceof SyntaxError
+          ? new ParseError(err.message)
+          : err instanceof Error
+          ? new ServerError(err.stack ?? err.message)
+          : new ServerError('Unknown error')
+
+      const { code, message } = error
+      response = {
+        id,
+        error: { code, message },
+      }
     }
-    respond().catch((error: Error) =>
-      // This should never be reached but keeps eslint happy
-      // and does the right thing in case it is reached
-      send({ error })
-    )
-  })
+    sendMessage(response)
+  }
 }
 
 /**
  * On SIGINT, send a JSON-RPC notification that there is no
  * request currently being processed.
  */
-const defaultSigIntHandler = (): void => {
+function defaultSigIntHandler(): void {
   process.removeAllListeners('SIGINT')
   process.addListener('SIGINT', () => {
-    send({
+    sendMessage({
       method: 'warn',
       params: {
         message: 'No request is currently being processed; interrupt ignored.',
@@ -100,7 +93,7 @@ const defaultSigIntHandler = (): void => {
 /**
  * Remove all SIGINT handlers
  */
-const noSigIntHandler = (): void => {
+function noSigIntHandler(): void {
   process.removeAllListeners('SIGINT')
 }
 
@@ -111,10 +104,10 @@ const noSigIntHandler = (): void => {
  * @param id Id of the current request
  * @param method Method of the current request
  */
-const uninterruptibleSigIntHandler = (id: number, method: string): void => {
+function uninterruptibleSigIntHandler(id: number, method: string): void {
   process.removeAllListeners('SIGINT')
   process.addListener('SIGINT', () => {
-    send({
+    sendMessage({
       method: 'warn',
       params: {
         request: {
@@ -128,7 +121,7 @@ const uninterruptibleSigIntHandler = (id: number, method: string): void => {
 }
 
 /**
- * Send a JSON-RPC message to the client
+ * Send a JSON-RPC message (response or notification) to the client.
  *
  * This sends the message with,
  *   transport: stdio
@@ -137,6 +130,6 @@ const uninterruptibleSigIntHandler = (id: number, method: string): void => {
  *
  * @param message The JSON-RPC response or notification
  */
-const send = (message: unknown): void => {
+function sendMessage(message: unknown): void {
   process.stdout.write(JSON.stringify(message) + '\n')
 }
