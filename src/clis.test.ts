@@ -147,7 +147,7 @@ describe('select', () => {
     setTimeout(() => {
       stdin.send('content[0]\n')
       stdin.end()
-    }, 10)
+    }, 100)
     await cli(['select', one, '--interact'])
     expect(consoleLog).toHaveBeenCalledTimes(1)
     expect(consoleLog).toHaveBeenCalledWith(
@@ -174,7 +174,7 @@ describe('execute', () => {
     setTimeout(() => {
       stdin.send('6 * 7\n')
       stdin.end()
-    }, 10)
+    }, 100)
     const temp = tempy.file({ extension: 'json' })
     await cli(['execute', one, temp, '--interact'])
     expect(consoleLog).toHaveBeenCalledTimes(1)
@@ -186,7 +186,7 @@ describe('execute', () => {
     setTimeout(() => {
       stdin.send('% $#\n')
       stdin.end()
-    }, 10)
+    }, 100)
     const temp = tempy.file({ extension: 'json' })
     await cli(['execute', one, temp, '--interact'])
     expect(consoleError).toHaveBeenCalledTimes(1)
