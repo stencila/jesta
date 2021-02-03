@@ -1,6 +1,6 @@
 import { codeError, isA, Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { Method } from './plugin'
+import { Method } from './types'
 import { record } from './util/changes'
 import { enter } from './util/session'
 import * as timer from './util/timer'

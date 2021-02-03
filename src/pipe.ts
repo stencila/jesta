@@ -1,6 +1,6 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { Method } from './plugin'
+import { Method } from './types'
 
 export async function pipe(
   this: Jesta,

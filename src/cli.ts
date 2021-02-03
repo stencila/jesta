@@ -3,7 +3,7 @@ import minimist from 'minimist'
 import path from 'path'
 import readline from 'readline'
 import { Jesta } from '.'
-import { Method, Plugin } from './plugin'
+import { Method } from './types'
 import { persist } from './util/readline'
 
 /**
@@ -15,14 +15,16 @@ import { persist } from './util/readline'
  */
 // istanbul ignore next
 export function cli(this: Jesta): void {
-  run(this, process.argv.slice(2)).catch((error) => {
-    console.error(
-      error instanceof Error && !process.argv.includes('--debug')
-        ? error.message
-        : error
-    )
-    process.exit(1)
-  })
+  run
+    .bind(this)(process.argv.slice(2))
+    .catch((error) => {
+      console.error(
+        error instanceof Error && !process.argv.includes('--debug')
+          ? error.message
+          : error
+      )
+      process.exit(1)
+    })
 }
 
 /**
@@ -33,10 +35,10 @@ export function cli(this: Jesta): void {
  * @param plugin The plugin to run the command on (Jesta or a derived plugin)
  * @param argv The vector of string arguments
  */
-export async function run(plugin: Plugin, argv: string[]): Promise<void> {
+export async function run(this: Jesta, argv: string[]): Promise<void> {
   const {
     package: { name, version, description },
-  } = plugin.manifest()
+  } = this.manifest()
 
   let {
     _: [method, ...args],
@@ -62,16 +64,16 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
     case 'manifest':
-      return console.log(plugin.manifest())
+      return console.log(this.manifest())
     case 'register':
-      return await plugin.register()
+      return await this.register()
     case 'serve':
-      return plugin.serve()
+      return this.serve()
 
     case Method.decode: {
       const input = url(args[0])
 
-      const node = await plugin.dispatch(Method.decode, { input, ...options })
+      const node = await this.dispatch(Method.decode, { input, ...options })
 
       return console.log(node)
     }
@@ -82,7 +84,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
       const json = await stdin()
       const node = JSON.parse(json) as Node
 
-      const content = await plugin.dispatch(Method.encode, {
+      const content = await this.dispatch(Method.encode, {
         node,
         output,
         ...options,
@@ -95,13 +97,13 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
       const input = url(args[0])
       const outputs = args.slice(1).map(url)
 
-      const node = await plugin.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.decode, {
         input,
         ...options,
         format: options.from,
       })
       for (const output of outputs) {
-        await plugin.dispatch(Method.encode, {
+        await this.dispatch(Method.encode, {
           node,
           output,
           ...options,
@@ -117,20 +119,20 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
       const query = args[1]
       const output = url(args[2])
 
-      const node = await plugin.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.decode, {
         input,
         ...options,
         format: options.from,
       })
 
       const select = async (query: string, output?: string): Promise<void> => {
-        const selected = await plugin.dispatch(Method.select, {
+        const selected = await this.dispatch(Method.select, {
           node,
           query,
           ...options,
         })
         if (selected !== undefined && output !== undefined)
-          await plugin.dispatch(Method.encode, {
+          await this.dispatch(Method.encode, {
             node: selected,
             output,
             ...options,
@@ -172,12 +174,12 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
 
       cd(input)
 
-      const node = await plugin.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.decode, {
         input,
         ...options,
         format: options.from,
       })
-      const result = await plugin.dispatch(method, { node, ...options, calls })
+      const result = await this.dispatch(method, { node, ...options, calls })
 
       if (options.interact === true && method === Method.execute) {
         const rl = readline.createInterface({
@@ -192,11 +194,10 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
             programmingLanguage: 'js',
             text: line,
           })
-          plugin
-            .dispatch(method, {
-              node,
-              ...options,
-            })
+          this.dispatch(method, {
+            node,
+            ...options,
+          })
             .then((node) => {
               const { outputs, errors } = node as CodeChunk
               if (outputs) {
@@ -214,7 +215,7 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
         }
       }
 
-      await plugin.dispatch(Method.encode, {
+      await this.dispatch(Method.encode, {
         node: result,
         output,
         ...options,
@@ -233,12 +234,12 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
       const name = args[1]
       const value = args[2]
 
-      const node = await plugin.dispatch(Method.decode, { input, ...options })
-      await plugin.dispatch(Method.execute, { node, ...options })
+      const node = await this.dispatch(Method.decode, { input, ...options })
+      await this.dispatch(Method.execute, { node, ...options })
 
-      if (method === 'run') plugin.serve()
+      if (method === 'run') await this.serve()
       else {
-        const result = await plugin.dispatch(method, {
+        const result = await this.dispatch(method, {
           name,
           value,
           ...options,

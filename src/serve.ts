@@ -1,7 +1,7 @@
 import { Node } from '@stencila/schema'
 import readline from 'readline'
 import { Jesta } from '.'
-import { Method } from './plugin'
+import { Method } from './types'
 import {
   InvalidRequestError,
   JsonRpcError,

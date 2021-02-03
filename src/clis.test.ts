@@ -22,7 +22,7 @@ async function cli(args: string[]): Promise<void> {
   consoleLog.mockClear()
   consoleError.mockClear()
 
-  return run(jesta, args)
+  return run.bind(jesta)(args)
 }
 
 const one = fixture('one', 'index.json')
@@ -263,13 +263,13 @@ describe('run', () => {
   jesta.serve = serveMock
 
   it('executes and runs the stencil', async () => {
-    await run(jesta, ['run', one, 'foo', 'bar'])
+    await run.bind(jesta)(['run', one, 'foo', 'bar'])
     expect(executeMock).toHaveBeenCalled()
     expect(serveMock).toHaveBeenCalled()
   })
 
   it('requires <in> argument', async () => {
-    await expect(run(jesta, ['run'])).rejects.toThrow(
+    await expect(run.bind(jesta)(['run'])).rejects.toThrow(
       /Parameter 'input' is required/
     )
   })
@@ -286,14 +286,14 @@ describe('pipe', () => {
 
   it('executes and runs the stencil', async () => {
     const temp = tempy.file({ extension: 'json' })
-    await run(jesta, ['clean+compile+build', one, temp])
+    await run.bind(jesta)(['clean+compile+build', one, temp])
     expect(cleanMock).toHaveBeenCalled()
     expect(compileMock).toHaveBeenCalled()
     expect(buildMock).toHaveBeenCalled()
   })
 
   it('requires <in> argument', async () => {
-    await expect(run(jesta, ['pipe'])).rejects.toThrow(
+    await expect(run.bind(jesta)(['pipe'])).rejects.toThrow(
       /Parameter 'input' is required/
     )
   })

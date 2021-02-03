@@ -1,4 +1,3 @@
-import { Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { context } from './util/session'
 

@@ -2,7 +2,7 @@ import path from 'path'
 
 import { Jesta } from '.'
 import { description, version } from '../package.json'
-import { Manifest } from './plugin'
+import { Manifest } from './types'
 
 export function manifest(this: Jesta): Manifest {
   const { name: fileName, ext } = path.parse(this.file)
