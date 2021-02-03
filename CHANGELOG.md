@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/stencila/jesta/compare/v1.2.0...v1.3.0) (2021-02-03)
+
+
+### Bug Fixes
+
+* **Execute:** Support CodeExpressions ([1da0b90](https://github.com/stencila/jesta/commit/1da0b90f88573efe0f057726ca526b899eca94a0))
+
+
+### Features
+
+* **Delete:** Add delete method ([2362c62](https://github.com/stencila/jesta/commit/2362c62776546c37f9b1d0ed93afd2d66391eb99))
+
 # [1.2.0](https://github.com/stencila/jesta/compare/v1.1.0...v1.2.0) (2021-02-03)
 
 
