@@ -11,7 +11,7 @@ export async function execute(
   node: Node,
   force: boolean
 ): Promise<Node> {
-  if (isA('CodeChunk', node)) {
+  if (isA('CodeChunk', node) || isA('CodeExpression', node)) {
     const { programmingLanguage, text } = node
     if (['js', 'javascript'].includes(programmingLanguage ?? '')) {
       // Ensure node has been built
@@ -23,8 +23,15 @@ export async function execute(
       const [outputs, errors] = enter(text)
 
       // Update outputs
-      if (outputs.length > 0) node.outputs = outputs
-      else delete node.outputs
+      if (isA('CodeChunk', node)) {
+        if (outputs.length > 0) node.outputs = outputs
+        else delete node.outputs
+      } else {
+        // There should only be one output but in case there are more
+        // only take the last
+        if (outputs.length > 0) node.output = outputs.slice(-1)[0]
+        else delete node.output
+      }
 
       // Update errors
       if (errors.length > 0)
