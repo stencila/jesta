@@ -11,7 +11,9 @@
     "test:watch": "npm run test -- --watchAll",
     "test:cover": "npm run test -- --collectCoverage",
     "start": "npx ts-node src",
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run build:dist && npm run build:bin",
+    "build:dist": "tsc -p tsconfig.json",
+    "build:bin": "pkg --out-path bin .",
     "postbuild": "node dist/src/index.js register",
     "docs": "typedoc src/index.ts"
   },
@@ -39,6 +41,8 @@
     "jest": "26.6.3",
     "json-schema": "0.3.0",
     "mock-stdin": "1.0.0",
+    "pkg": "4.4.9",
+    "shelljs": "0.8.4",
     "tempy": "1.0.0",
     "ts-jest": "26.4.4",
     "ts-node": "9.1.1",
@@ -87,10 +91,44 @@
       "@stencila"
     ]
   },
+  "pkg": {
+    "targets": [
+      "node14-linux-x64",
+      "node14-macos-x64",
+      "node14-win-x64"
+    ]
+  },
   "release": {
     "extends": "@stencila/semantic-release-config",
     "branches": [
       "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "bin/jesta-linux",
+              "label": "Linux binary"
+            },
+            {
+              "path": "bin/jesta-macos",
+              "label": "MacOS binary"
+            },
+            {
+              "path": "bin/jesta-win.exe",
+              "label": "Windows binary"
+            }
+          ]
+        }
+      ],
+      "@qiwi/semantic-release-gh-pages-plugin"
     ]
   }
 }
