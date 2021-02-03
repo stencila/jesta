@@ -102,11 +102,12 @@ export function dispatch(
       return this.vars()
     }
 
-    case Method.get: {
+    case Method.get:
+    case Method.delete: {
       const { name } = params
       assertRequiredParam(name !== undefined, 'name')
       assertValidParam(typeof name === 'string', 'name', 'should be a string')
-      return this.get(name)
+      return method === Method.get ? this.get(name) : this.delete(name)
     }
 
     case Method.set: {

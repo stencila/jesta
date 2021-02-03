@@ -9,6 +9,7 @@ export enum Method {
   encode = 'encode',
   enrich = 'enrich',
   execute = 'execute',
+  delete = 'delete',
   get = 'get',
   pipe = 'pipe',
   reshape = 'reshape',
@@ -119,6 +120,10 @@ export abstract class Plugin {
   }
 
   set(name: string, value: Node): Promise<undefined> {
+    return Promise.resolve(undefined)
+  }
+
+  delete(name: string): Promise<undefined> {
     return Promise.resolve(undefined)
   }
 

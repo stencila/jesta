@@ -227,7 +227,8 @@ export async function run(plugin: Plugin, argv: string[]): Promise<void> {
     case 'run':
     case Method.vars:
     case Method.get:
-    case Method.set: {
+    case Method.set:
+    case Method.delete: {
       const input = url(args[0])
       const name = args[1]
       const value = args[2]
@@ -287,6 +288,7 @@ execute <in> [out]           Execute stencil <in> (save as [out])
 vars <in>                    List variables in stencil <in>
 get <in> <name>              Get a variable from stencil <in>
 set <in> <name> <value>      Set a variable in stencil <in>
+delete <in> <name>           Delete a variable from stencil <in>
 
 run <in>                     Run stencil <in> (execute and serve)
 

@@ -5,6 +5,7 @@ import { clean } from './clean'
 import { cli } from './cli'
 import { compile } from './compile'
 import { decode } from './decode'
+import { delete_ } from './delete'
 import { dispatch } from './dispatch'
 import { encode } from './encode'
 import { execute } from './execute'
@@ -37,6 +38,7 @@ export class Jesta extends Plugin {
 
   get = get
   set = set
+  delete = delete_
   vars = vars
 
   pipe = pipe
