@@ -24,7 +24,8 @@
   "homepage": "https://github.com/stencila/jesta#readme",
   "keywords": [
     "Stencila",
-    "plugin"
+    "plugin",
+    "stencils"
   ],
   "author": "Stencila <hello@stenci.la>",
   "license": "Apache-2.0",
