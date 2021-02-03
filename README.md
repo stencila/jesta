@@ -37,18 +37,26 @@ Or using the name of this repo directly,
 stencila install jesta
 ```
 
-None of that is possible right now, and this package isn't even on NPM yet, but you could always install it from GitHub directly if you like:
+None of that is possible right now, but if you have Node.js and NPM installed,
 
 ```sh
-npm install stencila/jesta
+npm install --global stencila/jesta
 ```
+
+and if you don't, run the install script,
+
+```sh
+curl -sL https://raw.githubusercontent.com/stencila/jesta/main/install.sh | sh
+```
+
+or download and install the binary for your operating system from the [latest release](https://github.com/stencila/jesta/releases).
 
 ## 🚀 Use
 
 Most of the time, you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you do want to run Jesta standalone...
 
 ```sh
-npx jesta help
+jesta help
 ```
 
 ## 💪 Extend
@@ -62,7 +70,7 @@ npm init
 npm install stencila/jesta
 ```
 
-Implement your own `manifest` and override any of Jesta's other methods and in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
+Implement your own `manifest` function (and override any of Jesta's other methods) and then in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
 
 ```ts
 import { Jesta } from '@stencila/jesta'
@@ -72,8 +80,10 @@ export class MyPlugin extends Jesta {
   manifest = manifest
 }
 
-if (require.main === module) new MyPlugin.cli(__filename)
+if (require.main === module) new MyPlugin(__filename).cli()
 ```
+
+This repo also creates standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). This is mainly done as an example: check out the `build:bin` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin. The installation scripts [`install.sh`](install.sh) and [`install.ps1`](install.ps1) will install these binaries.
 
 ## 🛠️ Develop
 
