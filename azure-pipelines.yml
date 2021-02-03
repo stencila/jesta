@@ -2,9 +2,12 @@ jobs:
   - job: test
     strategy:
       matrix:
-        linux:
+        linux_14:
           image_name: ubuntu-latest
           node_version: 14.x
+        linux_12:
+          image_name: ubuntu-latest
+          node_version: 12.x
         mac:
           image_name: macOS-latest
           node_version: 14.x
