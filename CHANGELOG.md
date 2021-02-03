@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/stencila/jesta/compare/v1.1.0...v1.2.0) (2021-02-03)
+
+
+### Bug Fixes
+
+* **Javascript:** The ?? operator is not available in Node 12 ([305b6c9](https://github.com/stencila/jesta/commit/305b6c998aab73dfbef23b651ea9e8f73bfcfc5d))
+
+
+### Features
+
+* **Binaries:** Include binaries in releases ([04723d5](https://github.com/stencila/jesta/commit/04723d5fdbe02b82eb73db7d3657f26f546f06bd))
+
 # [1.1.0](https://github.com/stencila/jesta/compare/v1.0.1...v1.1.0) (2021-01-31)
 
 
