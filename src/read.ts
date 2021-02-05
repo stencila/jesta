@@ -57,7 +57,7 @@ export async function readFile(
 ): Promise<[string, string]> {
   const content = await promisify(fs.readFile)(path, 'utf8')
   // TODO: guess the media type
-  const mediaType = format ?? ''
+  const mediaType = format ?? 'application/json'
   return [content, mediaType]
 }
 
