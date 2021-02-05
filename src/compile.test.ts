@@ -8,9 +8,21 @@ describe('comment tags', () => {
   test.each(['alters', 'assigns', 'declares', 'imports', 'reads', 'uses'])(
     '%s',
     async (prop: string) => {
-      const node = await jesta.compile(
+      let node = await jesta.compile(
         codeChunk({
           programmingLanguage: 'js',
+          // Un-namespaced tag
+          text: `// @${prop} a b c`,
+        }),
+        true
+      )
+      // @ts-expect-error using string as key
+      expect(node[prop]).toEqual(['a', 'b', 'c'])
+
+      node = await jesta.compile(
+        codeChunk({
+          programmingLanguage: 'js',
+          // Namespaced tag
           text: `// @stencila-${prop} a b c`,
         }),
         true
@@ -29,9 +41,9 @@ describe('comment tags', () => {
 
 /* @stencila-declares a */
 
-/* @stencila-imports bar */
+/* @imports bar */
 
-// @stencila-declares b
+// @declares b
         `,
       }),
       true
@@ -46,13 +58,13 @@ describe('comment tags', () => {
       codeChunk({
         programmingLanguage: 'js',
         text: `
-// @stencila-imports foo bar
+// @imports foo bar
 const baz = require('quax')
 
-// @stencila-declares a
+// @declares a
 var b = 1
 
-// @stencila-reads data.csv
+// @reads data.csv
 fs.readFile('other.csv')
         `,
       }),
