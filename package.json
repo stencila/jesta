@@ -33,6 +33,8 @@
     "@stencila/schema": "^1.0.0",
     "acorn": "^8.0.4",
     "acorn-walk": "^8.0.1",
+    "got": "^11.8.1",
+    "keyv": "^4.0.3",
     "minimist": "^1.2.5"
   },
   "devDependencies": {

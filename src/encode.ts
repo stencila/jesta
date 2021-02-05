@@ -1,23 +1,26 @@
 import { Node } from '@stencila/schema'
 import path from 'path'
 import { Jesta } from '.'
-import { write } from './util/write'
 
+/**
+ *
+ * @param this
+ * @param node
+ * @param url
+ * @param format
+ * @returns A string to be written, or undefined if already written
+ */
+/* eslint-disable @typescript-eslint/require-await */
 export async function encode(
   this: Jesta,
   node: Node,
-  output?: string,
+  url?: string,
   format?: string
-): Promise<string> {
-  format =
-    format ?? (output !== undefined ? path.extname(output).slice(1) : 'json')
+): Promise<string | undefined> {
+  format = format ?? (url !== undefined ? path.extname(url).slice(1) : 'json')
 
   if (format === 'json' || format.startsWith('application/json')) {
-    const json = JSON.stringify(node, null, '  ')
-    if (output !== undefined) {
-      await write(json, output)
-      return ''
-    } else return Promise.resolve(json)
+    return JSON.stringify(node, null, '  ')
   }
 
   throw Error(`Incapable of encoding to format "${format}"`)

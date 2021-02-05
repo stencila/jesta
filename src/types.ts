@@ -5,17 +5,21 @@ export enum Method {
   clean = 'clean',
   compile = 'compile',
   decode = 'decode',
+  delete = 'delete',
   encode = 'encode',
   enrich = 'enrich',
   execute = 'execute',
-  delete = 'delete',
+  export = 'export',
   get = 'get',
+  import = 'import',
   pipe = 'pipe',
+  read = 'read',
   reshape = 'reshape',
   select = 'select',
   set = 'set',
   validate = 'validate',
   vars = 'vars',
+  write = 'write',
 }
 
 /**

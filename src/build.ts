@@ -14,9 +14,10 @@ const writeFile = promisify(fs.writeFile)
 /**
  * Build a stencil
  *
- * This implementation walks the stencil entity and collects the package names
+ * This implementation walks the stencil and collects NPM package names
  * from the `imports` property of Javascript `CodeChunk` nodes. It then
- * calls `npm install` with those packages names.
+ * calls `npm install` with the names of the packages missing from `package.json`.
+ * If there is no `package.json` file then will create one.
  *
  * @param entity The stencil to build.
  */
@@ -77,19 +78,16 @@ export async function build(
         } else throw error
       }
 
-      // TODO: Optimise by removing packages already in package.json
+      // Only install packages that are not yet in package.json
       const missing = packages.filter(
         (pkg) => packageJson.dependencies[pkg] === undefined
       )
       if (missing.length > 0) {
         // Ask `npm` to install the packages
-        // TODO: Check behaviour of install, should not update the version
-        // number if already there
         spawnSync('npm', ['install', '--save-exact', ...missing], {
           // TODO: Transform output from stdout and stderr into log entries
           stdio: ['ignore', 'inherit', 'inherit'],
         })
-        // TODO: Consider running `npm audit fix` if necessary
       }
     }
 
