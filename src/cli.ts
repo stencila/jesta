@@ -17,6 +17,7 @@ import { persist } from './util/readline'
 export function cli(this: Jesta): void {
   run
     .bind(this)(process.argv.slice(2))
+    .then(() => process.exit(0))
     .catch((error) => {
       console.error(
         error instanceof Error && !process.argv.includes('--debug')
