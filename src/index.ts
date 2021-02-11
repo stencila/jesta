@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { build } from './build'
+import { call } from './call'
 import { clean } from './clean'
 import { cli } from './cli'
 import { compile } from './compile'
@@ -11,6 +12,7 @@ import { encode } from './encode'
 import { enrich } from './enrich'
 import { execute } from './execute'
 import { export_ } from './export_'
+import { funcs } from './funcs'
 import { get } from './get'
 import { import_ } from './import_'
 import { manifest } from './manifest'
@@ -55,6 +57,9 @@ export class Jesta {
   set = set
   delete = delete_
   vars = vars
+
+  funcs = funcs
+  call = call
 
   pipe = pipe
   dispatch = dispatch

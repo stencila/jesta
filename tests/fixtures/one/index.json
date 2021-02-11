@@ -25,6 +25,11 @@
       "type": "CodeChunk",
       "programmingLanguage": "js",
       "text": "// @imports lodash simple-statistics\n// @uses a b c"
+    },
+    {
+      "type": "CodeChunk",
+      "programmingLanguage": "js",
+      "text": "function hello(who){ return 'Hello ' + who}"
     }
   ]
 }

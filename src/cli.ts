@@ -230,10 +230,22 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case Method.vars:
     case Method.get:
     case Method.set:
-    case Method.delete: {
+    case Method.delete:
+    case Method.funcs:
+    case Method.call: {
       const input = url(args[0])
       const name = args[1]
-      const value = args[2]
+      const value = args[2] // for set
+
+      let args_: Record<string, Node> = {}
+      if (method === Method.call) {
+        args_ = args.slice(2).reduce((prev, curr, index) => {
+          const match = /\w+=.*/.exec(curr)
+          const [name, json] = match ? match.slice(1) : [`${index}`, curr]
+          const value = JSON.parse(json)
+          return { ...prev, [name]: value }
+        }, {})
+      }
 
       const node = await this.dispatch(Method.decode, { input, ...options })
       await this.dispatch(Method.execute, { node, ...options })
@@ -243,6 +255,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         const result = await this.dispatch(method, {
           name,
           value,
+          args: args_,
           ...options,
         })
         console.log(result)

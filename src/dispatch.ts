@@ -1,4 +1,4 @@
-import { Node } from '@stencila/schema'
+import { isPrimitive, Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { Method } from './types'
 import {
@@ -116,6 +116,23 @@ export function dispatch(
       assertValidParam(typeof name === 'string', 'name', 'should be a string')
       assertRequiredParam(value !== undefined, 'value')
       return this.set(name, value)
+    }
+
+    case Method.funcs: {
+      return this.funcs()
+    }
+
+    case Method.call: {
+      const { name, args } = params
+      assertRequiredParam(name !== undefined, 'name')
+      assertValidParam(typeof name === 'string', 'name', 'should be a string')
+      assertValidParam(
+        !isPrimitive(args) && !Array.isArray(args),
+        'name',
+        'should be a object'
+      )
+      // @ts-expect-error difficult to check args further
+      return this.call(name, args)
     }
   }
   throw new MethodNotFoundError(method)

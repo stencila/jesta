@@ -2,6 +2,7 @@ import { JSONSchema7 } from 'json-schema'
 
 export enum Method {
   build = 'build',
+  call = 'call',
   clean = 'clean',
   compile = 'compile',
   decode = 'decode',
@@ -10,6 +11,7 @@ export enum Method {
   enrich = 'enrich',
   execute = 'execute',
   export = 'export',
+  funcs = 'funcs',
   get = 'get',
   import = 'import',
   pipe = 'pipe',

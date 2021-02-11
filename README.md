@@ -13,13 +13,13 @@
 
 - Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage`.
 
-- Implements `vars`, `get`, and `set` methods for Node.js sessions.
+- Implements `vars`, `get`, `set` and `delete` methods for managing variables in Node.js sessions.
 
-- Implements `decode` and `encode` methods for `format:json`.
+- Implements `decode` and `encode` methods for `format` `json`.
 
-- Implements `select` for `lang:simplepath`.
+- Implements `select` for `lang` `simplepath`.
 
-- A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods (required for integration with Stencila CLI and Desktop)
+- A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods required for integration with Stencila CLI and Desktop)
 
 - A simple command line interface, including interactive modes, for running and testing plugins.
 
