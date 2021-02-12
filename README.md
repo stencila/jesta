@@ -11,17 +11,37 @@
 
 ## ✨ Features
 
-- Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage`.
+> Features that are not yet implemented or only partially implemented are indicated by a unicorn emoji 🦄
+
+- Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage` 🦄.
 
 - Implements `vars`, `get`, `set` and `delete` methods for managing variables in Node.js sessions.
+
+- Implements `funcs`, and `call` methods for using functions defined in Node.js sessions 🦄.
 
 - Implements `decode` and `encode` methods for `format` `json`.
 
 - Implements `select` for `lang` `simplepath`.
 
+- Implements `read` and `write` for protocols `file://`, `http://`, and `stdio://`.
+
 - A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods required for integration with Stencila CLI and Desktop)
 
 - A simple command line interface, including interactive modes, for running and testing plugins.
+
+## 🏗️ Roadmap
+
+- [x] Development setup (linting, tests, CI, docs etc)
+- [x] Semantic releases
+- [x] Simple API for developing extension plugins
+- [x] Simple CLI for testing extension plugins
+- [x] Binary distributions using `pkg` (mainly as an example for extenders)
+- [ ] Docker image (mainly as an example for extenders)
+- [ ] Re-implement / move basic IO utility functions from Encoda (e.g. cached HTTP requests, MediaType mappings)
+- [ ] Finish implementing core execution functions for Javascript: `compile`, `build`, `execute`, `funcs`, `call`.
+- [ ] Use `logga` for logging
+- [ ] At least 95% test coverage
+- [ ] Test usage with `stencila` CLI
 
 ## 📦 Install
 
