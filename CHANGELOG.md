@@ -1,3 +1,20 @@
+# [1.4.0](https://github.com/stencila/jesta/compare/v1.3.0...v1.4.0) (2021-02-12)
+
+
+### Bug Fixes
+
+* Typings and tests ([493103f](https://github.com/stencila/jesta/commit/493103ff74d0843cc252b241ba3d852f7fc245e8))
+* **Cache:** Use persistent dir; cleanup after set ([60be842](https://github.com/stencila/jesta/commit/60be842bae939d9faf51d3f78f8131ac6ae7fb30))
+* **CLI:** Exit on success ([dd1e082](https://github.com/stencila/jesta/commit/dd1e08205bca9fc5e8894601684cff550d463bc9))
+* **Compile:** Allow unnamespaced tags ([3a0c52c](https://github.com/stencila/jesta/commit/3a0c52c6d6861aa791bec97e39f9230e6c51d1eb))
+* **Compile:** Tidy up and add tests ([dab52bd](https://github.com/stencila/jesta/commit/dab52bdc4657f3edab6bdb12814aec15d1c777b7))
+* **Read:** Temporarily default to JSON ([68d10d5](https://github.com/stencila/jesta/commit/68d10d57049530e050e0ac9c3308085fd0f43b87))
+
+
+### Features
+
+* **Funcs & call:** Add method for listing and calling functions ([74b3166](https://github.com/stencila/jesta/commit/74b3166c0692c44ee0b27fd53b586b41534d7244))
+
 # [1.3.0](https://github.com/stencila/jesta/compare/v1.2.0...v1.3.0) (2021-02-03)
 
 
