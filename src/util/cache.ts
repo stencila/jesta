@@ -3,13 +3,16 @@ import fs from 'fs'
 import Keyv from 'keyv'
 import path from 'path'
 import { promisify } from 'util'
+import { cache as cacheDir } from '../util/dirs'
 
 /**
  * Cache class that implements the methods required to
- * act as a Keyv storage adapter.
+ * act as a [Keyv](https://github.com/lukechilds/keyv) storage adapter.
  *
  * Stores values as files in a Stencila cache directory intended to
- * be used across applications and plugins.
+ * be used across applications and plugins. Removes the least
+ * recently accessed files to maintain the size of the cache below a
+ * defined size.
  *
  * Note that this differs from https://github.com/zaaack/keyv-file in that
  * if persists values across processes. This is important for CLI applications
@@ -22,15 +25,22 @@ export class Cache implements Keyv.Store<string> {
    */
   private dir: string
 
-  maximumSize = 950
+  /**
+   * The maximum size of the cache (MiB).
+   */
+  maximumSize = 100
 
-  cleanupInterval = 10
+  /**
+   * The amount of time between cleanup checks (seconds).
+   */
+  cleanupInterval = 120
 
+  /**
+   * Create the cache.
+   */
   public constructor() {
-    const dir = (this.dir = '/tmp/cache')
+    const dir = (this.dir = cacheDir())
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-    else this.cleanup()
-    setInterval(() => this.cleanup(), this.cleanupInterval * 1000)
   }
 
   /**
@@ -50,6 +60,7 @@ export class Cache implements Keyv.Store<string> {
    */
   public set(key: string, value: string): void {
     fs.writeFileSync(this.filename(key), value, 'utf8')
+    process.nextTick(() => this.cleanup())
   }
 
   /**
@@ -102,7 +113,8 @@ export class Cache implements Keyv.Store<string> {
           }
         })
       )
-      const total = files.reduce((prev, file) => prev + file.stats.size, 0)
+      const total =
+        files.reduce((prev, file) => prev + file.stats.size, 0) / 1e6
       if (total > this.maximumSize) {
         const sorted = files.sort((a, b) => a.stats.atimeMs - b.stats.atimeMs)
         let remain = total

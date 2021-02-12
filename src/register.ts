@@ -12,8 +12,10 @@ export async function register(this: Jesta): Promise<void> {
   const {
     package: { name },
   } = manifest
+
   const dir = plugins()
   if (!fs.existsSync(dir)) await promisify(fs.mkdir)(dir, { recursive: true })
+
   const file = path.join(dir, `${name}.json`)
   await promisify(fs.writeFile)(
     file,
