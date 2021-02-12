@@ -1,6 +1,7 @@
 import { isEntity, isPrimitive, Node } from '@stencila/schema'
 import repl from 'repl'
 import stream from 'stream'
+import vm from 'vm'
 
 const input = new stream.PassThrough()
 
@@ -41,7 +42,7 @@ const session: repl.REPLServer = repl.start({
   breakEvalOnSigint: true,
 })
 
-export const context = session.context
+export const context: vm.Context = session.context
 
 export const enter = (code: string): [Node[], Error[]] => {
   outputs = []

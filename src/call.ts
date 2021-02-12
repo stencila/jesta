@@ -1,3 +1,4 @@
+import { Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { context } from './util/session'
 
@@ -10,6 +11,7 @@ export async function call(
   name: string,
   args: Record<string, Node> = {}
 ): Promise<Node> {
-  const func = context[name]
-  return func.call(null, ...Object.values(args))
+  const func = context[name] as unknown
+  // @ts-expect-error TODO check args against func type signature
+  return func(...Object.values(args)) as Node
 }

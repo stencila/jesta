@@ -1,4 +1,3 @@
-import { nodeType } from '@stencila/schema'
 import { Jesta } from '.'
 import { context } from './util/session'
 
@@ -23,7 +22,7 @@ export async function funcs(this: Jesta): Promise<Record<string, string>> {
   )
 }
 
-export function funcType(func: () => void) {
+export function funcType(_func: () => void): string {
   // TODO
-  return {}
+  return 'TODO'
 }

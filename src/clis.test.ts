@@ -61,38 +61,6 @@ describe('serve', () => {
   })
 })
 
-describe('decode', () => {
-  it('decodes input to a node and outputs it', async () => {
-    await cli(['decode', one])
-    expect(consoleLog).toHaveBeenCalledTimes(1)
-    expect(consoleLog).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'Article' })
-    )
-  })
-
-  it('requires <in> argument', async () => {
-    await expect(cli(['decode'])).rejects.toThrow(
-      /Parameter 'input' is required/
-    )
-  })
-})
-
-describe('encode', () => {
-  it('reads node as JSON from stdin and encodes to stdout', async () => {
-    const stdin = mockStdin()
-    process.nextTick(() => {
-      stdin.send('{"type": "Paragraph"}')
-      stdin.end()
-    })
-    await cli(['encode'])
-    expect(consoleLog).toHaveBeenCalledTimes(2)
-    expect(consoleLog.mock.calls).toEqual([
-      ['Enter a node as JSON and Ctrl+D when finished'],
-      ['{\n  "type": "Paragraph"\n}'],
-    ])
-  })
-})
-
 describe('convert', () => {
   it('converts input to one output', async () => {
     const temp = tempy.file({ extension: 'json' })
@@ -110,10 +78,13 @@ describe('convert', () => {
     expect(consoleLog).toHaveBeenCalledTimes(0)
   })
 
-  it('errors if extension formats are unsupported', async () => {
+  it('errors if file does not exist', async () => {
     await expect(cli(['convert', 'foo.bar', 'baz.json'])).rejects.toThrow(
-      /Incapable of decoding from format "bar"/
+      /ENOENT: no such file or directory/
     )
+  })
+
+  it('errors if extension formats are unsupported', async () => {
     await expect(cli(['convert', one, 'baz.bar'])).rejects.toThrow(
       /Incapable of encoding to format "bar"/
     )
