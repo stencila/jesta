@@ -23,7 +23,7 @@
 
 - Implements `select` for `lang` `simplepath`.
 
-- Implements `read` and `write` for protocols `file://`, `http://`, and `stdio://`.
+- Implements `read` and `write` for protocols `file://`, `http://` (with [RFC 7234](http://httpwg.org/specs/rfc7234.html) compliant caching), and `stdio://`.
 
 - A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods required for integration with Stencila CLI and Desktop)
 
@@ -42,6 +42,7 @@
 - [ ] Use `logga` for logging
 - [ ] At least 95% test coverage
 - [ ] Test usage with `stencila` CLI
+- [ ] Add an 🙏 Acknowledgements section to this README
 
 ## 📦 Install
 
