@@ -257,7 +257,7 @@ Primary commands (required for plugin integration)
 register                     Register ${name}
 serve                        Serve ${name} over stdin/stdout
 
-Secondary commands (mainly for testing plugin)
+Secondary commands (mainly for plugin testing)
 
 help                         Print this message
 manifest                     Display ${name}'s manifest
@@ -269,21 +269,24 @@ enrich <in> [out]            Enrich stencil <in> (save as [out])
 
 select <in> <query> [out]    Select nodes from stencil <in> (save as [out])
 
-clean <in> [out]             Clean stencil <in> (save as [out])
 compile <in> [out]           Compile stencil <in> (save as [out]) 
 build <in> [out]             Build stencil <in> (save as [out])
 execute <in> [out]           Execute stencil <in> (save as [out])
+clean <in> [out]             Clean stencil <in> (save as [out])
 
 vars <in>                    List variables in stencil <in>
 get <in> <name>              Get a variable from stencil <in>
 set <in> <name> <value>      Set a variable in stencil <in>
 delete <in> <name>           Delete a variable from stencil <in>
 
-run <in>                     Run stencil <in> (execute and serve)
+funcs <in>                   List functions in stencila <in>
+call <in> <name> [arg=val]   Call a function in stencil <in>
+
+run <in>                     Run (execute and serve) stencil <in>
 
 Notes:
 
-- check the plugin's \`manifest\` for it's capabilities
+- use the --debug option for debug level logging and error stack traces
 
 - \`in\` and \`out\` are file paths or URLs (e.g. http://..., file://...);
   but only some URL protocols are supported by the plugin (see manifest)
@@ -298,9 +301,6 @@ Notes:
 - \`validate\`, \`compile\`, \`build\` and \`execute\` support the \`--force\` option
 
 - some methods can be piped together, e.g. \`clean+compile+build+execute\`
-
-- use the \`--debug\` option to get stack traces etc
-
 
 For a more advanced command line interface install ${name} as a Stencila plugin
 and use it from there:
