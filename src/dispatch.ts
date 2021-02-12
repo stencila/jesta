@@ -17,7 +17,6 @@ export function dispatch(
     case Method.clean:
     case Method.compile:
     case Method.enrich:
-    case Method.execute:
     case Method.reshape:
     case Method.validate: {
       const { node, force = false } = params
@@ -36,8 +35,6 @@ export function dispatch(
           return this.compile(node, force)
         case Method.enrich:
           return this.enrich(node)
-        case Method.execute:
-          return this.execute(node, force)
         case Method.reshape:
           return this.reshape(node)
         case Method.validate:
@@ -137,41 +134,82 @@ export function dispatch(
       return this.select(node, query, lang)
     }
 
-    case Method.vars: {
-      return this.vars()
-    }
-
+    case Method.execute:
+    case Method.vars:
     case Method.get:
-    case Method.delete: {
-      const { name } = params
-      assertRequiredParam(name !== undefined, 'name')
-      assertValidParam(typeof name === 'string', 'name', 'should be a string')
-      return method === Method.get ? this.get(name) : this.delete(name)
-    }
-
-    case Method.set: {
-      const { name, value } = params
-      assertRequiredParam(name !== undefined, 'name')
-      assertValidParam(typeof name === 'string', 'name', 'should be a string')
-      assertRequiredParam(value !== undefined, 'value')
-      return this.set(name, value)
-    }
-
-    case Method.funcs: {
-      return this.funcs()
-    }
-
+    case Method.set:
+    case Method.delete:
+    case Method.funcs:
     case Method.call: {
-      const { name, args } = params
-      assertRequiredParam(name !== undefined, 'name')
-      assertValidParam(typeof name === 'string', 'name', 'should be a string')
+      const { stencil } = params
+      assertRequiredParam(stencil !== undefined, 'stencil')
       assertValidParam(
-        !isPrimitive(args) && !Array.isArray(args),
-        'name',
-        'should be a object'
+        typeof stencil === 'string',
+        'stencil',
+        'should be a string'
       )
-      // @ts-expect-error difficult to check args further
-      return this.call(name, args)
+
+      switch (method) {
+        case Method.execute: {
+          const { node, force = false } = params
+          assertRequiredParam(node !== undefined, 'node')
+          assertValidParam(
+            force === undefined || typeof force === 'boolean',
+            'force',
+            'should be a boolean'
+          )
+          return this.execute(stencil, node, force)
+        }
+
+        case Method.vars:
+          return this.vars(stencil)
+
+        case Method.get:
+        case Method.delete: {
+          const { name } = params
+          assertRequiredParam(name !== undefined, 'name')
+          assertValidParam(
+            typeof name === 'string',
+            'name',
+            'should be a string'
+          )
+          return method === Method.get
+            ? this.get(stencil, name)
+            : this.delete(stencil, name)
+        }
+
+        case Method.set: {
+          const { name, value } = params
+          assertRequiredParam(name !== undefined, 'name')
+          assertValidParam(
+            typeof name === 'string',
+            'name',
+            'should be a string'
+          )
+          assertRequiredParam(value !== undefined, 'value')
+          return this.set(stencil, name, value)
+        }
+
+        case Method.funcs: {
+          return this.funcs(stencil)
+        }
+
+        case Method.call: {
+          const { name, args } = params
+          assertValidParam(
+            name === undefined || typeof name === 'string',
+            'name',
+            'should be a string'
+          )
+          assertValidParam(
+            !isPrimitive(args) && !Array.isArray(args),
+            'name',
+            'should be a object'
+          )
+          // @ts-expect-error difficult to check args further
+          return this.call(stencil, name, args)
+        }
+      }
     }
   }
   throw new MethodNotFoundError(method)

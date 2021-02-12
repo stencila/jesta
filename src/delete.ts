@@ -1,8 +1,12 @@
 import { Jesta } from '.'
-import { context } from './util/session'
+import { session } from './util/session'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function delete_(this: Jesta, name: string): Promise<undefined> {
-  delete context[name]
+export async function delete_(
+  this: Jesta,
+  stencil: string,
+  name: string
+): Promise<undefined> {
+  delete session(stencil).context[name]
   return undefined
 }

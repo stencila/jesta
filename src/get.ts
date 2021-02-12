@@ -1,8 +1,12 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { context } from './util/session'
+import { session } from './util/session'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function get(this: Jesta, name: string): Promise<Node> {
-  return context[name] as Node
+export async function get(
+  this: Jesta,
+  stencil: string,
+  name: string
+): Promise<Node> {
+  return session(stencil).context[name] as Node
 }

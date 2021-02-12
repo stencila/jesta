@@ -143,7 +143,6 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case Method.clean:
     case Method.compile:
     case Method.enrich:
-    case Method.execute:
     case Method.pipe:
     case Method.reshape:
     case Method.validate: {
@@ -159,7 +158,29 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       })
       const result = await this.dispatch(method, { node, ...options, calls })
 
-      if (options.interact === true && method === Method.execute) {
+      await this.dispatch(Method.export, {
+        node: result,
+        output,
+        ...options,
+        format: options.to,
+      })
+
+      return
+    }
+
+    case 'run':
+    case Method.execute:
+    case Method.vars:
+    case Method.get:
+    case Method.set:
+    case Method.delete:
+    case Method.funcs:
+    case Method.call: {
+      const stencil = url(args[0])
+      const name = args[1]
+      const value = args[2] // for set
+
+      if (method === Method.execute && options.interact === true) {
         const rl = readline.createInterface({
           input: process.stdin,
           output: process.stdout,
@@ -172,7 +193,8 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
             programmingLanguage: 'js',
             text: line,
           })
-          this.dispatch(method, {
+          this.dispatch(Method.execute, {
+            stencil,
             node,
             ...options,
           })
@@ -191,45 +213,29 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
             })
             .catch(console.error)
         }
+        return
       }
 
-      await this.dispatch(Method.export, {
-        node: result,
-        output,
+      const node = await this.dispatch(Method.import, {
+        input: stencil,
         ...options,
-        format: options.to,
       })
-
-      return
-    }
-
-    case 'run':
-    case Method.vars:
-    case Method.get:
-    case Method.set:
-    case Method.delete:
-    case Method.funcs:
-    case Method.call: {
-      const input = url(args[0])
-      const name = args[1]
-      const value = args[2] // for set
-
-      let args_: Record<string, Node> = {}
-      if (method === Method.call) {
-        args_ = args.slice(2).reduce((prev, curr, index) => {
-          const match = /\w+=.*/.exec(curr)
-          const [name, json] = match ? match.slice(1) : [`${index}`, curr]
-          const value = JSON.parse(json)
-          return { ...prev, [name]: value }
-        }, {})
-      }
-
-      const node = await this.dispatch(Method.import, { input, ...options })
-      await this.dispatch(Method.execute, { node, ...options })
+      await this.dispatch(Method.execute, { stencil, node, ...options })
 
       if (method === 'run') await this.serve()
       else {
+        let args_: Record<string, Node> = {}
+        if (method === Method.call) {
+          args_ = args.slice(2).reduce((prev, curr, index) => {
+            const match = /\w+=.*/.exec(curr)
+            const [name, json] = match ? match.slice(1) : [`${index}`, curr]
+            const value = JSON.parse(json)
+            return { ...prev, [name]: value }
+          }, {})
+        }
+
         const result = await this.dispatch(method, {
+          stencil,
           name,
           value,
           args: args_,
@@ -279,10 +285,10 @@ get <in> <name>              Get a variable from stencil <in>
 set <in> <name> <value>      Set a variable in stencil <in>
 delete <in> <name>           Delete a variable from stencil <in>
 
-funcs <in>                   List functions in stencila <in>
-call <in> <name> [arg=val]   Call a function in stencil <in>
+funcs <in>                   List functions in stencil <in>
+call <in> [func] [name=val]  Call stencil <in> (or a function within it)
 
-run <in>                     Run (execute and serve) stencil <in>
+run <in>                     Run stencil <in> (execute and serve)
 
 Notes:
 
@@ -299,6 +305,9 @@ Notes:
 - \`select\` supports the \`--lang\` option for the query language
 
 - \`validate\`, \`compile\`, \`build\` and \`execute\` support the \`--force\` option
+
+- \`call\` accepts \`name=val\` pairs for string parameters and \`name:=json\` for
+  other parameters
 
 - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
