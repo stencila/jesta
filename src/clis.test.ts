@@ -78,6 +78,25 @@ describe('convert', () => {
     expect(consoleLog).toHaveBeenCalledTimes(0)
   })
 
+  it('works with stdin as input', async () => {
+    const stdin = mockStdin()
+    process.nextTick(() => {
+      stdin.send('{"type": "Paragraph"}')
+      stdin.end()
+    })
+    const temp = tempy.file({ extension: 'json' })
+    await cli(['convert', '-', '--from=json', temp])
+
+    expect(fs.existsSync(temp))
+  })
+
+  it('works with stdout as output', async () => {
+    const stdoutWrite = jest.spyOn(process.stdout, 'write').mockImplementation()
+    await cli(['convert', one, '-', '--to=json'])
+    expect(consoleLog).toHaveBeenCalledTimes(0)
+    expect(stdoutWrite).toHaveBeenCalledWith(expect.stringMatching(/^{/))
+  })
+
   it('errors if file does not exist', async () => {
     await expect(cli(['convert', 'foo.bar', 'baz.json'])).rejects.toThrow(
       /ENOENT: no such file or directory/

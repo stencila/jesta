@@ -71,29 +71,6 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case 'serve':
       return this.serve()
 
-    case Method.import: {
-      const input = url(args[0])
-
-      const node = await this.dispatch(Method.import, { input, ...options })
-
-      return console.log(node)
-    }
-
-    case Method.export: {
-      const output = url(args[0])
-      console.log('Enter a node as JSON and Ctrl+D when finished')
-      const [json] = await this.read('stdin://')
-      const node = JSON.parse(json) as Node
-
-      const content = await this.dispatch(Method.export, {
-        node,
-        output,
-        ...options,
-      })
-
-      return console.log(content)
-    }
-
     case 'convert': {
       const input = url(args[0])
       const outputs = args.slice(1).map(url)
@@ -285,10 +262,7 @@ Secondary commands (mainly for testing plugin)
 help                         Print this message
 manifest                     Display ${name}'s manifest
 
-import <in>                  Import a stencil from <in> to stdout
-export <out>                 Export a stencil from stdin to <out>
 convert <in> <out>           Convert stencil <in> to <out>
-
 validate <in> [out]          Validate stencil <in> (save as [out])
 reshape <in> [out]           Reshape stencil <in> (save as [out])
 enrich <in> [out]            Enrich stencil <in> (save as [out])
