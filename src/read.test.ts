@@ -1,6 +1,6 @@
 import { stdin as mockStdin } from 'mock-stdin'
 import nock from 'nock'
-import { read, readFile, readHttp, readStdin } from './read'
+import { read, readFile, readHttp, readStdio } from './read'
 
 describe('read', () => {
   it('handles a string:// URL', async () => {
@@ -19,6 +19,24 @@ describe('read', () => {
       '{}',
       'application/json+ld',
     ])
+  })
+
+  it('handles a stdio:// URL', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('beep')
+      stdin.end()
+    }, 100)
+    expect(await read('stdio://')).toEqual(['beep', ''])
+  })
+
+  it('handles a stdin:// URL', async () => {
+    const stdin = mockStdin()
+    setTimeout(() => {
+      stdin.send('boop')
+      stdin.end()
+    }, 100)
+    expect(await read('stdin://', 'md')).toEqual(['boop', 'text/markdown'])
   })
 
   it('handles a http:// URL', async () => {
@@ -46,7 +64,7 @@ test('readStdin', async () => {
     stdin.end()
   }, 100)
 
-  expect(await readStdin()).toEqual('yoyo')
+  expect(await readStdio()).toEqual('yoyo')
 })
 
 describe('readFile', () => {

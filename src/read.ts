@@ -38,6 +38,9 @@ export async function read(
     switch (protocol) {
       case 'string':
         return [url.slice(9), guessMediaType(format)]
+      case 'stdio':
+      case 'stdin':
+        return [await readStdio(), guessMediaType(format)]
       case 'file':
         return readFile(url.slice(7), format)
       case 'http':
@@ -55,7 +58,7 @@ export async function read(
 /**
  * Read content from standard input
  */
-export async function readStdin(): Promise<string> {
+export async function readStdio(): Promise<string> {
   const stream = process.stdin
   stream.setEncoding('utf8')
   return new Promise((resolve, reject) => {
@@ -86,11 +89,11 @@ export async function readFile(
 /**
  * Read content from a HTTP/S URL
  *
- * The
+ * The Media Type is determined from the `Content-Type` header if present,
+ * guessed from the URL's path segment if not.
  *
  * @param url The URL to fetch
  * @param format The format of the content (extension or media type).
- *               From the `Content-Type` header if present, guessed from either the extension if not.
  * @returns A tuple of the content and media type
  */
 export async function readHttp(
