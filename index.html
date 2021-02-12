@@ -50,7 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>Project @stencila/jesta</h1>
+			<h1>@stencila/jesta</h1>
 		</div>
 	</div>
 </header>
@@ -72,19 +72,42 @@
 				<a href="#✨-features" id="✨-features" style="color: inherit; text-decoration: none;">
 					<h2>✨ Features</h2>
 				</a>
+				<blockquote>
+					<p>Features that are not yet implemented or only partially implemented are indicated by a unicorn emoji 🦄</p>
+				</blockquote>
 				<ul>
-					<li><p>Implements <code>compile</code>, <code>build</code> and <code>execute</code> methods for <code>CodeChunk</code> and <code>CodeExpression</code> nodes with Javascript as their <code>programmingLanguage</code>.</p>
+					<li><p>Implements <code>compile</code>, <code>build</code> and <code>execute</code> methods for <code>CodeChunk</code> and <code>CodeExpression</code> nodes with Javascript as their <code>programmingLanguage</code> 🦄.</p>
 					</li>
-					<li><p>Implements <code>vars</code>, <code>get</code>, and <code>set</code> methods for Node.js sessions.</p>
+					<li><p>Implements <code>vars</code>, <code>get</code>, <code>set</code> and <code>delete</code> methods for managing variables in Node.js sessions.</p>
 					</li>
-					<li><p>Implements <code>decode</code> and <code>encode</code> methods for <code>format:json</code>.</p>
+					<li><p>Implements <code>funcs</code>, and <code>call</code> methods for using functions defined in Node.js sessions 🦄.</p>
 					</li>
-					<li><p>Implements <code>select</code> for <code>lang:simplepath</code>.</p>
+					<li><p>Implements <code>decode</code> and <code>encode</code> methods for <code>format</code> <code>json</code>.</p>
 					</li>
-					<li><p>A base for other plugins written in Javascript or Typescript (implements <code>register</code> and <code>serve</code> methods (required for integration with Stencila CLI and Desktop)</p>
+					<li><p>Implements <code>select</code> for <code>lang</code> <code>simplepath</code>.</p>
+					</li>
+					<li><p>Implements <code>read</code> and <code>write</code> for protocols <code>file://</code>, <code>http://</code>, and <code>stdio://</code>.</p>
+					</li>
+					<li><p>A base for other plugins written in Javascript or Typescript (implements <code>register</code> and <code>serve</code> methods required for integration with Stencila CLI and Desktop)</p>
 					</li>
 					<li><p>A simple command line interface, including interactive modes, for running and testing plugins.</p>
 					</li>
+				</ul>
+				<a href="#🏗️-roadmap" id="🏗️-roadmap" style="color: inherit; text-decoration: none;">
+					<h2>🏗️ Roadmap</h2>
+				</a>
+				<ul>
+					<li><input checked="" disabled="" type="checkbox"> Development setup (linting, tests, CI, docs etc)</li>
+					<li><input checked="" disabled="" type="checkbox"> Semantic releases</li>
+					<li><input checked="" disabled="" type="checkbox"> Simple API for developing extension plugins</li>
+					<li><input checked="" disabled="" type="checkbox"> Simple CLI for testing extension plugins</li>
+					<li><input checked="" disabled="" type="checkbox"> Binary distributions using <code>pkg</code> (mainly as an example for extenders)</li>
+					<li><input disabled="" type="checkbox"> Docker image (mainly as an example for extenders)</li>
+					<li><input disabled="" type="checkbox"> Re-implement / move basic IO utility functions from Encoda (e.g. cached HTTP requests, MediaType mappings)</li>
+					<li><input disabled="" type="checkbox"> Finish implementing core execution functions for Javascript: <code>compile</code>, <code>build</code>, <code>execute</code>, <code>funcs</code>, <code>call</code>.</li>
+					<li><input disabled="" type="checkbox"> Use <code>logga</code> for logging</li>
+					<li><input disabled="" type="checkbox"> At least 95% test coverage</li>
+					<li><input disabled="" type="checkbox"> Test usage with <code>stencila</code> CLI</li>
 				</ul>
 				<a href="#📦-install" id="📦-install" style="color: inherit; text-decoration: none;">
 					<h2>📦 Install</h2>
@@ -124,7 +147,7 @@
 <span style="color: #000000">  </span><span style="color: #001080">manifest</span><span style="color: #000000"> = </span><span style="color: #001080">manifest</span>
 <span style="color: #000000">}</span>
 
-<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MyPlugin</span><span style="color: #000000">(</span><span style="color: #001080">__filename</span><span style="color: #000000">).</span><span style="color: #795E26">cli</span><span style="color: #000000">()</span>
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MyPlugin</span><span style="color: #000000">(</span><span style="color: #001080">__filename</span><span style="color: #000000">).</span><span style="color: #795E26">cli</span><span style="color: #000000">()</span>
 </code></pre>
 				<p>This repo also creates standalone binaries for Linux, MacOS and Windows using <a href="https://github.com/vercel/pkg"><code>pkg</code></a>. This is mainly done as an example: check out the <code>build:bin</code> script and the <code>pkg</code> property in the <a href="package.json"><code>package.json</code></a> to see how to reuse this approach for your own plugin. The installation scripts <a href="install.sh"><code>install.sh</code></a> and <a href="install.ps1"><code>install.ps1</code></a> will install these binaries.</p>
 				<a href="#🛠️-develop" id="🛠️-develop" style="color: inherit; text-decoration: none;">
@@ -154,6 +177,18 @@
 				<ul>
 					<li class=" ">
 						<a href="modules.html">Exports</a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Internals</span>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="modules/util.html">util</a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Externals</span>
+					</li>
+					<li class=" tsd-kind-namespace tsd-is-external">
+						<a href="modules/schema.html">schema</a>
 					</li>
 				</ul>
 			</nav>
