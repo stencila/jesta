@@ -120,7 +120,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       const query = args[1]
       const output = url(args[2])
 
-      const node = await this.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.import, {
         input,
         ...options,
         format: options.from,
@@ -133,7 +133,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
           ...options,
         })
         if (selected !== undefined && output !== undefined)
-          await this.dispatch(Method.encode, {
+          await this.dispatch(Method.export, {
             node: selected,
             output,
             ...options,
@@ -175,7 +175,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
 
       cd(input)
 
-      const node = await this.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.import, {
         input,
         ...options,
         format: options.from,
@@ -216,7 +216,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         }
       }
 
-      await this.dispatch(Method.encode, {
+      await this.dispatch(Method.export, {
         node: result,
         output,
         ...options,
@@ -247,7 +247,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         }, {})
       }
 
-      const node = await this.dispatch(Method.decode, { input, ...options })
+      const node = await this.dispatch(Method.import, { input, ...options })
       await this.dispatch(Method.execute, { node, ...options })
 
       if (method === 'run') await this.serve()
