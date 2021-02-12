@@ -7,9 +7,10 @@ export async function export_(
   url: string,
   format?: string,
   force?: boolean
-): Promise<void> {
+): Promise<undefined> {
   const reshaped = await this.reshape(node, force)
   const validated = await this.validate(reshaped, force)
-  const encoded = await this.encode(validated, format)
-  if (encoded !== undefined) return this.write(encoded, url)
+  const encoded = await this.encode(validated, url, format)
+  if (encoded !== undefined) await this.write(encoded, url)
+  return Promise.resolve(undefined)
 }

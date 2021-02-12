@@ -1,6 +1,7 @@
 import { Node } from '@stencila/schema'
 import path from 'path'
 import { Jesta } from '.'
+import { CapabilityError } from './util'
 
 /**
  *
@@ -19,9 +20,13 @@ export async function encode(
 ): Promise<string | undefined> {
   format = format ?? (url !== undefined ? path.extname(url).slice(1) : 'json')
 
-  if (format === 'json' || format.startsWith('application/json')) {
+  if (
+    format === '' ||
+    format === 'json' ||
+    format.startsWith('application/json')
+  ) {
     return JSON.stringify(node, null, '  ')
   }
 
-  throw Error(`Incapable of encoding to format "${format}"`)
+  throw new CapabilityError(`encoding to format "${format}"`)
 }

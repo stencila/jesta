@@ -98,13 +98,13 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       const input = url(args[0])
       const outputs = args.slice(1).map(url)
 
-      const node = await this.dispatch(Method.decode, {
+      const node = await this.dispatch(Method.import, {
         input,
         ...options,
         format: options.from,
       })
       for (const output of outputs) {
-        await this.dispatch(Method.encode, {
+        await this.dispatch(Method.export, {
           node,
           output,
           ...options,
@@ -353,7 +353,8 @@ function url(value: string): string
 function url(value: string | undefined): string | undefined
 function url(value: string | undefined): string | undefined {
   if (value === undefined) return undefined
-  return /^([a-z]{2,6}):\/\/\S+/.test(value)
+  if (value === '-') return 'stdio://'
+  return /^([a-z]{2,6}):\/\//.test(value)
     ? value
     : `file://${path.resolve(value)}`
 }

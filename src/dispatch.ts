@@ -74,6 +74,45 @@ export function dispatch(
       return this.encode(node, output, format)
     }
 
+    case Method.import: {
+      const { input, format, force } = params
+      assertRequiredParam(input !== undefined, 'input')
+      assertValidParam(typeof input === 'string', 'input', 'should be a string')
+      assertValidParam(
+        format === undefined || typeof format === 'string',
+        'format',
+        'should be a string'
+      )
+      assertValidParam(
+        force === undefined || typeof force === 'boolean',
+        'force',
+        'should be a boolean'
+      )
+      return this.import(input, format, force)
+    }
+
+    case Method.export: {
+      const { node, output, format, force } = params
+      assertRequiredParam(node !== undefined, 'node')
+      assertRequiredParam(output !== undefined, 'output')
+      assertValidParam(
+        typeof output === 'string',
+        'output',
+        'should be a string'
+      )
+      assertValidParam(
+        format === undefined || typeof format === 'string',
+        'format',
+        'should be a string'
+      )
+      assertValidParam(
+        force === undefined || typeof force === 'boolean',
+        'force',
+        'should be a boolean'
+      )
+      return this.export(node, output, format, force)
+    }
+
     case Method.pipe: {
       const { node, calls } = params
       assertRequiredParam(node !== undefined, 'node')
