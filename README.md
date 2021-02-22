@@ -36,20 +36,23 @@
 - [x] Simple API for developing extension plugins
 - [x] Simple CLI for testing extension plugins
 - [x] Binary distributions using `pkg` (mainly as an example for extenders)
+- [ ] Add `js` as a format for encoding and decoding (with basic comment parsing)
 - [ ] Docker image (mainly as an example for extenders)
 - [ ] Re-implement / move basic IO utility functions from Encoda (e.g. cached HTTP requests, MediaType mappings)
 - [ ] Finish implementing core execution functions for Javascript: `compile`, `build`, `execute`, `funcs`, `call`.
+- [ ] Implement `set` for `Parameter` nodes
 - [ ] Use `logga` for logging
 - [ ] At least 95% test coverage
+- [ ] Complete implementing `manifest`
 - [ ] Test usage with `stencila` CLI
 - [ ] Add an 🙏 Acknowledgements section to this README
 
 ## 📦 Install
 
-It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the Stencila CLI,
+It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the [Stencila CLI](https://github.com/stencila/stencila),
 
 ```sh
-stencila install nodejs
+stencila install javascript
 ```
 
 Or using the name of this repo directly,
@@ -61,20 +64,20 @@ stencila install jesta
 None of that is possible right now, but if you have Node.js and NPM installed,
 
 ```sh
-npm install --global stencila/jesta
+npm install --global @stencila/jesta
 ```
 
-and if you don't, run the install script,
+If you don't have Node.js installed, install the standalone binary by running the install script,
 
 ```sh
 curl -sL https://raw.githubusercontent.com/stencila/jesta/main/install.sh | sh
 ```
 
-or download and install the binary for your operating system from the [latest release](https://github.com/stencila/jesta/releases).
+or manually download and install the binary for your operating system from the [latest release](https://github.com/stencila/jesta/releases).
 
 ## 🚀 Use
 
-Most of the time, you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you do want to run Jesta standalone...
+Most of the time you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you _do_ want to run Jesta standalone...
 
 ```sh
 jesta help
