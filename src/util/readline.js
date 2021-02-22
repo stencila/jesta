@@ -9,7 +9,7 @@ const { plugins } = require('./dirs')
  * that is easier to integrate with TypeScript.
  *
  * @param {readline.Interface} rl The `readline` interface
- * @param {strineg} plugin The name of the plugin that the history is for
+ * @param {string} plugin The name of the plugin that the history is for
  * @param {*} command The name of the plugin command that the history is for
  */
 exports.persist = function (rl, plugin, command) {

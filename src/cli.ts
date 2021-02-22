@@ -38,7 +38,7 @@ export function cli(this: Jesta): void {
  */
 export async function run(this: Jesta, argv: string[]): Promise<void> {
   const {
-    package: { name, version, description },
+    package: { name: pluginName, version, description },
   } = this.manifest()
 
   let {
@@ -125,7 +125,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
           output: process.stdout,
           prompt: '>> ',
         })
-        persist(rl, name, 'select')
+        persist(rl, pluginName, 'select')
         rl.prompt()
         for await (const line of rl) {
           select(line, output)
@@ -186,7 +186,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
           output: process.stdout,
           prompt: 'js> ',
         })
-        persist(rl, name, 'execute')
+        persist(rl, pluginName, 'execute')
         rl.prompt()
         for await (const line of rl) {
           const node = codeChunk({
@@ -253,20 +253,20 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case undefined:
       return console.log(
         `
-${name} ${version}: ${description}
+${pluginName} ${version}: ${description}
 
 Usage:
-${name} <command>
+${pluginName} <command>
 
 Primary commands (required for plugin integration)
 
-register                     Register ${name}
-serve                        Serve ${name} over stdin/stdout
+register                     Register ${pluginName}
+serve                        Serve ${pluginName} over stdin/stdout
 
 Secondary commands (mainly for plugin testing)
 
 help                         Print this message
-manifest                     Display ${name}'s manifest
+manifest                     Display ${pluginName}'s manifest
 
 convert <in> <out>           Convert stencil <in> to <out>
 validate <in> [out]          Validate stencil <in> (save as [out])
@@ -311,10 +311,10 @@ Notes:
 
 - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
-For a more advanced command line interface install ${name} as a Stencila plugin
+For a more advanced command line interface install ${pluginName} as a Stencila plugin
 and use it from there:
 
-  stencila install ${name}
+  stencila install ${pluginName}
       `.trim()
       )
 
