@@ -1,3 +1,22 @@
+# [1.5.0](https://github.com/stencila/jesta/compare/v1.4.0...v1.5.0) (2021-02-22)
+
+
+### Bug Fixes
+
+* **CLI:** Use import and export of decode and encode ([79b56c2](https://github.com/stencila/jesta/commit/79b56c28df20d671891538781632361076bf2774))
+* **CLI:** Use plugin name for persisting history ([4e5dda6](https://github.com/stencila/jesta/commit/4e5dda6acb4d63149f3d0e08c18abb2c005351f8))
+* **Directory paths:** Return for Windows ([03bf3c3](https://github.com/stencila/jesta/commit/03bf3c3ea495e9094a728aa00af2ddf55ef80e62))
+* **IO:** Use import and export functions for convert ([8244b67](https://github.com/stencila/jesta/commit/8244b67df81bce176241121ee7bfac6f6a717830))
+* **Read:** Add stdio:// URL handling ([10d4f85](https://github.com/stencila/jesta/commit/10d4f85fe5d42e64d1a42c1e896c3dcd32775fc9))
+* **Read:** Various fixes and improvements; added tests ([c0ad9d0](https://github.com/stencila/jesta/commit/c0ad9d0dbe9b904f493fb2efd1d2c5261f768caf))
+* **Write:** Add stdio:// URL handling ([2f4499c](https://github.com/stencila/jesta/commit/2f4499cface24ef83959ef0ec1a85214c64d2ab7))
+
+
+### Features
+
+* **CLI:** Remove import and export; add convert tests for stdio ([9e53510](https://github.com/stencila/jesta/commit/9e535109a7beccfa52513eaf7f5450b7eb2c647a))
+* **Sessions:** Allow for multiple sessions; run methods withing stencil context ([2bf9905](https://github.com/stencila/jesta/commit/2bf9905dcaa833ce68371324a23c0f4a164d4ad2))
+
 # [1.4.0](https://github.com/stencila/jesta/compare/v1.3.0...v1.4.0) (2021-02-12)
 
 
