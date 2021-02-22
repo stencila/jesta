@@ -22,7 +22,7 @@ export function plugins(): string {
   if (platform === 'darwin')
     return path.join(homedir, 'Library', 'Preferences', 'Stencila', 'Plugins')
   if (platform === 'win32')
-    path.join(
+    return path.join(
       env.APPDATA ?? path.join(homedir, 'AppData', 'Roaming'),
       'Stencila',
       'Config',
@@ -46,7 +46,7 @@ export function cache(): string {
   if (platform === 'darwin')
     return path.join(homedir, 'Library', 'Caches', 'Stencila')
   if (platform === 'win32')
-    path.join(
+    return path.join(
       env.LOCALAPPDATA ?? path.join(homedir, 'AppData', 'Local'),
       'Stencila',
       'Cache'
