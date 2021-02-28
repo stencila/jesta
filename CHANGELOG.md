@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/stencila/jesta/compare/v1.5.1...v1.5.2) (2021-02-28)
+
+
+### Bug Fixes
+
+* **Release:** Prefix archive names with asset name and version ([10250ab](https://github.com/stencila/jesta/commit/10250ab4e25d8a1a114364b396912fe9f9ceca3f))
+
 ## [1.5.1](https://github.com/stencila/jesta/compare/v1.5.0...v1.5.1) (2021-02-28)
 
 
