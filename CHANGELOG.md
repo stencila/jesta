@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/stencila/jesta/compare/v1.5.0...v1.5.1) (2021-02-28)
+
+
+### Bug Fixes
+
+* **Release:** Compress and rename binaries ([00208cd](https://github.com/stencila/jesta/commit/00208cd3c76b382ef940e982aa5c48733e054865))
+
 # [1.5.0](https://github.com/stencila/jesta/compare/v1.4.0...v1.5.0) (2021-02-22)
 
 
