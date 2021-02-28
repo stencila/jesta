@@ -13,7 +13,7 @@
     "start": "npx ts-node src",
     "build": "npm run build:dist && npm run build:bin",
     "build:dist": "tsc -p tsconfig.json",
-    "build:bin": "pkg --out-path bin .",
+    "build:bin": "bash build.sh",
     "postbuild": "node dist/src/index.js register",
     "docs": "typedoc src/index.ts"
   },
@@ -121,16 +121,13 @@
         {
           "assets": [
             {
-              "path": "bin/jesta-linux",
-              "label": "Linux binary"
+              "path": "bin/x86_64-unknown-linux-gnu.tar.gz"
             },
             {
-              "path": "bin/jesta-macos",
-              "label": "MacOS binary"
+              "path": "bin/x86_64-apple-darwin.tar.gz"
             },
             {
-              "path": "bin/jesta-win.exe",
-              "label": "Windows binary"
+              "path": "bin/x86_64-pc-windows-msvc.zip"
             }
           ]
         }
