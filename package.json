@@ -121,13 +121,16 @@
         {
           "assets": [
             {
-              "path": "bin/x86_64-unknown-linux-gnu.tar.gz"
+              "path": "bin/x86_64-unknown-linux-gnu.tar.gz",
+              "name": "jesta-v${ nextRelease }-x86_64-unknown-linux-gnu.tar.gz"
             },
             {
-              "path": "bin/x86_64-apple-darwin.tar.gz"
+              "path": "bin/x86_64-apple-darwin.tar.gz",
+              "name": "jesta-v${ nextRelease }-x86_64-apple-darwin.tar.gz"
             },
             {
-              "path": "bin/x86_64-pc-windows-msvc.zip"
+              "path": "bin/x86_64-pc-windows-msvc.zip",
+              "name": "jesta-v${ nextRelease }-x86_64-pc-windows-msvc.zip"
             }
           ]
         }
