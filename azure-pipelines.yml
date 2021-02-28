@@ -52,6 +52,11 @@ jobs:
           versionSpec: 14.x
         displayName: Install Node.js
 
+      - task: gitversion/setup@0
+        displayName: Install GitVersion
+        inputs:
+          versionSpec: '5.x'
+
       - script: |
           npm ci
           npm run build
@@ -66,10 +71,8 @@ jobs:
           NPM_TOKEN: $(NPM_TOKEN)
         displayName: Release package
 
-      - task: UseGitVersion@5
-        inputs:
-          versionSpec: '5.x'
-        displayName: Get the version from Git tag
+      - task: gitversion/execute@0
+        displayName: Determine version
 
       - task: Docker@2
         displayName: Build and push Docker image
