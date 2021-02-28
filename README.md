@@ -37,8 +37,8 @@
 - [x] Simple CLI for testing extension plugins
 - [x] Binary distributions using `pkg` (mainly as an example for extenders)
 - [ ] Add `js` as a format for encoding and decoding (with basic comment parsing)
-- [ ] Docker image (mainly as an example for extenders)
-- [ ] Re-implement / move basic IO utility functions from Encoda (e.g. cached HTTP requests, MediaType mappings)
+- [x] Docker image (mainly as an example for extenders)
+- [x] Re-implement / move basic IO utility functions from Encoda (e.g. cached HTTP requests, MediaType mappings)
 - [ ] Finish implementing core execution functions for Javascript: `compile`, `build`, `execute`, `funcs`, `call`.
 - [ ] Implement `set` for `Parameter` nodes
 - [ ] Use `logga` for logging

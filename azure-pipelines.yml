@@ -2,12 +2,9 @@ jobs:
   - job: test
     strategy:
       matrix:
-        linux_14:
+        linux:
           image_name: ubuntu-latest
           node_version: 14.x
-        linux_12:
-          image_name: ubuntu-latest
-          node_version: 12.x
         mac:
           image_name: macOS-latest
           node_version: 14.x
@@ -25,7 +22,8 @@ jobs:
       - script: npm ci
         displayName: Install dependencies
 
-      # Run linting on Linux only (unnecessary to duplicate by OS)
+      # Some of the following are only run on Linux to avoid duplication
+
       - script: npm run lint
         condition: eq(variables['agent.os'], 'Linux')
         displayName: Run linting
@@ -33,10 +31,15 @@ jobs:
       - script: npm run test:cover
         displayName: Run Node tests
 
-      # Upload coverage on Linux only (unnecessary to duplicate by OS)
       - script: bash <(curl -s https://codecov.io/bash)
         condition: and(succeeded(), eq(variables['agent.os'], 'Linux'))
-        displayName: 'Upload coverage'
+        displayName: Upload coverage
+
+      - script: |
+          make image
+          docker run stencila/jesta
+        condition: and(succeeded(), eq(variables['agent.os'], 'Linux'))
+        displayName: Run Docker image
 
   - job: release
     dependsOn: [test]
@@ -62,3 +65,18 @@ jobs:
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NPM_TOKEN: $(NPM_TOKEN)
         displayName: Release package
+
+      - task: UseGitVersion@5
+        inputs:
+          versionSpec: '5.x'
+        displayName: Get the version from Git tag
+
+      - task: Docker@2
+        displayName: Build and push Docker image
+        inputs:
+          command: buildAndPush
+          containerRegistry: DockerHub
+          repository: stencila/jesta
+          tags: |
+            $(GitVersion.SemVer)
+            latest
