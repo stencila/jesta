@@ -13,11 +13,7 @@ const { plugins } = require('./dirs')
  * @param {*} command The name of the plugin command that the history is for
  */
 exports.persist = function (rl, plugin, command) {
-  const dir = path.join(plugins(), plugin)
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-
-  const file = path.join(dir, `${command}-history.txt`)
-
+  const file = path.join(plugins(), plugin, `${command}-history.txt`)
   const history = fs.existsSync(file)
     ? fs
         .readFileSync(file, 'utf8')

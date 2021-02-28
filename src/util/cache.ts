@@ -39,8 +39,7 @@ export class Cache implements Keyv.Store<string> {
    * Create the cache.
    */
   public constructor() {
-    const dir = (this.dir = cacheDir())
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    this.dir = cacheDir()
   }
 
   /**
