@@ -49,6 +49,8 @@
 
 ## 📦 Install
 
+### Using `stencila`
+
 It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the [Stencila CLI](https://github.com/stencila/stencila),
 
 ```sh
@@ -61,18 +63,38 @@ Or using the name of this repo directly,
 stencila install jesta
 ```
 
-None of that is possible right now, but if you have Node.js and NPM installed,
+But neither of those options is available right now 🦄.
+
+### Using `npm`
+
+If you have Node.js and NPM installed,
 
 ```sh
 npm install --global @stencila/jesta
 ```
 
-## 🚀 Use
+### Using `docker`
 
-Most of the time you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you _do_ want to run Jesta standalone...
+A Docker [image](https://hub.docker.com/r/stencila/jesta) is built for each release,
 
 ```sh
-jesta help
+docker pull stencila/jesta
+```
+
+## 🚀 Use
+
+Most of the time you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI).
+
+But if you _do_ want to run Jesta standalone, for example to execute a stencil containing Javascript code,
+
+```sh
+jesta execute stencil.json
+```
+
+Or, if you are using the Docker image,
+
+```sh
+docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute stencil.json
 ```
 
 ## 💪 Extend
