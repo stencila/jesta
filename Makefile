@@ -18,7 +18,7 @@ cover:
 build:
 	npm run build
 
-image:
+image: build
 	docker build --tag stencila/jesta . 
 
 docs:

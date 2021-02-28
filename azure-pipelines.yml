@@ -39,7 +39,7 @@ jobs:
           make image
           docker run stencila/jesta
         condition: and(succeeded(), eq(variables['agent.os'], 'Linux'))
-        displayName: Run Docker image
+        displayName: Build and run Docker image
 
   - job: release
     dependsOn: [test]
