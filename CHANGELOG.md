@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/stencila/jesta/compare/v1.5.2...v1.6.0) (2021-02-28)
+
+
+### Features
+
+* **Dockerfile:** Add initial deployment as Docker image ([b76de08](https://github.com/stencila/jesta/commit/b76de08d8b6e50ee7f85c4c82518f05dac6de5a8))
+
 ## [1.5.2](https://github.com/stencila/jesta/compare/v1.5.1...v1.5.2) (2021-02-28)
 
 
