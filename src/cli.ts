@@ -43,7 +43,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     _: [method, ...args],
     ...options
   } = minimist(argv, {
-    boolean: ['force', 'debug', 'interact'],
+    boolean: ['force', 'debug', 'interact', 'update'],
   })
 
   let calls: string[] = []
@@ -63,7 +63,8 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
     case 'manifest':
-      return console.log(JSON.stringify(this.manifest(), null, '  '))
+      const manifest = this.manifest(options.update ?? false)
+      return console.log(JSON.stringify(manifest, null, '  '))
     case 'register':
       return await this.register()
     case 'serve':
@@ -251,13 +252,13 @@ ${pluginName} <command>
 
 Primary commands (required for plugin integration)
 
+manifest                     Get ${pluginName}'s manifest
 register                     Register ${pluginName}
-serve                        Serve ${pluginName} over stdin/stdout
+serve                        Serve ${pluginName} over stdio
 
 Secondary commands (mainly for plugin testing)
 
 help                         Print this message
-manifest                     Display ${pluginName}'s manifest
 
 convert <in> <out>           Convert stencil <in> to <out>
 validate <in> [out]          Validate stencil <in> (save as [out])

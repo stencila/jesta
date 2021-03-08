@@ -4,7 +4,18 @@ import path from 'path'
 import { Jesta } from '.'
 import { Manifest, Method } from './types'
 
-export function manifest(this: Jesta): Manifest {
+/**
+ * Get the manifest for this plugin.
+ *
+ * This function reads in the plugin's `codemeta.json` file and
+ * populates the `featureList` using the `schema` property of each
+ * method. This approach allows plugin developers to easily extend
+ * Jesta by writing their own `codemeta.json` file and method schemas.
+ *
+ * @param this The plugin instance.
+ * @param update Should the `codemeta.json` file be updated?
+ */
+export function manifest(this: Jesta, update = false): Manifest {
   const file = path.join(__dirname, '..', 'codemeta.json')
 
   // Read the existing manifest
@@ -23,7 +34,7 @@ export function manifest(this: Jesta): Manifest {
   }
 
   // Write back the manifest
-  fs.writeFileSync(file, JSON.stringify(manifest, null, '  '))
+  if (update) fs.writeFileSync(file, JSON.stringify(manifest, null, '  '))
 
   return manifest
 }
