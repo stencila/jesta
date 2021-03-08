@@ -115,14 +115,23 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      "@semantic-release/npm",
       [
         "@semantic-release/exec",
         {
           "prepareCmd": "sed -i -e 's!\"softwareVersion\": .*!\"softwareVersion\": \"${nextRelease.version}\",!' codemeta.json"
         }
       ],
-      "@semantic-release/npm",
-      "@semantic-release/git",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "codemeta.json"
+          ]
+        }
+      ],
       [
         "@semantic-release/github",
         {
