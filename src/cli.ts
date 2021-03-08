@@ -63,7 +63,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
     case 'manifest':
-      return console.log(JSON.stringify(this.manifest()))
+      return console.log(JSON.stringify(this.manifest(), null, '  '))
     case 'register':
       return await this.register()
     case 'serve':

@@ -32,7 +32,7 @@ describe('manifest', () => {
     await cli(['manifest'])
     expect(consoleLog).toHaveBeenCalledTimes(1)
     expect(consoleLog).toHaveBeenCalledWith(
-      expect.stringContaining('"name":"jesta"')
+      expect.stringContaining('"name": "jesta"')
     )
   })
 })

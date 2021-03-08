@@ -11,7 +11,7 @@ export async function register(this: Jesta): Promise<void> {
   const manifest = this.manifest()
   const { name } = manifest
 
-  const file = path.join(plugin(name, true), `${name}.json`)
+  const file = path.join(plugin(name, true), `codemeta.json`)
   await promisify(fs.writeFile)(
     file,
     JSON.stringify(manifest, null, '  '),

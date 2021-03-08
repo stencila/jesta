@@ -28,5 +28,88 @@
       "serialization": "json"
     }
   ],
-  "featureList": []
+  "featureList": [
+    {
+      "title": "convert",
+      "required": ["input", "output"],
+      "properties": {
+        "input": {
+          "type": "string",
+          "pattern": "^(file|https?):\\/\\/.+"
+        },
+        "output": {
+          "type": "string",
+          "pattern": "^file:\\/\\/.+"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "title": "decode",
+      "description": "Decode content of a specific format into a Stencila node.",
+      "required": ["content", "format"],
+      "properties": {
+        "content": {
+          "description": "The content to be decoded",
+          "type": "string"
+        },
+        "format": {
+          "description": "The format of the content",
+          "const": "json"
+        }
+      },
+      "interruptible": false
+    },
+    {
+      "title": "encode",
+      "description": "Encode a Stencila node to content of a specific format.",
+      "required": ["node", "format"],
+      "properties": {
+        "node": {
+          "description": "The node to be encoded"
+        },
+        "format": {
+          "description": "The format of the content",
+          "const": "json"
+        }
+      },
+      "interruptible": false
+    },
+    {
+      "title": "import",
+      "description": "Import a node from a URL (including a `file://` or `string://` URL).",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "description": "URL to import the node from.",
+          "type": "string",
+          "pattern": "^(file|https?|string):\\/\\/.+"
+        },
+        "format": {
+          "description": "Format to import the node from. Defaults to the URL's media type or file extension.",
+          "type": "string",
+          "const": "json"
+        },
+        "cached": {
+          "description": "Allow cached content to be used (for http:// URLs).",
+          "type": "boolean"
+        },
+        "upcast": {
+          "description": "Upcast the imported node.",
+          "type": "boolean",
+          "const": false
+        },
+        "validate": {
+          "description": "Validate the imported node.",
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  ]
 }
