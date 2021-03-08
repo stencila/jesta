@@ -37,9 +37,7 @@ export function cli(this: Jesta): void {
  * @param argv The vector of string arguments
  */
 export async function run(this: Jesta, argv: string[]): Promise<void> {
-  const {
-    package: { name: pluginName, version, description },
-  } = this.manifest()
+  const { name: pluginName, softwareVersion, description } = this.manifest()
 
   let {
     _: [method, ...args],
@@ -65,7 +63,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
     case 'manifest':
-      return console.log(this.manifest())
+      return console.log(JSON.stringify(this.manifest()))
     case 'register':
       return await this.register()
     case 'serve':
@@ -253,7 +251,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case undefined:
       return console.log(
         `
-${pluginName} ${version}: ${description}
+${pluginName} ${softwareVersion}: ${description}
 
 Usage:
 ${pluginName} <command>

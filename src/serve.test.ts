@@ -1,7 +1,7 @@
 import { MockSTDIN, stdin as mockStdin } from 'mock-stdin'
 import { Jesta } from '.'
 
-const jesta = new Jesta('')
+const jesta = new Jesta()
 
 let stdin: MockSTDIN
 let stdout = jest.spyOn(process.stdout, 'write').mockImplementation()

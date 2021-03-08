@@ -61,7 +61,7 @@ export type Address = StdioAddress | HttpAddress | WebsocketAddress
 
 export type MethodSchema = JSONSchema7 & { interruptible: boolean }
 
-type Capabilities = {
+type FeatureList = {
   [key in Method]?: MethodSchema
 }
 
@@ -69,8 +69,8 @@ type Capabilities = {
  * A plugin manifest
  */
 export interface Manifest {
-  version: 1
-  package: Package
-  addresses: Address[]
-  capabilities: Capabilities
+  name: string
+  description: string
+  softwareVersion: string
+  featureList: FeatureList
 }

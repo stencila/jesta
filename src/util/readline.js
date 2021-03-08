@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { plugins } = require('./dirs')
+const { plugin } = require('./dirs')
 
 /**
  * Persist the history of a `readline` interface
@@ -9,11 +9,11 @@ const { plugins } = require('./dirs')
  * that is easier to integrate with TypeScript.
  *
  * @param {readline.Interface} rl The `readline` interface
- * @param {string} plugin The name of the plugin that the history is for
+ * @param {string} name The name of the plugin that the history is for
  * @param {*} command The name of the plugin command that the history is for
  */
-exports.persist = function (rl, plugin, command) {
-  const file = path.join(plugins(), plugin, `${command}-history.txt`)
+exports.persist = function (rl, name, command) {
+  const file = path.join(plugin(name, true), `${command}-history.txt`)
   const history = fs.existsSync(file)
     ? fs
         .readFileSync(file, 'utf8')

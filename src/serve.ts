@@ -1,7 +1,6 @@
 import { Node } from '@stencila/schema'
 import readline from 'readline'
 import { Jesta } from '.'
-import { Method } from './types'
 import {
   InvalidRequestError,
   JsonRpcError,
@@ -13,8 +12,6 @@ import {
  * Serve the plugin.
  */
 export async function serve(this: Jesta): Promise<void> {
-  const manifest = this.manifest()
-
   // Turn on the default signal handler so that an errant SIGINT does
   // not stop the server
   defaultSigIntHandler()
@@ -40,8 +37,8 @@ export async function serve(this: Jesta): Promise<void> {
       // If the method is interruptible then it has it's own SIGINT handling,
       // so turn off this module's SIGINT handling. Otherwise, add a handler that provides
       // a notification that this request is not interruptible
-      const { interruptible = false } =
-        manifest.capabilities[method as Method] ?? {}
+      // TODO Get interruptible from method schema this[method as Method].schema
+      const { interruptible = false } = {}
       if (interruptible) noSigIntHandler()
       else uninterruptibleSigIntHandler(id, method)
 

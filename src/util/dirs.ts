@@ -17,29 +17,38 @@ import path from 'path'
 const homedir = os.homedir()
 
 /**
- * Get the Stencila plugins directory.
+ * Get a Stencila plugin directory.
  *
  * The `plugins` directory is used to store the manifests and other
  * data of Stencila plugins.
  */
-export function plugins(ensure = true): string {
-  const dir = (() => {
-    const { env, platform } = process
-    if (platform === 'darwin')
-      return path.join(homedir, 'Library', 'Preferences', 'Stencila', 'Plugins')
-    if (platform === 'win32')
+export function plugin(name: string, ensure = true): string {
+  const dir = path.join(
+    (() => {
+      const { env, platform } = process
+      if (platform === 'darwin')
+        return path.join(
+          homedir,
+          'Library',
+          'Preferences',
+          'Stencila',
+          'Plugins'
+        )
+      if (platform === 'win32')
+        return path.join(
+          env.APPDATA ?? path.join(homedir, 'AppData', 'Roaming'),
+          'Stencila',
+          'Config',
+          'Plugins'
+        )
       return path.join(
-        env.APPDATA ?? path.join(homedir, 'AppData', 'Roaming'),
-        'Stencila',
-        'Config',
-        'Plugins'
+        env.XDG_CONFIG_HOME ?? path.join(homedir, '.config'),
+        'stencila',
+        'plugins'
       )
-    return path.join(
-      env.XDG_CONFIG_HOME ?? path.join(homedir, '.config'),
-      'stencila',
-      'plugins'
-    )
-  })()
+    })(),
+    name
+  )
 
   if (ensure && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
 

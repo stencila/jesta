@@ -49,7 +49,7 @@
 
 ## 📦 Install
 
-### Using `stencila`
+### Via `stencila`
 
 It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the [Stencila CLI](https://github.com/stencila/stencila),
 
@@ -65,7 +65,7 @@ stencila install jesta
 
 But neither of those options is available right now 🦄.
 
-### Using `npm`
+### Via `npm`
 
 If you have Node.js and NPM installed,
 
@@ -73,7 +73,7 @@ If you have Node.js and NPM installed,
 npm install --global @stencila/jesta
 ```
 
-### Using `docker`
+### Via `docker`
 
 A Docker [image](https://hub.docker.com/r/stencila/jesta) is built for each release,
 
@@ -108,18 +108,20 @@ npm init
 npm install stencila/jesta
 ```
 
-Implement your own `manifest` function (and override any of Jesta's other methods) and then in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
+Override any of Jesta's methods e.g. `compile` and in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
 
 ```ts
 import { Jesta } from '@stencila/jesta'
-import { manifest } from './manifest'
+import { compile } from './compile'
 
 export class MyPlugin extends Jesta {
-  manifest = manifest
+  compile = compile
 }
 
-if (require.main === module) new MyPlugin(__filename).cli()
+if (require.main === module) new MyPlugin().cli()
 ```
+
+Write a `codemeta.json` that describes the features and runtime alternatives of your plugin (a good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) file).
 
 This repo also creates standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). These binaries are published for each [release](https://github.com/stencila/jesta/releases) with a [target triplet](https://wiki.osdev.org/Target_Triplet) name that is suitable for download by the `stencila` CLI tool. Check out the `build.sh` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin.
 

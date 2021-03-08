@@ -28,9 +28,6 @@ import { vars } from './vars'
 import { write } from './write'
 
 export class Jesta {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(public file: string) {}
-
   manifest = manifest
 
   read = read
@@ -73,4 +70,4 @@ export * from './types'
 export * as util from './util'
 
 // istanbul ignore next
-if (require.main === module) new Jesta(__filename).cli()
+if (require.main === module) new Jesta().cli()

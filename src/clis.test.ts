@@ -6,7 +6,7 @@ import { fixture } from '../tests/helpers'
 import { run } from './cli'
 
 // An instance of jest which we can mock methods on
-const jesta = new Jesta('')
+const jesta = new Jesta()
 
 // Spies for console output
 const consoleLog = jest.spyOn(console, 'log').mockImplementation()
@@ -32,7 +32,7 @@ describe('manifest', () => {
     await cli(['manifest'])
     expect(consoleLog).toHaveBeenCalledTimes(1)
     expect(consoleLog).toHaveBeenCalledWith(
-      expect.objectContaining({ version: 1 })
+      expect.stringContaining('"name":"jesta"')
     )
   })
 })
@@ -246,7 +246,7 @@ describe('set', () => {
 })
 
 describe('run', () => {
-  const jesta = new Jesta('index.js')
+  const jesta = new Jesta()
   const executeMock = jest.fn(() => Promise.resolve(null))
   jesta.execute = executeMock
   const serveMock = jest.fn(() => Promise.resolve())
@@ -266,7 +266,7 @@ describe('run', () => {
 })
 
 describe('pipe', () => {
-  const jesta = new Jesta('index.js')
+  const jesta = new Jesta()
   const cleanMock = jest.fn(() => Promise.resolve(null))
   jesta.clean = cleanMock
   const compileMock = jest.fn(() => Promise.resolve(null))

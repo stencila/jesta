@@ -1,7 +1,7 @@
 import { codeChunk, codeExpression, datatable, isA } from '@stencila/schema'
 import { Jesta } from '.'
 
-const jesta = new Jesta('')
+const jesta = new Jesta()
 
 const stencil1 = 'file://some/file.Rmd'
 

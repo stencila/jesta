@@ -2,7 +2,7 @@ import { CodeChunk, codeChunk } from '@stencila/schema'
 import { Jesta } from '.'
 import { compileCode } from './compile'
 
-const jesta = new Jesta('')
+const jesta = new Jesta()
 
 describe('comment tags', () => {
   test.each(['alters', 'assigns', 'declares', 'imports', 'reads', 'uses'])(

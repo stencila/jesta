@@ -1,0 +1,122 @@
+{
+  "name": "jesta",
+  "softwareVersion": "1.6.0",
+  "description": "Stencila plugin for stencils using Node.js",
+  "runtimeAlternatives": [
+    {
+      "kind": "docker",
+      "image": "stencila/jesta",
+      "args": ["serve"],
+      "transport": "stdio",
+      "framing": "nld",
+      "serialization": "json"
+    },
+    {
+      "kind": "binary",
+      "command": "jesta",
+      "args": ["serve"],
+      "transport": "stdio",
+      "framing": "nld",
+      "serialization": "json"
+    },
+    {
+      "kind": "package",
+      "command": "node",
+      "args": ["./dist/src/index.js", "serve"],
+      "transport": "stdio",
+      "framing": "nld",
+      "serialization": "json"
+    }
+  ],
+  "featureList": [
+    {
+      "title": "decode",
+      "description": "",
+      "required": ["content", "format"],
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "format": {
+          "const": "json"
+        }
+      }
+    },
+    {
+      "title": "encode",
+      "required": ["node", "format"],
+      "properties": {
+        "node": {},
+        "format": {
+          "const": "json"
+        }
+      }
+    },
+    {
+      "title": "import",
+      "description": "Import a node from a URL (including a `file://` or `string://`).",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^(file|https?|string):\\/\\/.+"
+        },
+        "format": {
+          "const": "json"
+        },
+        "cached": {
+          "type": "boolean",
+          "default": true
+        },
+        "validate": {
+          "const": false
+        },
+        "reshape": {
+          "const": false
+        }
+      }
+    },
+    {
+      "title": "export",
+      "description": "Export a node to a URL (including a `file://` or `string://`).",
+      "required": ["node", "url"],
+      "properties": {
+        "node": {},
+        "url": {
+          "description": "URL to export the node to. Use `string://` to have a string returned.",
+          "type": "string",
+          "pattern": "^(file:\\/\\/.+)|(string:\\/\\/)"
+        },
+        "format": {
+          "description": "Format to export the node as. Defaults to the URL's file extension. Must be `json`.",
+          "const": "json"
+        },
+        "force": {
+          "description": "For `file://` URLs, should existing files be overwritten? Defaults to true.",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    {
+      "title": "convert",
+      "required": ["input", "output"],
+      "properties": {
+        "input": {
+          "type": "string",
+          "pattern": "^(file|https?):\\/\\/.+"
+        },
+        "output": {
+          "type": "string",
+          "pattern": "^file:\\/\\/.+"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
