@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/stencila/jesta/compare/v1.6.0...v1.7.0) (2021-03-08)
+
+
+### Features
+
+* **Manifest:** Use Codemeta as basis for manifest ([4ecef6d](https://github.com/stencila/jesta/commit/4ecef6de0031a916562c17453263af874f99dd9b))
+
 # [1.6.0](https://github.com/stencila/jesta/compare/v1.5.2...v1.6.0) (2021-02-28)
 
 
