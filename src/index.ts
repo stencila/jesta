@@ -5,9 +5,11 @@ import { call } from './call'
 import { clean } from './clean'
 import { cli } from './cli'
 import { compile } from './compile'
+import { convert } from './convert'
 import { decode } from './decode'
 import { delete_ } from './delete'
 import { dispatch } from './dispatch'
+import { downcast } from './downcast'
 import { encode } from './encode'
 import { enrich } from './enrich'
 import { execute } from './execute'
@@ -19,10 +21,10 @@ import { manifest } from './manifest'
 import { pipe } from './pipe'
 import { read } from './read'
 import { register } from './register'
-import { reshape } from './reshape'
 import { select } from './select'
 import { serve } from './serve'
 import { set } from './set'
+import { upcast } from './upcast'
 import { validate } from './validate'
 import { vars } from './vars'
 import { write } from './write'
@@ -36,12 +38,15 @@ export class Jesta {
   decode = decode
   encode = encode
 
+  downcast = downcast
+  upcast = upcast
+
   validate = validate
-  reshape = reshape
   enrich = enrich
 
   import = import_
   export = export_
+  convert = convert
 
   select = select
 

@@ -8,21 +8,25 @@ import { CapabilityError } from './util/errors'
  * @param content The content to write
  * @param url The url to write to
  */
-export async function write(content: string, url: string): Promise<void> {
+export async function write(content: string, url: string): Promise<string> {
   const match = /^([a-z]{2,6}):\/\//.exec(url)
   if (match) {
     const protocol = match[1]
     switch (protocol) {
       case 'stdio':
       case 'stdout':
-        return writeStdio(content)
+        writeStdio(content)
+        break
       case 'file':
-        return writeFile(content, url.slice(7))
+        await writeFile(content, url.slice(7))
+        break
       default:
         throw new CapabilityError(`write over protocol "${protocol}"`)
     }
+  } else {
+    await writeFile(content, url)
   }
-  return writeFile(content, url)
+  return url
 }
 
 /**
@@ -30,9 +34,8 @@ export async function write(content: string, url: string): Promise<void> {
  *
  * @param content The content to write
  */
-export function writeStdio(content: string): Promise<void> {
+export function writeStdio(content: string): void {
   process.stdout.write(content)
-  return Promise.resolve()
 }
 
 /**

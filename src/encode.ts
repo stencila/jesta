@@ -1,32 +1,33 @@
 import { Node } from '@stencila/schema'
-import path from 'path'
 import { Jesta } from '.'
+import { MethodSchema } from './types'
 import { CapabilityError } from './util'
 
-/**
- *
- * @param this
- * @param node
- * @param url
- * @param format
- * @returns A string to be written, or undefined if already written
- */
-/* eslint-disable @typescript-eslint/require-await */
+export const schema: MethodSchema = {
+  title: 'encode',
+  description: 'Encode a Stencila node to content of a specific format.',
+  required: ['node', 'format'],
+  properties: {
+    node: {
+      description: 'The node to be encoded',
+    },
+    format: {
+      description: 'The format of the content',
+      const: 'json',
+    },
+  },
+  interruptible: false,
+}
+
 export async function encode(
   this: Jesta,
   node: Node,
-  url?: string,
-  format?: string
-): Promise<string | undefined> {
-  format = format ?? (url !== undefined ? path.extname(url).slice(1) : 'json')
-
-  if (
-    format === '' ||
-    format === 'json' ||
-    format.startsWith('application/json')
-  ) {
-    return JSON.stringify(node, null, '  ')
+  format: string
+): Promise<string> {
+  if (format === 'json') {
+    return Promise.resolve(JSON.stringify(node, null, '  '))
+  } else {
+    throw new CapabilityError(`encoding to format "${format}"`)
   }
-
-  throw new CapabilityError(`encoding to format "${format}"`)
 }
+encode.schema = schema

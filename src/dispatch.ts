@@ -17,7 +17,8 @@ export function dispatch(
     case Method.clean:
     case Method.compile:
     case Method.enrich:
-    case Method.reshape:
+    case Method.upcast:
+    case Method.downcast:
     case Method.validate: {
       const { node, force = false } = params
       assertRequiredParam(node !== undefined, 'node')
@@ -35,8 +36,10 @@ export function dispatch(
           return this.compile(node, force)
         case Method.enrich:
           return this.enrich(node)
-        case Method.reshape:
-          return this.reshape(node)
+        case Method.upcast:
+          return this.upcast(node)
+        case Method.downcast:
+          return this.downcast(node)
         case Method.validate:
           return this.validate(node, force)
       }
@@ -44,15 +47,19 @@ export function dispatch(
     }
 
     case Method.decode: {
-      const { input, format } = params
-      assertRequiredParam(input !== undefined, 'input')
-      assertValidParam(typeof input === 'string', 'input', 'should be a string')
+      const { content, format } = params
+      assertRequiredParam(content !== undefined, 'content')
       assertValidParam(
-        format === undefined || typeof format === 'string',
+        typeof content === 'string',
+        'content',
+        'should be a string'
+      )
+      assertValidParam(
+        typeof format === 'string',
         'format',
         'should be a string'
       )
-      return this.decode(input, format)
+      return this.decode(content, format)
     }
 
     case Method.encode: {
@@ -64,11 +71,11 @@ export function dispatch(
         'should be a string'
       )
       assertValidParam(
-        format === undefined || typeof format === 'string',
+        typeof format === 'string',
         'format',
         'should be a string'
       )
-      return this.encode(node, output, format)
+      return this.encode(node, format)
     }
 
     case Method.import: {
@@ -108,6 +115,14 @@ export function dispatch(
         'should be a boolean'
       )
       return this.export(node, output, format, force)
+    }
+
+    case Method.convert: {
+      const { input, output, from, to } = params
+      assertRequiredParam(input !== undefined, 'input')
+      assertValidParam(typeof input === 'string', 'input', 'should be a string')
+      // @ts-expect-error because not type checking here yet
+      return this.convert(input, output, from, to)
     }
 
     case Method.pipe: {

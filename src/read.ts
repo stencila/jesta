@@ -2,6 +2,7 @@ import contentType from 'content-type'
 import fs from 'fs'
 import got from 'got'
 import mime from 'mime'
+import path from 'path'
 import { promisify } from 'util'
 import { cache } from './util/cache'
 import { CapabilityError } from './util/errors'
@@ -9,54 +10,43 @@ import { CapabilityError } from './util/errors'
 /**
  * Read content from a URL.
  *
- * Returns a tuple with the content and the [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml)
- * of the content.
- *
- * Use `format` (either a filename extension or Media Type) to force
- * a particular Media Type to be returned. Otherwise the Media Type will be inferred
- * from the `Content-Type` header (for HTTP requests) or from the extension
- * name (if any) of the URL. If the Media Type can not be guessed, will return
- * an empty string.
- *
  * For HTTP/S URLs this function complies with [RFC 7234](http://httpwg.org/specs/rfc7234.html)
  * for caching of requests. Use `force` to ignore any cached content that may
  * exist on the machine for the URL.
  *
  * @param url The URL to read.
- * @param format The format to assume for the read content.
  * @param force Should any cached content be ignored? For remote URLs only.
- * @returns A tuple of [content, media type]
+ * @returns A the content that was read.
  */
 export async function read(
   url: string,
-  format?: string,
   force = false
-): Promise<[string, string]> {
+): Promise<[string, string | undefined]> {
   const match = /^([a-z]{2,6}):\/\//.exec(url)
   if (match) {
     const protocol = match[1]
     switch (protocol) {
       case 'string':
-        return [url.slice(9), guessMediaType(format)]
+        return [url.slice(9), undefined]
       case 'stdio':
       case 'stdin':
-        return [await readStdio(), guessMediaType(format)]
+        return [await readStdio(), undefined]
       case 'file':
-        return readFile(url.slice(7), format)
+        return readFile(url.slice(7))
       case 'http':
       case 'https':
-        return readHttp(url, format, force)
+        return readHttp(url, force)
       default:
-        throw new CapabilityError(
-          `Incapable of read over protocol "${protocol}"`
-        )
+        throw new CapabilityError(`read over protocol "${protocol}"`)
     }
   }
-  return [url, guessMediaType(format)]
+  throw new CapabilityError(`read from URL "${url.slice(0, 500)}"`)
 }
 
 /**
  * Read content from standard input
+ *
+ * @returns The content
  */
 export async function readStdio(): Promise<string> {
   const stream = process.stdin
@@ -72,64 +62,50 @@ export async function readStdio(): Promise<string> {
 /**
  * Read content from the local file system
  *
- * @param path The path to the file to read
- * @param format The format of the content (extension or media type).
- *               Guessed from either the extension or content if not supplied.
- * @returns A tuple of the content and media type
+ * @param filePath The path to the file to read
+ * @returns A tuple of the content and its format
  */
 export async function readFile(
-  path: string,
-  format?: string
-): Promise<[string, string]> {
-  const content = await promisify(fs.readFile)(path, 'utf8')
-  const mediaType = guessMediaType(format, path)
-  return [content, mediaType]
+  filePath: string
+): Promise<[string, string | undefined]> {
+  const content = await promisify(fs.readFile)(filePath, 'utf8')
+  const { ext } = path.parse(filePath)
+  const format = ext !== '' ? ext.slice(1) : undefined
+  return [content, format]
 }
 
 /**
  * Read content from a HTTP/S URL
  *
- * The Media Type is determined from the `Content-Type` header if present,
+ * The format is determined from the `Content-Type` header if present,
  * guessed from the URL's path segment if not.
  *
  * @param url The URL to fetch
- * @param format The format of the content (extension or media type).
- * @returns A tuple of the content and media type
+ * @param force The format of the content.
+ * @returns A tuple of the content and its format
  */
 export async function readHttp(
   url: string,
-  format?: string,
   force = false
-): Promise<[string, string]> {
+): Promise<[string, string | undefined]> {
   const response = await got(url, {
     cache: force ? undefined : cache,
   })
   const content = response.body
 
   let mediaType
-  if (format === undefined) {
-    try {
-      ;({ type: mediaType } = contentType.parse(response))
-    } catch (error) {}
-  }
-  if (mediaType === undefined) {
+  try {
+    ;({ type: mediaType } = contentType.parse(response))
+  } catch (error) {}
+
+  let format
+  if (mediaType !== undefined) {
+    format = mime.getExtension(mediaType) ?? undefined
+  } else {
     const { pathname } = new URL(url)
-    mediaType = guessMediaType(format, pathname)
+    const ext = path.extname(pathname)
+    format = ext !== '' ? ext.slice(1) : undefined
   }
 
-  return [content, mediaType]
-}
-
-/**
- * Guess the IANA Media Type from a supplied format string or file path.
- *
- * If the supplied format string looks like a Media Type then that will be
- * returned. Otherwise will attempt to be guessed from the extension name
- * of the supplied path.
- */
-function guessMediaType(format?: string, path?: string): string {
-  if (format?.includes('/')) return format
-  if (format !== undefined) return mime.getType(format) ?? ''
-  if (path !== undefined) return mime.getType(path) ?? ''
-  return ''
+  return [content, format]
 }

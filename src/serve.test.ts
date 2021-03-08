@@ -72,7 +72,7 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'input' is required",
+        message: "Parameter 'content' is required",
       },
     })
   })
@@ -81,13 +81,13 @@ describe('errors', () => {
     const response = await request({
       id: 1,
       method: 'decode',
-      params: { input: null },
+      params: { content: null },
     })
     expect(response).toEqual({
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'input' is invalid: should be a string",
+        message: "Parameter 'content' is invalid: should be a string",
       },
     })
   })

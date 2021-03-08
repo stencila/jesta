@@ -4,21 +4,7 @@ import { read, readFile, readHttp, readStdio } from './read'
 
 describe('read', () => {
   it('handles a string:// URL', async () => {
-    expect(await read('string://foo')).toEqual(['foo', ''])
-    expect(await read('string://foo', 'md')).toEqual(['foo', 'text/markdown'])
-    expect(await read('string://foo', 'text/markdown')).toEqual([
-      'foo',
-      'text/markdown',
-    ])
-  })
-
-  it('handles a string with no URL prefix', async () => {
-    expect(await read('foo')).toEqual(['foo', ''])
-    expect(await read('foo', 'html')).toEqual(['foo', 'text/html'])
-    expect(await read('{}', 'application/json+ld')).toEqual([
-      '{}',
-      'application/json+ld',
-    ])
+    expect(await read('string://foo')).toEqual(['foo', undefined])
   })
 
   it('handles a stdio:// URL', async () => {
@@ -27,7 +13,7 @@ describe('read', () => {
       stdin.send('beep')
       stdin.end()
     }, 100)
-    expect(await read('stdio://')).toEqual(['beep', ''])
+    expect(await read('stdio://')).toEqual(['beep', undefined])
   })
 
   it('handles a stdin:// URL', async () => {
@@ -36,18 +22,15 @@ describe('read', () => {
       stdin.send('boop')
       stdin.end()
     }, 100)
-    expect(await read('stdin://', 'md')).toEqual(['boop', 'text/markdown'])
+    expect(await read('stdin://')).toEqual(['boop', undefined])
   })
 
   it('handles a http:// URL', async () => {
     nock('http://example.org').get('/').reply(200, 'beep')
-    expect(await read('http://example.org')).toEqual(['beep', ''])
+    expect(await read('http://example.org')).toEqual(['beep', undefined])
 
     nock('https://example.org').get('/').reply(200, 'boop')
-    expect(await read('https://example.org', 'json')).toEqual([
-      'boop',
-      'application/json',
-    ])
+    expect(await read('https://example.org')).toEqual(['boop', undefined])
   })
 
   it('throws a capability error for unhandled protocols', async () => {
@@ -68,25 +51,10 @@ test('readStdin', async () => {
 })
 
 describe('readFile', () => {
-  it('returns a media type based on filename extension', async () => {
+  it('returns a format based on filename extension', async () => {
     const [content, mediaType] = await readFile(__filename)
     expect(content).toMatch(/^import/)
-    expect(mediaType).toBe('video/mp2t')
-  })
-
-  it('returns a media type if one is supplied', async () => {
-    const [content, mediaType] = await readFile(
-      __filename,
-      'application/typescript'
-    )
-    expect(content).toMatch(/^import/)
-    expect(mediaType).toBe('application/typescript')
-  })
-
-  it('returns a media type if an extension is supplied', async () => {
-    const [content, mediaType] = await readFile(__filename, 'md')
-    expect(content).toMatch(/^import/)
-    expect(mediaType).toBe('text/markdown')
+    expect(mediaType).toBe('ts')
   })
 })
 
@@ -98,7 +66,7 @@ describe('readHttp', () => {
 
     const [content, mediaType] = await readHttp('http://example.org/data')
     expect(content).toMatch('[]')
-    expect(mediaType).toBe('application/json')
+    expect(mediaType).toBe('json')
   })
 
   it('falls back to media type based on extension if no content-type header', async () => {
@@ -106,7 +74,7 @@ describe('readHttp', () => {
 
     const [content, mediaType] = await readHttp('http://example.org/data.json')
     expect(content).toMatch('[]')
-    expect(mediaType).toBe('application/json')
+    expect(mediaType).toBe('json')
   })
 
   it('both content-type and extension are overridden by format arg', async () => {
@@ -114,11 +82,8 @@ describe('readHttp', () => {
       'Content-Type': 'application/json',
     })
 
-    const [content, mediaType] = await readHttp(
-      'http://example.org/data.html',
-      'csv'
-    )
+    const [content, format] = await readHttp('http://example.org/data.html')
     expect(content).toMatch('beep, boop')
-    expect(mediaType).toBe('text/csv')
+    expect(format).toBe('json')
   })
 })

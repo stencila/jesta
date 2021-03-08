@@ -69,23 +69,15 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case 'serve':
       return this.serve()
 
-    case 'convert': {
+    case Method.convert: {
       const input = url(args[0])
-      const outputs = args.slice(1).map(url)
+      const output = url(args[1])
 
-      const node = await this.dispatch(Method.import, {
+      await this.dispatch(Method.convert, {
         input,
+        output,
         ...options,
-        format: options.from,
       })
-      for (const output of outputs) {
-        await this.dispatch(Method.export, {
-          node,
-          output,
-          ...options,
-          format: options.to,
-        })
-      }
 
       return
     }
@@ -142,7 +134,8 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case Method.compile:
     case Method.enrich:
     case Method.pipe:
-    case Method.reshape:
+    case Method.upcast:
+    case Method.downcast:
     case Method.validate: {
       const input = url(args[0])
       const output = url(args[1] ?? input)

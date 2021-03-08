@@ -5,8 +5,10 @@ export enum Method {
   call = 'call',
   clean = 'clean',
   compile = 'compile',
+  convert = 'convert',
   decode = 'decode',
   delete = 'delete',
+  downcast = 'downcast',
   encode = 'encode',
   enrich = 'enrich',
   execute = 'execute',
@@ -16,9 +18,9 @@ export enum Method {
   import = 'import',
   pipe = 'pipe',
   read = 'read',
-  reshape = 'reshape',
   select = 'select',
   set = 'set',
+  upcast = 'upcast',
   validate = 'validate',
   vars = 'vars',
   write = 'write',
@@ -59,7 +61,7 @@ export interface WebsocketAddress extends BaseAddress {
 
 export type Address = StdioAddress | HttpAddress | WebsocketAddress
 
-export type MethodSchema = JSONSchema7 & { interruptible: boolean }
+export type MethodSchema = JSONSchema7 & { interruptible?: boolean }
 
 type FeatureList = {
   [key in Method]?: MethodSchema

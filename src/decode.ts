@@ -1,17 +1,34 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
+import { MethodSchema } from './types'
+import { CapabilityError } from './util'
 
-export async function decode(
-  this: Jesta,
-  url: string,
-  format?: string,
-  force?: boolean
-): Promise<Node> {
-  const [content, mediaType] = await this.read(url, format, force)
-
-  if (mediaType.startsWith('application/json')) {
-    return JSON.parse(content) as Node
-  }
-
-  throw Error(`Incapable of decoding from format "${mediaType}"`)
+export const schema: MethodSchema = {
+  title: 'decode',
+  description: 'Decode content of a specific format into a Stencila node.',
+  required: ['content', 'format'],
+  properties: {
+    content: {
+      description: 'The content to be decoded',
+      type: 'string',
+    },
+    format: {
+      description: 'The format of the content',
+      const: 'json',
+    },
+  },
+  interruptible: false,
 }
+
+export function decode(
+  this: Jesta,
+  content: string,
+  format: string | undefined
+): Promise<Node> {
+  if (format === 'json') {
+    return Promise.resolve(JSON.parse(content) as Node)
+  } else {
+    throw new CapabilityError(`decoding from format "${format ?? 'undefined'}"`)
+  }
+}
+decode.schema = schema
