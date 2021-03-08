@@ -116,20 +116,37 @@
 				<a href="#📦-install" id="📦-install" style="color: inherit; text-decoration: none;">
 					<h2>📦 Install</h2>
 				</a>
+				<a href="#via-stencila" id="via-stencila" style="color: inherit; text-decoration: none;">
+					<h3>Via <code>stencila</code></h3>
+				</a>
 				<p>It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the <a href="https://github.com/stencila/stencila">Stencila CLI</a>,</p>
 				<pre><code class="language-sh"><span style="color: #000000">stencila install javascript</span>
 </code></pre>
 				<p>Or using the name of this repo directly,</p>
 				<pre><code class="language-sh"><span style="color: #000000">stencila install jesta</span>
 </code></pre>
-				<p>None of that is possible right now, but if you have Node.js and NPM installed,</p>
+				<p>But neither of those options is available right now 🦄.</p>
+				<a href="#via-npm" id="via-npm" style="color: inherit; text-decoration: none;">
+					<h3>Via <code>npm</code></h3>
+				</a>
+				<p>If you have Node.js and NPM installed,</p>
 				<pre><code class="language-sh"><span style="color: #000000">npm install --global @stencila/jesta</span>
+</code></pre>
+				<a href="#via-docker" id="via-docker" style="color: inherit; text-decoration: none;">
+					<h3>Via <code>docker</code></h3>
+				</a>
+				<p>A Docker <a href="https://hub.docker.com/r/stencila/jesta">image</a> is built for each release,</p>
+				<pre><code class="language-sh"><span style="color: #000000">docker pull stencila/jesta</span>
 </code></pre>
 				<a href="#🚀-use" id="🚀-use" style="color: inherit; text-decoration: none;">
 					<h2>🚀 Use</h2>
 				</a>
-				<p>Most of the time you won&#39;t use Jesta directly (it&#39;s more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI). But if you <em>do</em> want to run Jesta standalone...</p>
-				<pre><code class="language-sh"><span style="color: #000000">jesta </span><span style="color: #795E26">help</span>
+				<p>Most of the time you won&#39;t use Jesta directly (it&#39;s more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI).</p>
+				<p>But if you <em>do</em> want to run Jesta standalone, for example to execute a stencil containing Javascript code,</p>
+				<pre><code class="language-sh"><span style="color: #000000">jesta execute stencil.json</span>
+</code></pre>
+				<p>Or, if you are using the Docker image,</p>
+				<pre><code class="language-sh"><span style="color: #000000">docker run -it --rm -v</span><span style="color: #001080">$PWD</span><span style="color: #000000">:/work -w/work stencila/jesta execute stencil.json</span>
 </code></pre>
 				<a href="#💪-extend" id="💪-extend" style="color: inherit; text-decoration: none;">
 					<h2>💪 Extend</h2>
@@ -139,16 +156,17 @@
 				<pre><code class="language-sh"><span style="color: #000000">npm init</span>
 <span style="color: #000000">npm install stencila/jesta</span>
 </code></pre>
-				<p>Implement your own <code>manifest</code> function (and override any of Jesta&#39;s other methods) and then in your <code>index.ts</code> or <code>index.js</code>, call Jesta&#39;s <code>cli</code> function e.g.</p>
+				<p>Override any of Jesta&#39;s methods e.g. <code>compile</code> and in your <code>index.ts</code> or <code>index.js</code>, call Jesta&#39;s <code>cli</code> function e.g.</p>
 				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Jesta</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@stencila/jesta&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">manifest</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./manifest&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">compile</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;./compile&#039;</span>
 
 <span style="color: #AF00DB">export</span><span style="color: #000000"> </span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">MyPlugin</span><span style="color: #000000"> </span><span style="color: #0000FF">extends</span><span style="color: #000000"> </span><span style="color: #267F99">Jesta</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #001080">manifest</span><span style="color: #000000"> = </span><span style="color: #001080">manifest</span>
+<span style="color: #000000">  </span><span style="color: #001080">compile</span><span style="color: #000000"> = </span><span style="color: #001080">compile</span>
 <span style="color: #000000">}</span>
 
-<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MyPlugin</span><span style="color: #000000">(</span><span style="color: #001080">__filename</span><span style="color: #000000">).</span><span style="color: #795E26">cli</span><span style="color: #000000">()</span>
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MyPlugin</span><span style="color: #000000">().</span><span style="color: #795E26">cli</span><span style="color: #000000">()</span>
 </code></pre>
+				<p>Write a <code>codemeta.json</code> that describes the features and runtime alternatives of your plugin (a good place to start is by copying Jesta&#39;s <a href="codemeta.json"><code>codemeta.json</code></a> file).</p>
 				<p>This repo also creates standalone binaries for Linux, MacOS and Windows using <a href="https://github.com/vercel/pkg"><code>pkg</code></a>. These binaries are published for each <a href="https://github.com/stencila/jesta/releases">release</a> with a <a href="https://wiki.osdev.org/Target_Triplet">target triplet</a> name that is suitable for download by the <code>stencila</code> CLI tool. Check out the <code>build.sh</code> script and the <code>pkg</code> property in the <a href="package.json"><code>package.json</code></a> to see how to reuse this approach for your own plugin.</p>
 				<a href="#🛠️-develop" id="🛠️-develop" style="color: inherit; text-decoration: none;">
 					<h2>🛠️ Develop</h2>
