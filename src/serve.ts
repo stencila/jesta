@@ -61,10 +61,10 @@ export async function serve(this: Jesta): Promise<void> {
           ? new ServerError(err.stack ?? err.message)
           : new ServerError('Unknown error')
 
-      const { code, message } = error
+      const { code, message, data } = error
       response = {
         id,
-        error: { code, message },
+        error: { code, message, data },
       }
     }
     sendMessage(response)

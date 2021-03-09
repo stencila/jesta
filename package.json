@@ -34,6 +34,8 @@
     "@stencila/schema": "^1.0.0",
     "acorn": "^8.0.4",
     "acorn-walk": "^8.0.1",
+    "ajv": "^7.2.1",
+    "ajv-formats": "^1.5.1",
     "content-type": "^1.0.4",
     "got": "^11.8.1",
     "keyv": "^4.0.3",

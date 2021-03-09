@@ -31,21 +31,47 @@
   "featureList": [
     {
       "title": "convert",
+      "type": "object",
       "required": ["input", "output"],
       "properties": {
         "input": {
+          "description": "URL to read from.",
           "type": "string",
-          "pattern": "^(file|https?):\\/\\/.+"
+          "pattern": "^(file|https?|stdio|string):\\/\\/.*"
         },
         "output": {
+          "description": "The URL to write the content to. Use `string://` to have a string returned.",
           "type": "string",
-          "pattern": "^file:\\/\\/.+"
+          "pattern": "^(file|stdio|string):\\/\\/.*"
         },
         "from": {
-          "type": "string"
+          "description": "Format to import the node from. Defaults to the URL's media type or file extension.",
+          "type": "string",
+          "const": "json"
         },
         "to": {
-          "type": "string"
+          "description": "Format to export the node to. Defaults to the URL's file extension.",
+          "type": "string",
+          "const": "json"
+        },
+        "cache": {
+          "description": "Use and store cached content (for http:// URLs).",
+          "type": "boolean"
+        },
+        "upcast": {
+          "description": "Upcast the imported node.",
+          "type": "boolean",
+          "const": false
+        },
+        "downcast": {
+          "description": "Downcast the exported node.",
+          "type": "boolean",
+          "const": false
+        },
+        "validate": {
+          "description": "Validate the imported node.",
+          "type": "boolean",
+          "const": false
         }
       }
     },
@@ -81,22 +107,37 @@
       "interruptible": false
     },
     {
+      "title": "get",
+      "description": "Get a variable from a stencil.",
+      "required": ["stencil", "name"],
+      "properties": {
+        "stencil": {
+          "description": "The id of the stencil to get the variable from.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the variable.",
+          "type": "string"
+        }
+      }
+    },
+    {
       "title": "import",
       "description": "Import a node from a URL (including a `file://` or `string://` URL).",
-      "required": ["url"],
+      "required": ["input"],
       "properties": {
-        "url": {
-          "description": "URL to import the node from.",
+        "input": {
+          "description": "URL to read from.",
           "type": "string",
-          "pattern": "^(file|https?|string):\\/\\/.+"
+          "pattern": "^(file|https?|stdio|string):\\/\\/.*"
         },
         "format": {
           "description": "Format to import the node from. Defaults to the URL's media type or file extension.",
           "type": "string",
           "const": "json"
         },
-        "cached": {
-          "description": "Allow cached content to be used (for http:// URLs).",
+        "cache": {
+          "description": "Use and store cached content (for http:// URLs).",
           "type": "boolean"
         },
         "upcast": {
@@ -108,6 +149,74 @@
           "description": "Validate the imported node.",
           "type": "boolean",
           "const": false
+        }
+      }
+    },
+    {
+      "title": "read",
+      "description": "Read content from a URL (including a `file://` or `string://` URL).",
+      "required": ["input"],
+      "properties": {
+        "input": {
+          "description": "URL to read from.",
+          "type": "string",
+          "pattern": "^(file|https?|stdio|string):\\/\\/.*"
+        },
+        "cache": {
+          "description": "Use and store cached content (for http:// URLs).",
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "title": "select",
+      "description": "Select child nodes from a node.",
+      "required": ["node", "query"],
+      "properties": {
+        "node": {
+          "description": "The node to select from."
+        },
+        "query": {
+          "description": "The query to run against the node.",
+          "type": "string"
+        },
+        "lang": {
+          "description": "The language that the query is written in.",
+          "enum": ["simplepath"]
+        }
+      }
+    },
+    {
+      "title": "set",
+      "description": "Set a variable in a stencil.",
+      "required": ["stencil", "name", "value"],
+      "properties": {
+        "stencil": {
+          "description": "The id of the stencil to set the variable in.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the variable to set.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value to to set the variable to."
+        }
+      }
+    },
+    {
+      "title": "write",
+      "description": "Write content to a URL (including a `file://` or `string://` URL).",
+      "required": ["content", "output"],
+      "properties": {
+        "content": {
+          "description": "The content to write",
+          "type": "string"
+        },
+        "output": {
+          "description": "The URL to write the content to. Use `string://` to have a string returned.",
+          "type": "string",
+          "pattern": "^(file|stdio|string):\\/\\/.*"
         }
       }
     }

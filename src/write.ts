@@ -1,15 +1,35 @@
 import fs from 'fs'
 import { promisify } from 'util'
+import { MethodSchema } from './types'
 import { CapabilityError } from './util/errors'
+
+export const schema: MethodSchema = {
+  title: 'write',
+  description:
+    'Write content to a URL (including a `file://` or `string://` URL).',
+  required: ['content', 'output'],
+  properties: {
+    content: {
+      description: 'The content to write',
+      type: 'string',
+    },
+    output: {
+      description:
+        'The URL to write the content to. Use `string://` to have a string returned.',
+      type: 'string',
+      pattern: '^(file|stdio|string):\\/\\/.*',
+    },
+  },
+}
 
 /**
  * Write content to a URL.
  *
  * @param content The content to write
- * @param url The url to write to
+ * @param output The URL to write to
  */
-export async function write(content: string, url: string): Promise<string> {
-  const match = /^([a-z]{2,6}):\/\//.exec(url)
+export async function write(content: string, output: string): Promise<string> {
+  const match = /^([a-z]{2,6}):\/\//.exec(output)
   if (match) {
     const protocol = match[1]
     switch (protocol) {
@@ -18,16 +38,17 @@ export async function write(content: string, url: string): Promise<string> {
         writeStdio(content)
         break
       case 'file':
-        await writeFile(content, url.slice(7))
+        await writeFile(content, output.slice(7))
         break
       default:
         throw new CapabilityError(`write over protocol "${protocol}"`)
     }
   } else {
-    await writeFile(content, url)
+    await writeFile(content, output)
   }
-  return url
+  return output
 }
+write.schema = schema
 
 /**
  * Write content to standard output

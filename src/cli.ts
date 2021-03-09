@@ -62,9 +62,10 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     // but we allow these as the dispatch function handles type checking
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-    case 'manifest':
+    case 'manifest': {
       const manifest = this.manifest(options.update ?? false)
       return console.log(JSON.stringify(manifest, null, '  '))
+    }
     case 'register':
       return await this.register()
     case 'serve':
@@ -148,6 +149,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         ...options,
         format: options.from,
       })
+
       const result = await this.dispatch(method, { node, ...options, calls })
 
       await this.dispatch(Method.export, {

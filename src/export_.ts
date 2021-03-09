@@ -1,20 +1,21 @@
 import path from 'path'
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { MethodSchema } from './types'
+import { MethodSchema, ParameterSchemas } from './types'
+import { schema as writeSchema } from './write'
+
+const { output } = writeSchema.properties as ParameterSchemas
 
 export const schema: MethodSchema = {
   title: 'export',
   description:
     'Export a node to a URL (including a `file://` or `string://` URL).',
-  required: ['url'],
+  required: ['node', 'output'],
   properties: {
-    url: {
-      description:
-        'URL to export the node to. Use `string://` to have a string returned.',
-      type: 'string',
-      pattern: '^(file|https?|string):\\/\\/.+',
+    node: {
+      description: 'The node to export.',
     },
+    output,
     format: {
       description:
         "Format to export the node to. Defaults to the URL's file extension.",
@@ -22,7 +23,7 @@ export const schema: MethodSchema = {
       const: 'json',
     },
     downcast: {
-      description: 'Downcast the exported node',
+      description: 'Downcast the exported node.',
       type: 'boolean',
       // Constant `false` because Jesta does not implement the downcast method
       const: false,
@@ -39,7 +40,7 @@ export const schema: MethodSchema = {
 export async function export_(
   this: Jesta,
   node: Node,
-  url: string,
+  output: string,
   format?: string,
   // These default to false because Jesta has neither capability
   downcast = false,
@@ -49,7 +50,7 @@ export async function export_(
   const validated = validate ? await this.validate(downcasted) : downcasted
   const encoded = await this.encode(
     validated,
-    format ?? path.extname(url).slice(1)
+    format ?? path.extname(output).slice(1)
   )
-  return this.write(encoded, url)
+  return this.write(encoded, output)
 }

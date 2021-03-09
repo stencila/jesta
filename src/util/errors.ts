@@ -7,10 +7,13 @@
 export abstract class JsonRpcError extends Error {
   code: number
 
-  constructor(name: string, code: number, message: string) {
+  data: unknown
+
+  constructor(name: string, code: number, message: string, data?: unknown) {
     super(message)
     this.name = name
     this.code = code
+    this.data = data
   }
 }
 
@@ -19,7 +22,12 @@ export abstract class JsonRpcError extends Error {
  */
 export class ParseError extends JsonRpcError {
   constructor(details: string) {
-    super('ParseError', -32700, `Error while parsing request: ${details}`)
+    super(
+      'ParseError',
+      -32700,
+      `Error while parsing request: ${details}`,
+      details
+    )
   }
 }
 
@@ -41,45 +49,22 @@ export class InvalidRequestError extends JsonRpcError {
  */
 export class MethodNotFoundError extends JsonRpcError {
   constructor(method: string) {
-    super('MethodNotFoundError', -32601, `Method '${method}' not found`)
-  }
-}
-
-/**
- * An error for when a required parameter is missing
- */
-export class RequiredParamError extends JsonRpcError {
-  constructor(param: string) {
-    super('RequiredParamError', -32602, `Parameter '${param}' is required`)
-  }
-}
-
-export function assertRequiredParam(
-  condition: boolean,
-  param: string
-): asserts condition {
-  if (!condition) throw new RequiredParamError(param)
-}
-
-/**
- * An error when a parameter is invalid
- */
-export class InvalidParamError extends JsonRpcError {
-  constructor(param: string, message: string) {
     super(
-      'InvalidParamError',
-      -32602,
-      `Parameter '${param}' is invalid: ${message}`
+      'MethodNotFoundError',
+      -32601,
+      `Method '${method}' does not exist`,
+      method
     )
   }
 }
 
-export function assertValidParam(
-  condition: boolean,
-  param: string,
-  message: string
-): asserts condition {
-  if (!condition) throw new InvalidParamError(param, message)
+/**
+ * An error when one of more parameters are invalid
+ */
+export class InvalidParamError extends JsonRpcError {
+  constructor(message: string, errors: unknown) {
+    super('InvalidParamError', -32602, message, errors)
+  }
 }
 
 /**
@@ -95,7 +80,7 @@ export class ServerError extends JsonRpcError {
  * An error when the plugin lacks the requested capability
  */
 export class CapabilityError extends JsonRpcError {
-  constructor(capability: string) {
-    super('CapabilityError', -32001, `Incapable of ${capability}`)
+  constructor(capability: string, params?: unknown) {
+    super('CapabilityError', -32001, `Incapable of ${capability}`, params)
   }
 }

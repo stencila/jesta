@@ -1,5 +1,25 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
+import { MethodSchema } from './types'
+
+export const schema: MethodSchema = {
+  title: 'select',
+  description: 'Select child nodes from a node.',
+  required: ['node', 'query'],
+  properties: {
+    node: {
+      description: 'The node to select from.',
+    },
+    query: {
+      description: 'The query to run against the node.',
+      type: 'string',
+    },
+    lang: {
+      description: 'The language that the query is written in.',
+      enum: ['simplepath'],
+    },
+  },
+}
 
 /* eslint-disable @typescript-eslint/require-await */
 export async function select(
@@ -22,3 +42,4 @@ export async function select(
 
   throw Error(`Incapable of selecting with language "${lang}"`)
 }
+select.schema = schema

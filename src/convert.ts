@@ -1,24 +1,35 @@
 import { Jesta } from '.'
-import { MethodSchema } from './types'
+import { MethodSchema, ParameterSchemas } from './types'
+import { schema as importSchema } from './import_'
+import { schema as exportSchema } from './export_'
+
+const {
+  input,
+  format: from,
+  cache,
+  upcast,
+  validate,
+} = importSchema.properties as ParameterSchemas
+
+const {
+  output,
+  format: to,
+  downcast,
+} = exportSchema.properties as ParameterSchemas
 
 export const schema: MethodSchema = {
   title: 'convert',
+  type: 'object',
   required: ['input', 'output'],
   properties: {
-    input: {
-      type: 'string',
-      pattern: '^(file|https?):\\/\\/.+',
-    },
-    output: {
-      type: 'string',
-      pattern: '^file:\\/\\/.+',
-    },
-    from: {
-      type: 'string',
-    },
-    to: {
-      type: 'string',
-    },
+    input,
+    output,
+    from,
+    to,
+    cache,
+    upcast,
+    downcast,
+    validate,
   },
 }
 
@@ -31,10 +42,9 @@ export async function convert(
   cached = true,
   upcast = false,
   downcast = false,
-  validateInput = false,
-  validateOutput = false
+  validate = false
 ): Promise<string> {
-  const imported = await this.import(input, from, cached, upcast, validateInput)
-  return this.export(imported, output, to, downcast, validateOutput)
+  const imported = await this.import(input, from, cached, upcast, validate)
+  return this.export(imported, output, to, downcast, validate)
 }
 convert.schema = schema

@@ -61,6 +61,10 @@ export interface WebsocketAddress extends BaseAddress {
 
 export type Address = StdioAddress | HttpAddress | WebsocketAddress
 
+export type ParameterSchema = JSONSchema7
+
+export type ParameterSchemas = Record<string, ParameterSchema>
+
 export type MethodSchema = JSONSchema7 & { interruptible?: boolean }
 
 /**

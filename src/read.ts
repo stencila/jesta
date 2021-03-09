@@ -4,8 +4,27 @@ import got from 'got'
 import mime from 'mime'
 import path from 'path'
 import { promisify } from 'util'
+import { MethodSchema } from './types'
 import { cache } from './util/cache'
 import { CapabilityError } from './util/errors'
+
+export const schema: MethodSchema = {
+  title: 'read',
+  description:
+    'Read content from a URL (including a `file://` or `string://` URL).',
+  required: ['input'],
+  properties: {
+    input: {
+      description: 'URL to read from.',
+      type: 'string',
+      pattern: '^(file|https?|stdio|string):\\/\\/.*',
+    },
+    cache: {
+      description: 'Use and store cached content (for http:// URLs).',
+      type: 'boolean',
+    },
+  },
+}
 
 /**
  * Read content from a URL.
@@ -14,34 +33,35 @@ import { CapabilityError } from './util/errors'
  * for caching of requests. Use `force` to ignore any cached content that may
  * exist on the machine for the URL.
  *
- * @param url The URL to read.
- * @param force Should any cached content be ignored? For remote URLs only.
+ * @param input The URL to read.
+ * @param cache Should any cached content be ignored? For remote URLs only.
  * @returns A the content that was read.
  */
 export async function read(
-  url: string,
-  force = false
+  input: string,
+  cache = true
 ): Promise<[string, string | undefined]> {
-  const match = /^([a-z]{2,6}):\/\//.exec(url)
+  const match = /^([a-z]{2,6}):\/\//.exec(input)
   if (match) {
     const protocol = match[1]
     switch (protocol) {
       case 'string':
-        return [url.slice(9), undefined]
+        return [input.slice(9), undefined]
       case 'stdio':
       case 'stdin':
         return [await readStdio(), undefined]
       case 'file':
-        return readFile(url.slice(7))
+        return readFile(input.slice(7))
       case 'http':
       case 'https':
-        return readHttp(url, force)
+        return readHttp(input, cache)
       default:
         throw new CapabilityError(`read over protocol "${protocol}"`)
     }
   }
-  throw new CapabilityError(`read from URL "${url.slice(0, 500)}"`)
+  throw new CapabilityError(`read from URL "${input.slice(0, 500)}"`)
 }
+read.schema = schema
 
 /**
  * Read content from standard input
@@ -81,15 +101,15 @@ export async function readFile(
  * guessed from the URL's path segment if not.
  *
  * @param url The URL to fetch
- * @param force The format of the content.
+ * @param caching Should a cache be used to retrieve / store content.
  * @returns A tuple of the content and its format
  */
 export async function readHttp(
   url: string,
-  force = false
+  caching = true
 ): Promise<[string, string | undefined]> {
   const response = await got(url, {
-    cache: force ? undefined : cache,
+    cache: caching ? cache : undefined,
   })
   const content = response.body
 

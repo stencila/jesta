@@ -228,7 +228,7 @@ describe('set', () => {
     expect(consoleLog).toHaveBeenCalledWith(undefined)
   })
 
-  it('requires <in> argument', async () => {
+  it('requires <input> argument', async () => {
     await expect(cli(['set'])).rejects.toThrow(/Parameter 'input' is required/)
   })
 
@@ -258,7 +258,7 @@ describe('run', () => {
     expect(serveMock).toHaveBeenCalled()
   })
 
-  it('requires <in> argument', async () => {
+  it('requires <input> argument', async () => {
     await expect(run.bind(jesta)(['run'])).rejects.toThrow(
       /Parameter 'input' is required/
     )
@@ -274,7 +274,7 @@ describe('pipe', () => {
   const buildMock = jest.fn(() => Promise.resolve(null))
   jesta.build = buildMock
 
-  it('executes and runs the stencil', async () => {
+  it.skip('executes and runs the stencil', async () => {
     const temp = tempy.file({ extension: 'json' })
     await run.bind(jesta)(['clean+compile+build', one, temp])
     expect(cleanMock).toHaveBeenCalled()
@@ -282,7 +282,7 @@ describe('pipe', () => {
     expect(buildMock).toHaveBeenCalled()
   })
 
-  it('requires <in> argument', async () => {
+  it('requires <input> argument', async () => {
     await expect(run.bind(jesta)(['pipe'])).rejects.toThrow(
       /Parameter 'input' is required/
     )

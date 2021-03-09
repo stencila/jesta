@@ -1,231 +1,145 @@
-import { isPrimitive, Node } from '@stencila/schema'
+import { Node } from '@stencila/schema'
+import Ajv from 'ajv'
+import addFormats from 'ajv-formats'
 import { Jesta } from '.'
 import { Method } from './types'
-import {
-  assertRequiredParam,
-  assertValidParam,
-  MethodNotFoundError,
-} from './util/errors'
+import { InvalidParamError, MethodNotFoundError } from './util/errors'
+
+const validators: Ajv = addFormats(new Ajv({ strict: false }))
 
 export function dispatch(
   this: Jesta,
   method: string,
   params: Record<string, Node | undefined>
 ): Promise<Node | undefined> {
-  switch (method) {
-    case Method.build:
-    case Method.clean:
-    case Method.compile:
-    case Method.enrich:
-    case Method.upcast:
-    case Method.downcast:
-    case Method.validate: {
-      const { node, force = false } = params
-      assertRequiredParam(node !== undefined, 'node')
-      assertValidParam(
-        force === undefined || typeof force === 'boolean',
-        'force',
-        'should be a boolean'
-      )
-      switch (method) {
-        case Method.build:
-          return this.build(node, force)
-        case Method.clean:
-          return this.clean(node)
-        case Method.compile:
-          return this.compile(node, force)
-        case Method.enrich:
-          return this.enrich(node)
-        case Method.upcast:
-          return this.upcast(node)
-        case Method.downcast:
-          return this.downcast(node)
-        case Method.validate:
-          return this.validate(node, force)
-      }
-      break
-    }
+  // Check this is a known method
+  if (Method[method as Method] === undefined)
+    throw new MethodNotFoundError(method)
 
-    case Method.decode: {
-      const { content, format } = params
-      assertRequiredParam(content !== undefined, 'content')
-      assertValidParam(
-        typeof content === 'string',
-        'content',
-        'should be a string'
-      )
-      assertValidParam(
-        typeof format === 'string',
-        'format',
-        'should be a string'
-      )
-      return this.decode(content, format)
-    }
-
-    case Method.encode: {
-      const { node, output, format } = params
-      assertRequiredParam(node !== undefined, 'node')
-      assertValidParam(
-        output === undefined || typeof output === 'string',
-        'output',
-        'should be a string'
-      )
-      assertValidParam(
-        typeof format === 'string',
-        'format',
-        'should be a string'
-      )
-      return this.encode(node, format)
-    }
-
-    case Method.import: {
-      const { input, format, force } = params
-      assertRequiredParam(input !== undefined, 'input')
-      assertValidParam(typeof input === 'string', 'input', 'should be a string')
-      assertValidParam(
-        format === undefined || typeof format === 'string',
-        'format',
-        'should be a string'
-      )
-      assertValidParam(
-        force === undefined || typeof force === 'boolean',
-        'force',
-        'should be a boolean'
-      )
-      return this.import(input, format, force)
-    }
-
-    case Method.export: {
-      const { node, output, format, force } = params
-      assertRequiredParam(node !== undefined, 'node')
-      assertRequiredParam(output !== undefined, 'output')
-      assertValidParam(
-        typeof output === 'string',
-        'output',
-        'should be a string'
-      )
-      assertValidParam(
-        format === undefined || typeof format === 'string',
-        'format',
-        'should be a string'
-      )
-      assertValidParam(
-        force === undefined || typeof force === 'boolean',
-        'force',
-        'should be a boolean'
-      )
-      return this.export(node, output, format, force)
-    }
-
-    case Method.convert: {
-      const { input, output, from, to } = params
-      assertRequiredParam(input !== undefined, 'input')
-      assertValidParam(typeof input === 'string', 'input', 'should be a string')
-      // @ts-expect-error because not type checking here yet
-      return this.convert(input, output, from, to)
-    }
-
-    case Method.pipe: {
-      const { node, calls } = params
-      assertRequiredParam(node !== undefined, 'node')
-      assertValidParam(
-        Array.isArray(calls),
-        'calls',
-        'should be an array of method names'
-      )
-      return this.pipe(node, calls)
-    }
-
-    case Method.select: {
-      const { node, query, lang } = params
-      assertRequiredParam(node !== undefined, 'node')
-      assertRequiredParam(query !== undefined, 'query')
-      assertValidParam(typeof query === 'string', 'query', 'should be a string')
-      assertValidParam(
-        lang === undefined || typeof lang === 'string',
-        'lang',
-        'should be a string'
-      )
-      return this.select(node, query, lang)
-    }
-
-    case Method.execute:
-    case Method.vars:
-    case Method.get:
-    case Method.set:
-    case Method.delete:
-    case Method.funcs:
-    case Method.call: {
-      const { stencil } = params
-      assertRequiredParam(stencil !== undefined, 'stencil')
-      assertValidParam(
-        typeof stencil === 'string',
-        'stencil',
-        'should be a string'
-      )
-
-      switch (method) {
-        case Method.execute: {
-          const { node, force = false } = params
-          assertRequiredParam(node !== undefined, 'node')
-          assertValidParam(
-            force === undefined || typeof force === 'boolean',
-            'force',
-            'should be a boolean'
-          )
-          return this.execute(stencil, node, force)
-        }
-
-        case Method.vars:
-          return this.vars(stencil)
-
-        case Method.get:
-        case Method.delete: {
-          const { name } = params
-          assertRequiredParam(name !== undefined, 'name')
-          assertValidParam(
-            typeof name === 'string',
-            'name',
-            'should be a string'
-          )
-          return method === Method.get
-            ? this.get(stencil, name)
-            : this.delete(stencil, name)
-        }
-
-        case Method.set: {
-          const { name, value } = params
-          assertRequiredParam(name !== undefined, 'name')
-          assertValidParam(
-            typeof name === 'string',
-            'name',
-            'should be a string'
-          )
-          assertRequiredParam(value !== undefined, 'value')
-          return this.set(stencil, name, value)
-        }
-
-        case Method.funcs: {
-          return this.funcs(stencil)
-        }
-
-        case Method.call: {
-          const { name, args } = params
-          assertValidParam(
-            name === undefined || typeof name === 'string',
-            'name',
-            'should be a string'
-          )
-          assertValidParam(
-            !isPrimitive(args) && !Array.isArray(args),
-            'name',
-            'should be a object'
-          )
-          // @ts-expect-error difficult to check args further
-          return this.call(stencil, name, args)
-        }
-      }
+  // Get the validation function for the method
+  let validator = validators.getSchema(method)
+  if (validator === undefined) {
+    // @ts-expect-error because indexing `Jesta`
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { schema } = this[method]
+    if (schema !== undefined) {
+      validator = validators.addSchema(schema, method).getSchema(method)
     }
   }
-  throw new MethodNotFoundError(method)
+
+  // Validate the supplied parameter against the method's schema (if any)
+  if (validator) {
+    if (validator(params) !== true) {
+      const errors = validator.errors ?? []
+      let messages: string[] = []
+      for (const error of errors) {
+        // Convert error message into something that is more easily digestible
+        // by humans
+        const { dataPath, message, params } = error
+        if (dataPath !== '' && message !== undefined) {
+          messages = [
+            ...messages,
+            `Parameter '${dataPath.slice(1)}' is invalid: ${message}.`,
+          ]
+        } else if (params.missingProperty !== undefined) {
+          messages = [
+            ...messages,
+            `Parameter '${params.missingProperty as string}' is required.`,
+          ]
+        } else {
+          messages = [...messages, `Parameters are invalid`]
+        }
+      }
+      throw new InvalidParamError(messages.join(' '), errors)
+    }
+  }
+
+  // Dispatch to the method
+  switch (method as Method) {
+    // case Method.build:
+    //  return this.build(params.node as Node, params.force as boolean)
+    case Method.call:
+      return this.call(
+        params.stencil as string,
+        params.name as string,
+        params.args as Record<string, Node>
+      )
+    case Method.clean:
+      return this.clean(params.node as Node)
+    case Method.compile:
+      return this.compile(params.node as Node, params.force as boolean)
+    case Method.convert:
+      return this.convert(
+        params.input as string,
+        params.output as string,
+        params.from as string,
+        params.to as string,
+        params.cache as boolean,
+        params.upcast as boolean,
+        params.downcast as boolean,
+        params.validate as boolean
+      )
+    case Method.decode:
+      return this.decode(params.content as string, params.format as string)
+    case Method.delete:
+      return this.delete(params.stencil as string, params.name as string)
+    case Method.downcast:
+      return this.downcast(params.node as Node)
+    case Method.encode:
+      return this.encode(params.node as Node, params.format as string)
+    case Method.enrich:
+      return this.enrich(params.node as Node, params.force as boolean)
+    case Method.execute:
+      return this.execute(
+        params.stencil as string,
+        params.node as Node,
+        params.force as boolean
+      )
+    case Method.export:
+      return this.export(
+        params.node as Node,
+        params.output as string,
+        params.format as string,
+        params.downcast as boolean,
+        params.validate as boolean
+      )
+    case Method.funcs:
+      return this.funcs(params.stencil as string)
+    case Method.get:
+      return this.get(params.stencil as string, params.name as string)
+    case Method.import:
+      return this.import(
+        params.input as string,
+        params.format as string,
+        params.cache as boolean,
+        params.upcast as boolean,
+        params.validate as boolean
+      )
+    case Method.pipe:
+      return this.pipe(params.node as Node, params.calls as Method[])
+    case Method.read:
+      return this.read(params.input as string, params.cache as boolean)
+    case Method.select:
+      return this.select(
+        params.node as Node,
+        params.query as string,
+        params.lang as string
+      )
+    case Method.set:
+      return this.set(
+        params.stencil as string,
+        params.name as string,
+        params.value as Node
+      )
+    case Method.upcast:
+      return this.upcast(params.node as Node)
+    case Method.validate:
+      return this.validate(params.node as Node, params.force as boolean)
+    case Method.vars:
+      return this.vars(params.stencil as string)
+    case Method.write:
+      return this.write(params.content as string, params.output as string)
+  }
+
+  return Promise.resolve(undefined)
 }

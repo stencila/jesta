@@ -41,6 +41,7 @@ describe('errors', () => {
         code: -32700,
         message:
           'Error while parsing request: Unexpected token # in JSON at position 0',
+        data: 'Unexpected token # in JSON at position 0',
       },
     })
   })
@@ -61,7 +62,8 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32601,
-        message: "Method 'foo' not found",
+        message: "Method 'foo' does not exist",
+        data: 'foo',
       },
     })
   })
@@ -72,22 +74,70 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'content' is required",
+        message: "Parameter 'content' is required.",
+        data: [
+          {
+            dataPath: '',
+            keyword: 'required',
+            message: "should have required property 'content'",
+            params: {
+              missingProperty: 'content',
+            },
+            schemaPath: '#/required',
+          },
+        ],
       },
     })
   })
 
-  test('InvalidParamError', async () => {
+  test('InvalidParamError: type', async () => {
     const response = await request({
       id: 1,
       method: 'decode',
-      params: { content: null },
+      params: { content: 42, format: 'bar' },
     })
     expect(response).toEqual({
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'content' is invalid: should be a string",
+        message: "Parameter 'content' is invalid: should be string.",
+        data: [
+          {
+            dataPath: '/content',
+            keyword: 'type',
+            message: 'should be string',
+            params: {
+              type: 'string',
+            },
+            schemaPath: '#/properties/content/type',
+          },
+        ],
+      },
+    })
+  })
+
+  test('InvalidParamError: value', async () => {
+    const response = await request({
+      id: 1,
+      method: 'decode',
+      params: { content: '{}', format: 'bar' },
+    })
+    expect(response).toEqual({
+      id: 1,
+      error: {
+        code: -32602,
+        message: "Parameter 'format' is invalid: should be equal to constant.",
+        data: [
+          {
+            dataPath: '/format',
+            keyword: 'const',
+            message: 'should be equal to constant',
+            params: {
+              allowedValue: 'json',
+            },
+            schemaPath: '#/properties/format/const',
+          },
+        ],
       },
     })
   })
