@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/stencila/jesta/compare/v1.8.0...v1.8.1) (2021-03-09)
+
+
+### Bug Fixes
+
+* **Schema:** Remove unecessary backlashes from patterns ([01a0817](https://github.com/stencila/jesta/commit/01a0817ea7b8260fc044116573e7371bf4dbe731))
+
 # [1.8.0](https://github.com/stencila/jesta/compare/v1.7.0...v1.8.0) (2021-03-09)
 
 
