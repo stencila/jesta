@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/stencila/jesta/compare/v1.7.0...v1.8.0) (2021-03-09)
+
+
+### Bug Fixes
+
+* **Manifest:** Include codemeta.json in pkg assets; do not overwrite by default ([e05020a](https://github.com/stencila/jesta/commit/e05020a53c48e19200cb56737ceff9b7cd2dc632))
+* **Releases:** Commit codemeta.json ([1044186](https://github.com/stencila/jesta/commit/1044186d5d2064c7248b52f0bfb638d8fab29d88))
+
+
+### Features
+
+* **Manifest:** Update from in-code definitions ([b11e017](https://github.com/stencila/jesta/commit/b11e017b3434d66c9924286501731ad1230a8fbb))
+* **Methods:** Use schema for parameter checking during dispatch ([b04b686](https://github.com/stencila/jesta/commit/b04b68654d6c5c1f0031cfb10611646c7193dddb))
+
 # [1.7.0](https://github.com/stencila/jesta/compare/v1.6.0...v1.7.0) (2021-03-08)
 
 

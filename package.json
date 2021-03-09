@@ -1,6 +1,6 @@
 {
   "name": "@stencila/jesta",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Stencila plugin for stencils using Node.js",
   "bin": "dist/src/index.js",
   "main": "dist/src/index.js",
