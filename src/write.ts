@@ -17,7 +17,7 @@ export const schema: MethodSchema = {
       description:
         'The URL to write the content to. Use `string://` to have a string returned.',
       type: 'string',
-      pattern: '^(file|stdio|string):\\/\\/.*',
+      pattern: '^(file|stdio|string)://.*',
     },
   },
 }

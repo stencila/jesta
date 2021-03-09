@@ -17,7 +17,7 @@ export const schema: MethodSchema = {
     input: {
       description: 'URL to read from.',
       type: 'string',
-      pattern: '^(file|https?|stdio|string):\\/\\/.*',
+      pattern: '^(file|https?|stdio|string)://.*',
     },
     cache: {
       description: 'Use and store cached content (for http:// URLs).',
