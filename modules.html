@@ -96,6 +96,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias"><a href="modules.html#address" class="tsd-kind-icon">Address</a></li>
 								<li class="tsd-kind-type-alias"><a href="modules.html#methodschema" class="tsd-kind-icon">Method<wbr>Schema</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#parameterschema" class="tsd-kind-icon">Parameter<wbr>Schema</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#parameterschemas" class="tsd-kind-icon">Parameter<wbr>Schemas</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,17 +111,37 @@
 					<div class="tsd-signature tsd-kind-icon">Address<span class="tsd-signature-symbol">:</span> <a href="interfaces/stdioaddress.html" class="tsd-signature-type" data-tsd-kind="Interface">StdioAddress</a><span class="tsd-signature-symbol"> | </span><a href="interfaces/httpaddress.html" class="tsd-signature-type" data-tsd-kind="Interface">HttpAddress</a><span class="tsd-signature-symbol"> | </span><a href="interfaces/websocketaddress.html" class="tsd-signature-type" data-tsd-kind="Interface">WebsocketAddress</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/types.ts#L60">src/types.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/types.ts#L62">src/types.ts:62</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="methodschema" class="tsd-anchor"></a>
 					<h3>Method<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Method<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JSONSchema7</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>interruptible<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">Method<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JSONSchema7</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>interruptible<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/types.ts#L62">src/types.ts:62</a></li>
+							<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/types.ts#L68">src/types.ts:68</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="parameterschema" class="tsd-anchor"></a>
+					<h3>Parameter<wbr>Schema</h3>
+					<div class="tsd-signature tsd-kind-icon">Parameter<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JSONSchema7</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/types.ts#L64">src/types.ts:64</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="parameterschemas" class="tsd-anchor"></a>
+					<h3>Parameter<wbr>Schemas</h3>
+					<div class="tsd-signature tsd-kind-icon">Parameter<wbr>Schemas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="modules.html#parameterschema" class="tsd-signature-type" data-tsd-kind="Type alias">ParameterSchema</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/types.ts#L66">src/types.ts:66</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,6 +198,12 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="modules.html#methodschema" class="tsd-kind-icon">Method<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#parameterschema" class="tsd-kind-icon">Parameter<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#parameterschemas" class="tsd-kind-icon">Parameter<wbr>Schemas</a>
 					</li>
 				</ul>
 			</nav>

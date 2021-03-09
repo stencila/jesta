@@ -78,7 +78,6 @@
 								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.jsonrpcerror.html" class="tsd-kind-icon">Json<wbr>Rpc<wbr>Error</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.methodnotfounderror.html" class="tsd-kind-icon">Method<wbr>Not<wbr>Found<wbr>Error</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.requiredparamerror.html" class="tsd-kind-icon">Required<wbr>Param<wbr>Error</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.servererror.html" class="tsd-kind-icon">Server<wbr>Error</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/util.session.html" class="tsd-kind-icon">Session</a></li>
 							</ul>
@@ -86,8 +85,6 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="util.html#assertrequiredparam" class="tsd-kind-icon">assert<wbr>Required<wbr>Param</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="util.html#assertvalidparam" class="tsd-kind-icon">assert<wbr>Valid<wbr>Param</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="util.html#mutate" class="tsd-kind-icon">mutate</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter"><a href="util.html#mutatesync" class="tsd-kind-icon">mutate<wbr>Sync</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="util.html#needed" class="tsd-kind-icon">needed</a></li>
@@ -103,61 +100,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="assertrequiredparam" class="tsd-anchor"></a>
-					<h3>assert<wbr>Required<wbr>Param</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">assert<wbr>Required<wbr>Param<span class="tsd-signature-symbol">(</span>condition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, param<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">asserts </span><span class="tsd-signature-type">condition</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/errors.ts#L57">src/util/errors.ts:57</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>condition: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>param: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">asserts </span><span class="tsd-signature-type">condition</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace">
-					<a name="assertvalidparam" class="tsd-anchor"></a>
-					<h3>assert<wbr>Valid<wbr>Param</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace">
-						<li class="tsd-signature tsd-kind-icon">assert<wbr>Valid<wbr>Param<span class="tsd-signature-symbol">(</span>condition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, param<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">asserts </span><span class="tsd-signature-type">condition</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/errors.ts#L77">src/util/errors.ts:77</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>condition: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>param: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>message: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">asserts </span><span class="tsd-signature-type">condition</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
 					<a name="mutate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> mutate</h3>
@@ -168,7 +110,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/walk.ts#L10">src/util/walk.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/walk.ts#L10">src/util/walk.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -218,7 +160,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/walk.ts#L24">src/util/walk.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/walk.ts#L24">src/util/walk.ts:24</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -268,7 +210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/changes.ts#L26">src/util/changes.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/changes.ts#L26">src/util/changes.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -294,7 +236,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/changes.ts#L34">src/util/changes.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/changes.ts#L34">src/util/changes.ts:34</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -323,7 +265,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/timer.ts#L5">src/util/timer.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/timer.ts#L5">src/util/timer.ts:5</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -346,7 +288,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/session.ts#L66">src/util/session.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/session.ts#L66">src/util/session.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -369,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/timer.ts#L1">src/util/timer.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/timer.ts#L1">src/util/timer.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">bigint</span></h4>
@@ -386,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/stencila/jesta/blob/4ecef6d/src/util/walk.ts#L3">src/util/walk.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/stencila/jesta/blob/b04b686/src/util/walk.ts#L3">src/util/walk.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -463,19 +405,10 @@
 						<a href="../classes/util.parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="../classes/util.requiredparamerror.html" class="tsd-kind-icon">Required<wbr>Param<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="../classes/util.servererror.html" class="tsd-kind-icon">Server<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="../classes/util.session.html" class="tsd-kind-icon">Session</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="util.html#assertrequiredparam" class="tsd-kind-icon">assert<wbr>Required<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-namespace">
-						<a href="util.html#assertvalidparam" class="tsd-kind-icon">assert<wbr>Valid<wbr>Param</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="util.html#mutate" class="tsd-kind-icon">mutate</a>
