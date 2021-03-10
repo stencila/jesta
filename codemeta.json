@@ -1,48 +1,17 @@
 {
   "name": "jesta",
   "softwareVersion": "1.8.1",
-  "description": "Stencila plugin for stencils using Node.js",
-  "runtimeAlternatives": [
-    {
-      "kind": "docker",
-      "image": "stencila/jesta",
-      "args": [
-        "serve"
-      ],
-      "transport": "stdio",
-      "framing": "nld",
-      "serialization": "json"
-    },
-    {
-      "kind": "binary",
-      "command": "jesta",
-      "args": [
-        "serve"
-      ],
-      "transport": "stdio",
-      "framing": "nld",
-      "serialization": "json"
-    },
-    {
-      "kind": "package",
-      "command": "node",
-      "args": [
-        "./dist/src/index.js",
-        "serve"
-      ],
-      "transport": "stdio",
-      "framing": "nld",
-      "serialization": "json"
-    }
+  "description": "Stencila plugin for executable documents that use Node.js",
+  "installUrl": [
+    "https://www.npmjs.com/package/@stencila/jesta",
+    "https://github.com/stencila/jesta/releases",
+    "https://hub.docker.com/r/stencila/jesta"
   ],
   "featureList": [
     {
       "title": "convert",
       "type": "object",
-      "required": [
-        "input",
-        "output"
-      ],
+      "required": ["input", "output"],
       "properties": {
         "input": {
           "description": "URL to read from.",
@@ -88,10 +57,7 @@
     {
       "title": "decode",
       "description": "Decode content of a specific format into a Stencila node.",
-      "required": [
-        "content",
-        "format"
-      ],
+      "required": ["content", "format"],
       "properties": {
         "content": {
           "description": "The content to be decoded",
@@ -107,10 +73,7 @@
     {
       "title": "encode",
       "description": "Encode a Stencila node to content of a specific format.",
-      "required": [
-        "node",
-        "format"
-      ],
+      "required": ["node", "format"],
       "properties": {
         "node": {
           "description": "The node to be encoded"
@@ -125,10 +88,7 @@
     {
       "title": "get",
       "description": "Get a variable from a stencil.",
-      "required": [
-        "stencil",
-        "name"
-      ],
+      "required": ["stencil", "name"],
       "properties": {
         "stencil": {
           "description": "The id of the stencil to get the variable from.",
@@ -143,9 +103,7 @@
     {
       "title": "import",
       "description": "Import a node from a URL (including a `file://` or `string://` URL).",
-      "required": [
-        "input"
-      ],
+      "required": ["input"],
       "properties": {
         "input": {
           "description": "URL to read from.",
@@ -176,9 +134,7 @@
     {
       "title": "read",
       "description": "Read content from a URL (including a `file://` or `string://` URL).",
-      "required": [
-        "input"
-      ],
+      "required": ["input"],
       "properties": {
         "input": {
           "description": "URL to read from.",
@@ -194,10 +150,7 @@
     {
       "title": "select",
       "description": "Select child nodes from a node.",
-      "required": [
-        "node",
-        "query"
-      ],
+      "required": ["node", "query"],
       "properties": {
         "node": {
           "description": "The node to select from."
@@ -208,20 +161,14 @@
         },
         "lang": {
           "description": "The language that the query is written in.",
-          "enum": [
-            "simplepath"
-          ]
+          "enum": ["simplepath"]
         }
       }
     },
     {
       "title": "set",
       "description": "Set a variable in a stencil.",
-      "required": [
-        "stencil",
-        "name",
-        "value"
-      ],
+      "required": ["stencil", "name", "value"],
       "properties": {
         "stencil": {
           "description": "The id of the stencil to set the variable in.",
@@ -239,10 +186,7 @@
     {
       "title": "write",
       "description": "Write content to a URL (including a `file://` or `string://` URL).",
-      "required": [
-        "content",
-        "output"
-      ],
+      "required": ["content", "output"],
       "properties": {
         "content": {
           "description": "The content to write",

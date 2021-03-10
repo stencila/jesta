@@ -1,6 +1,6 @@
 # 🃏 Jesta
 
-#### Stencila plugin for stencils using Node.js
+#### Stencila plugin for executable documents that use Node.js
 
 <br>
 
@@ -100,7 +100,9 @@ docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute stencil.json
 
 ## 💪 Extend
 
-Jesta is designed to be extended. You can create your own Stencila plugin by following these steps.
+Jesta is designed to be extended so that you can create your own Stencila plugins using Javascript or Typescript.
+
+#### Getting started
 
 Initialize your package and add Jesta as a development dependency:
 
@@ -108,6 +110,8 @@ Initialize your package and add Jesta as a development dependency:
 npm init
 npm install stencila/jesta
 ```
+
+#### Override one or more method
 
 Override any of Jesta's methods e.g. `compile` and in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
 
@@ -122,9 +126,19 @@ export class MyPlugin extends Jesta {
 if (require.main === module) new MyPlugin().cli()
 ```
 
-Write a `codemeta.json` that describes the features and runtime alternatives of your plugin (a good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) file).
+#### Publish standalone binaries
 
-This repo also creates standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). These binaries are published for each [release](https://github.com/stencila/jesta/releases) with a [target triplet](https://wiki.osdev.org/Target_Triplet) name that is suitable for download by the `stencila` CLI tool. Check out the `build.sh` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin.
+Not everyone has Node.js installed. To make your plugin available to as many possible users as possible we encourage you to create standalone binaries for major operating systems.
+
+This repo provides an example of how to create standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). These binaries are published for each [release](https://github.com/stencila/jesta/releases) with a [target triplet](https://wiki.osdev.org/Target_Triplet) name that is suitable for download by the `stencila` CLI tool. Check out the `build.sh` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin.
+
+#### Publish a Docker image
+
+Some users may prefer to use your plugin as a Docker image. This repo contains a [`Dockerfile`](Dockerfile) that shows how you can create a Docker image for your plugin based on the Linux binary.
+
+#### Write a `codemeta.json` file
+
+The `codemeta.json` file, based on the [Codemeta](https://codemeta.github.io/) and schema.org projects, contains metadata about your plugin including how it can be installed and it's capabilities. It is needed to allow others to install your plugin via the Stencila CLI. A good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) file and modifying it.
 
 ## 🛠️ Develop
 
