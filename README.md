@@ -126,19 +126,52 @@ export class MyPlugin extends Jesta {
 if (require.main === module) new MyPlugin().cli()
 ```
 
+#### Write a `codemeta.json` file
+
+The `codemeta.json` file contains metadata (based on the [Codemeta](https://codemeta.github.io/) and schema.org standards) about your plugin including how it can be installed and it's capabilities. This metadata is used by Stencila to determine how it should install your plugin, how to run it, and what functions should be delegated to it.
+
+A good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) file and modifying it. At a minimum, the `codemeta.json` file should include a `name`, `description`, a `installUrl` array containing the NPM URL of the package, and a `featureList` array.
+
+```json
+{
+  "name": "myplugin",
+  "description": "My awesome plugin",
+  "installUrl": [
+    "https://www.npmjs.com/package/myplugin",
+  ],
+  "featureList": [
+    ...
+  ]
+}
+```
+
 #### Publish standalone binaries
 
 Not everyone has Node.js installed. To make your plugin available to as many possible users as possible we encourage you to create standalone binaries for major operating systems.
 
-This repo provides an example of how to create standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). These binaries are published for each [release](https://github.com/stencila/jesta/releases) with a [target triplet](https://wiki.osdev.org/Target_Triplet) name that is suitable for download by the `stencila` CLI tool. Check out the `build.sh` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin.
+This repo provides an example of how to create standalone binaries for Linux, MacOS and Windows using [`pkg`](https://github.com/vercel/pkg). These binaries are published for each [release](https://github.com/stencila/jesta/releases) with a [target triplet](https://wiki.osdev.org/Target_Triplet) name that is suitable for download by Stencila. Check out the `build.sh` script and the `pkg` property in the [`package.json`](package.json) to see how to reuse this approach for your own plugin.
+
+Add the binaries as assets to each release (see how we do this automatically using `semantic-release`) and add the GitHub releases URL to `installUrl` so that Stencila knows that standalone binaries are an installation option:
+
+```json
+  "installUrl": [
+    ...
+    "https://github.com/me/myplugin/releases"
+  ]
+```
 
 #### Publish a Docker image
 
-Some users may prefer to use your plugin as a Docker image. This repo contains a [`Dockerfile`](Dockerfile) that shows how you can create a Docker image for your plugin based on the Linux binary.
+Some users may prefer to use your plugin as a Docker image.
 
-#### Write a `codemeta.json` file
+This repo contains a [`Dockerfile`](Dockerfile) that shows how you can create a Docker image for your plugin based on the Linux binary. Once it is published add the Docker Hub URL to `installUrl` so that Stencila knows that is an installation option:
 
-The `codemeta.json` file, based on the [Codemeta](https://codemeta.github.io/) and schema.org projects, contains metadata about your plugin including how it can be installed and it's capabilities. It is needed to allow others to install your plugin via the Stencila CLI. A good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) file and modifying it.
+```json
+  "installUrl": [
+    ...
+    "https://hub.docker.com/r/me/myplugin"
+  ]
+```
 
 ## 🛠️ Develop
 
