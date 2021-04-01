@@ -1,5 +1,5 @@
 jobs:
-  - job: test
+  - job: Test
     strategy:
       matrix:
         linux:
@@ -36,13 +36,14 @@ jobs:
         displayName: Upload coverage
 
       - script: |
+          set -e
           make image
           docker run stencila/jesta
         condition: and(succeeded(), eq(variables['agent.os'], 'Linux'))
         displayName: Build and run Docker image
 
-  - job: release
-    dependsOn: [test]
+  - job: Release
+    dependsOn: [Test]
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     pool:
       vmImage: ubuntu-latest
@@ -58,6 +59,7 @@ jobs:
           versionSpec: '5.x'
 
       - script: |
+          set -e
           npm ci
           npm run build
           npm run docs
