@@ -1,6 +1,6 @@
 # 🃏 Jesta
 
-#### Stencila plugin for executable documents that use Node.js
+**Stencila plugin for executable documents using JavaScript**
 
 <br>
 
@@ -12,23 +12,21 @@
 
 ## ✨ Features
 
-> Features that are not yet implemented or only partially implemented are indicated by a unicorn emoji 🦄
+- Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage`.
 
-- Implements `compile`, `build` and `execute` methods for `CodeChunk` and `CodeExpression` nodes with Javascript as their `programmingLanguage` 🦄.
+- Implements `vars`, `get`, `set` and `delete` methods for managing variables in Node.js.
 
-- Implements `vars`, `get`, `set` and `delete` methods for managing variables in Node.js sessions.
+- Implements `funcs`, and `call` methods for using functions defined in Node.js.
 
-- Implements `funcs`, and `call` methods for using functions defined in Node.js sessions 🦄.
+- Implements `decode` and `encode` methods for document format `json`.
 
-- Implements `decode` and `encode` methods for `format` `json`.
-
-- Implements `select` for `lang` `simplepath`.
+- Implements `select` for query language `simplepath`.
 
 - Implements `read` and `write` for protocols `file://`, `http://` (with [RFC 7234](http://httpwg.org/specs/rfc7234.html) compliant caching), and `stdio://`.
 
 - Implements the `validate` method to validate documents against Stencila [JSON Schema](https://github.com/stencila/schema). By default, coerces inputs to meet the schema (e.g. dropping unknown properties, parsing dates) but this can be turned off with `--force=false`.
 
-- A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods required for integration with Stencila CLI and Desktop)
+- A base for other plugins written in Javascript or Typescript (implements `manifest` and `serve` methods required for integration with Stencila CLI and Desktop)
 
 - A simple command line interface, including interactive modes, for running and testing plugins.
 
@@ -54,10 +52,10 @@
 
 ### Via `stencila`
 
-It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the [Stencila CLI](https://github.com/stencila/stencila),
+This is the default plugin for using Javascript with Stencila. Install it using the [Stencila CLI](https://github.com/stencila/stencila),
 
 ```sh
-stencila install javascript
+stencila plugins install javascript
 ```
 
 Or using the name of this repo directly,
@@ -65,8 +63,6 @@ Or using the name of this repo directly,
 ```sh
 stencila install jesta
 ```
-
-But neither of those options is available right now 🦄.
 
 ### Via `npm`
 
@@ -104,7 +100,7 @@ docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute document.json
 
 Jesta is designed to be extended so that you can create your own Stencila plugins using Javascript or Typescript.
 
-#### Getting started
+### Getting started
 
 Initialize your package and add Jesta as a dependency:
 
@@ -113,7 +109,7 @@ npm init
 npm install @stencila/jesta
 ```
 
-#### Override one or more method
+### Override one or more method
 
 Override any of Jesta's methods e.g. `compile` and in your `index.ts` or `index.js`, call Jesta's `cli` function e.g.
 
@@ -128,7 +124,7 @@ export class MyPlugin extends Jesta {
 if (require.main === module) new MyPlugin().cli()
 ```
 
-#### Write a `codemeta.json` file
+### Write a `codemeta.json` file
 
 The `codemeta.json` file contains metadata (based on the [Codemeta](https://codemeta.github.io/) and schema.org standards) about your plugin including how it can be installed and it's capabilities. This metadata is used by Stencila to determine how it should install your plugin, how to run it, and what functions should be delegated to it.
 
@@ -147,7 +143,7 @@ A good place to start is by copying Jesta's [`codemeta.json`](codemeta.json) fil
 }
 ```
 
-#### Publish standalone binaries
+### Publish standalone binaries
 
 Not everyone has Node.js installed. To make your plugin available to as many possible users as possible we encourage you to create standalone binaries for major operating systems.
 
@@ -162,7 +158,7 @@ Add the binaries as assets to each release (see how we do this automatically usi
   ]
 ```
 
-#### Publish a Docker image
+### Publish a Docker image
 
 Some users may prefer to use your plugin as a Docker image.
 
@@ -174,6 +170,8 @@ This repo contains a [`Dockerfile`](Dockerfile) that shows how you can create a 
     "https://hub.docker.com/r/me/myplugin"
   ]
 ```
+
+> 💬 Tip: Stencila will attempt to install a plugin based on the order of URLs in `installUrl`. So, for example, if it's best that your users use a Docker image, put it first and that method will be used, if possible, and if the user hasn't specified a installation preference.
 
 ## 🛠️ Develop
 

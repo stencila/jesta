@@ -1,7 +1,7 @@
 {
   "name": "@stencila/jesta",
   "version": "1.9.1",
-  "description": "Stencila plugin for stencils using Node.js",
+  "description": "Stencila plugin for executable documents using JavaScript",
   "bin": "dist/src/index.js",
   "main": "dist/src/index.js",
   "scripts": {
@@ -131,7 +131,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "sed -i -e 's!\"softwareVersion\": .*!\"softwareVersion\": \"${nextRelease.version}\",!' codemeta.json"
+          "prepareCmd": "sed -i -e 's!\"softwareVersion\": .*!\"softwareVersion\": \"${nextRelease.version}\",!' codemeta.json && make build docs"
         }
       ],
       [
