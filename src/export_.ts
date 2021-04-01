@@ -23,16 +23,15 @@ export const schema: MethodSchema = {
       const: 'json',
     },
     downcast: {
-      description: 'Downcast the exported node.',
+      description: 'Downcast the node before it is exported?',
       type: 'boolean',
       // Constant `false` because Jesta does not implement the downcast method
       const: false,
     },
     validate: {
-      description: 'Validate the exported node.',
+      description: 'Validate the node before it is exported?',
       type: 'boolean',
-      // Constant `false` because Jesta does not implement the validate method
-      const: false,
+      const: true,
     },
   },
 }

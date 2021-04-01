@@ -28,8 +28,7 @@ export const schema: MethodSchema = {
     validate: {
       description: 'Validate the imported node.',
       type: 'boolean',
-      // Constant `false` because Jesta does not implement the validate method
-      const: false,
+      const: true,
     },
   },
 }

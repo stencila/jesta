@@ -26,6 +26,8 @@
 
 - Implements `read` and `write` for protocols `file://`, `http://` (with [RFC 7234](http://httpwg.org/specs/rfc7234.html) compliant caching), and `stdio://`.
 
+- Implements the `validate` method to validate documents against Stencila [JSON Schema](https://github.com/stencila/schema). By default, coerces inputs to meet the schema (e.g. dropping unknown properties, parsing dates) but this can be turned off with `--force=false`.
+
 - A base for other plugins written in Javascript or Typescript (implements `register` and `serve` methods required for integration with Stencila CLI and Desktop)
 
 - A simple command line interface, including interactive modes, for running and testing plugins.
@@ -46,7 +48,7 @@
 - [ ] At least 95% test coverage
 - [ ] Complete implementing `manifest`
 - [ ] Test usage with `stencila` CLI
-- [ ] Add an 🙏 Acknowledgements section to this README
+- [x] Add an 🙏 Acknowledgements section to this README
 
 ## 📦 Install
 
@@ -104,11 +106,11 @@ Jesta is designed to be extended so that you can create your own Stencila plugin
 
 #### Getting started
 
-Initialize your package and add Jesta as a development dependency:
+Initialize your package and add Jesta as a dependency:
 
 ```sh
 npm init
-npm install stencila/jesta
+npm install @stencila/jesta
 ```
 
 #### Override one or more method
@@ -203,3 +205,13 @@ There are also some test fixtures that you can try the CLI out on e.g.
 ```sh
 npm start -- compile+build+execute tests/fixtures/one/index.json
 ```
+
+## 🙏 Acknowledgements
+
+- The `read` method uses [`got`](https://github.com/sindresorhus/got#readme), [`keyv`](https://github.com/lukechilds/keyv#readme) and [`content-type`](https://github.com/jshttp/content-type#readme) to enable cached reads of URL and determine the format of the returned content.
+
+- The `validate` method uses [Ajv](https://ajv.js.org/), "the fastest JSON Schema validator for Node.js and browser", to validate and coerce JSON documents against our [schema](https://github.com/stencila/schema).
+
+- The `compile` method relies on [Acorn](https://github.com/acornjs/acorn#readme), a "tiny, fast JavaScript parser, written completely in JavaScript", to determine the `imports`, `declares`, `uses` etc properties of `CodeChunk` and `CodeExpression` nodes in documents.
+
+- The command line interface is implemented using [`minimist`](https://github.com/substack/minimist#readme).
