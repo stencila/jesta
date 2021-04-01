@@ -145,11 +145,11 @@
 					<h2>🚀 Use</h2>
 				</a>
 				<p>Most of the time you won&#39;t use Jesta directly (it&#39;s more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI).</p>
-				<p>But if you <em>do</em> want to run Jesta standalone, for example to execute a stencil containing Javascript code,</p>
-				<pre><code class="language-sh"><span style="color: #000000">jesta execute stencil.json</span>
+				<p>But if you <em>do</em> want to run Jesta standalone, for example to execute a document containing Javascript code,</p>
+				<pre><code class="language-sh"><span style="color: #000000">jesta execute document.json</span>
 </code></pre>
 				<p>Or, if you are using the Docker image,</p>
-				<pre><code class="language-sh"><span style="color: #000000">docker run -it --rm -v</span><span style="color: #001080">$PWD</span><span style="color: #000000">:/work -w/work stencila/jesta execute stencil.json</span>
+				<pre><code class="language-sh"><span style="color: #000000">docker run -it --rm -v</span><span style="color: #001080">$PWD</span><span style="color: #000000">:/work -w/work stencila/jesta execute document.json</span>
 </code></pre>
 				<a href="#💪-extend" id="💪-extend" style="color: inherit; text-decoration: none;">
 					<h2>💪 Extend</h2>
@@ -236,7 +236,7 @@
 					<h2>🙏 Acknowledgements</h2>
 				</a>
 				<ul>
-					<li><p>The <code>read</code> method uses <a href="https://github.com/sindresorhus/got#readme"><code>got</code></a>, <a href="https://github.com/lukechilds/keyv#readme"><code>keyv</code></a> and <a href="https://github.com/jshttp/content-type#readme"><code>content-type</code></a> to enable cached reads of URL and determine the format of the returned content.</p>
+					<li><p>The <code>read</code> method uses <a href="https://github.com/sindresorhus/got#readme"><code>got</code></a>, <a href="https://github.com/lukechilds/keyv#readme"><code>keyv</code></a> and <a href="https://github.com/jshttp/content-type#readme"><code>content-type</code></a> to enable cached reads of URLs and determine the format of the returned content.</p>
 					</li>
 					<li><p>The <code>validate</code> method uses <a href="https://ajv.js.org/">Ajv</a>, &quot;the fastest JSON Schema validator for Node.js and browser&quot;, to validate and coerce JSON documents against our <a href="https://github.com/stencila/schema">schema</a>.</p>
 					</li>
