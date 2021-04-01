@@ -1,6 +1,6 @@
 {
   "name": "jesta",
-  "softwareVersion": "1.9.0",
+  "softwareVersion": "1.9.1",
   "description": "Stencila plugin for executable documents that use Node.js",
   "installUrl": [
     "https://www.npmjs.com/package/@stencila/jesta",
@@ -96,14 +96,14 @@
     },
     {
       "title": "get",
-      "description": "Get a variable from a stencil.",
+      "description": "Get a variable from a document.",
       "required": [
-        "stencil",
+        "document",
         "name"
       ],
       "properties": {
-        "stencil": {
-          "description": "The id of the stencil to get the variable from.",
+        "document": {
+          "description": "The id of the document to get the variable from.",
           "type": "string"
         },
         "name": {
@@ -188,15 +188,15 @@
     },
     {
       "title": "set",
-      "description": "Set a variable in a stencil.",
+      "description": "Set a variable in a document.",
       "required": [
-        "stencil",
+        "document",
         "name",
         "value"
       ],
       "properties": {
-        "stencil": {
-          "description": "The id of the stencil to set the variable in.",
+        "document": {
+          "description": "The id of the document to set the variable in.",
           "type": "string"
         },
         "name": {
@@ -209,7 +209,7 @@
       }
     },
     {
-      "title": "import",
+      "title": "validate",
       "description": "Validate a node against the Stencila Schema.",
       "required": [
         "node"

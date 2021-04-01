@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/stencila/jesta/compare/v1.9.0...v1.9.1) (2021-04-01)
+
+
+### Bug Fixes
+
+* **Validate:** Use correct title in method schema ([d8a098f](https://github.com/stencila/jesta/commit/d8a098fc420855ede8c39cc1a3cb7fa7bb81aef5))
+
 # [1.9.0](https://github.com/stencila/jesta/compare/v1.8.1...v1.9.0) (2021-04-01)
 
 
