@@ -1,3 +1,16 @@
+# [1.9.0](https://github.com/stencila/jesta/compare/v1.8.1...v1.9.0) (2021-04-01)
+
+
+### Bug Fixes
+
+* **Deps:** Update dependencies ([61942d8](https://github.com/stencila/jesta/commit/61942d873a02824df74694da3d0da4ae30c6866e))
+* **Dispatch:** Updates for Ajv v8 ([e282e3c](https://github.com/stencila/jesta/commit/e282e3c03bc1fae4b1ff505ca789ad0dfac8666a))
+
+
+### Features
+
+* **Validate:** Add implementation of validate method ([2681366](https://github.com/stencila/jesta/commit/2681366f5688847a0f971aa115c35310d921b1a9))
+
 ## [1.8.1](https://github.com/stencila/jesta/compare/v1.8.0...v1.8.1) (2021-03-09)
 
 
