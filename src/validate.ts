@@ -9,7 +9,7 @@ import { Jesta } from '.'
 import { MethodSchema } from './types'
 
 export const methodSchema: MethodSchema = {
-  title: 'import',
+  title: 'validate',
   description: 'Validate a node against the Stencila Schema.',
   required: ['node'],
   properties: {
