@@ -5,11 +5,11 @@ import { session } from './util/session'
 
 export const schema: MethodSchema = {
   title: 'get',
-  description: 'Get a variable from a stencil.',
-  required: ['stencil', 'name'],
+  description: 'Get a variable from a document.',
+  required: ['document', 'name'],
   properties: {
-    stencil: {
-      description: 'The id of the stencil to get the variable from.',
+    document: {
+      description: 'The id of the document to get the variable from.',
       type: 'string',
     },
     name: {
@@ -22,9 +22,9 @@ export const schema: MethodSchema = {
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function get(
   this: Jesta,
-  stencil: string,
+  document: string,
   name: string
 ): Promise<Node> {
-  return session(stencil).context[name] as Node
+  return session(document).context[name] as Node
 }
 get.schema = schema

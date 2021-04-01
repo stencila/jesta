@@ -4,9 +4,9 @@
 #
 #    docker run -it --rm stencila/jesta
 #
-# Execute a stencil in the current working directory:
+# Execute a document in the current working directory:
 #
-#    docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute stencil.json
+#    docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute document.json
 #
 # Whilst, in theory, the built binary should be able to run in an image
 # that is `FROM scratch` or `FROM alpine`. That couldn't get made to work.

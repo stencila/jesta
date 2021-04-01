@@ -88,16 +88,16 @@ docker pull stencila/jesta
 
 Most of the time you won't use Jesta directly (it's more likely that you will use one of the plugins extended from it, or use it via the Stencila CLI).
 
-But if you _do_ want to run Jesta standalone, for example to execute a stencil containing Javascript code,
+But if you _do_ want to run Jesta standalone, for example to execute a document containing Javascript code,
 
 ```sh
-jesta execute stencil.json
+jesta execute document.json
 ```
 
 Or, if you are using the Docker image,
 
 ```sh
-docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute stencil.json
+docker run -it --rm -v$PWD:/work -w/work stencila/jesta execute document.json
 ```
 
 ## 💪 Extend
@@ -208,7 +208,7 @@ npm start -- compile+build+execute tests/fixtures/one/index.json
 
 ## 🙏 Acknowledgements
 
-- The `read` method uses [`got`](https://github.com/sindresorhus/got#readme), [`keyv`](https://github.com/lukechilds/keyv#readme) and [`content-type`](https://github.com/jshttp/content-type#readme) to enable cached reads of URL and determine the format of the returned content.
+- The `read` method uses [`got`](https://github.com/sindresorhus/got#readme), [`keyv`](https://github.com/lukechilds/keyv#readme) and [`content-type`](https://github.com/jshttp/content-type#readme) to enable cached reads of URLs and determine the format of the returned content.
 
 - The `validate` method uses [Ajv](https://ajv.js.org/), "the fastest JSON Schema validator for Node.js and browser", to validate and coerce JSON documents against our [schema](https://github.com/stencila/schema).
 

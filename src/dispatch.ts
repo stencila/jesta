@@ -60,7 +60,7 @@ export function dispatch(
     //  return this.build(params.node as Node, params.force as boolean)
     case Method.call:
       return this.call(
-        params.stencil as string,
+        params.document as string,
         params.name as string,
         params.args as Record<string, Node>
       )
@@ -82,7 +82,7 @@ export function dispatch(
     case Method.decode:
       return this.decode(params.content as string, params.format as string)
     case Method.delete:
-      return this.delete(params.stencil as string, params.name as string)
+      return this.delete(params.document as string, params.name as string)
     case Method.downcast:
       return this.downcast(params.node as Node)
     case Method.encode:
@@ -91,7 +91,7 @@ export function dispatch(
       return this.enrich(params.node as Node, params.force as boolean)
     case Method.execute:
       return this.execute(
-        params.stencil as string,
+        params.document as string,
         params.node as Node,
         params.force as boolean
       )
@@ -104,9 +104,9 @@ export function dispatch(
         params.validate as boolean
       )
     case Method.funcs:
-      return this.funcs(params.stencil as string)
+      return this.funcs(params.document as string)
     case Method.get:
-      return this.get(params.stencil as string, params.name as string)
+      return this.get(params.document as string, params.name as string)
     case Method.import:
       return this.import(
         params.input as string,
@@ -127,7 +127,7 @@ export function dispatch(
       )
     case Method.set:
       return this.set(
-        params.stencil as string,
+        params.document as string,
         params.name as string,
         params.value as Node
       )
@@ -136,7 +136,7 @@ export function dispatch(
     case Method.validate:
       return this.validate(params.node as Node, params.force as boolean)
     case Method.vars:
-      return this.vars(params.stencil as string)
+      return this.vars(params.document as string)
     case Method.write:
       return this.write(params.content as string, params.output as string)
   }

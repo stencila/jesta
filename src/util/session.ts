@@ -63,11 +63,11 @@ export class Session {
 
 const sessions: Record<string, Session> = {}
 
-export function session(stencil: string): Session {
-  let session = sessions[stencil]
+export function session(document: string): Session {
+  let session = sessions[document]
   if (session === undefined) {
     session = new Session()
-    sessions[stencil] = session
+    sessions[document] = session
   }
   return session
 }

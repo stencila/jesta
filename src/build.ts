@@ -12,14 +12,14 @@ const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
 /**
- * Build a stencil
+ * Build a document
  *
- * This implementation walks the stencil and collects NPM package names
+ * This implementation walks the document and collects NPM package names
  * from the `imports` property of Javascript `CodeChunk` nodes. It then
  * calls `npm install` with the names of the packages missing from `package.json`.
  * If there is no `package.json` file then will create one.
  *
- * @param entity The stencil to build.
+ * @param entity The document to build.
  */
 export async function build(
   this: Jesta,
@@ -49,7 +49,7 @@ export async function build(
       if (name !== undefined && !packages.includes(name)) packages.push(name)
     }
 
-    // Read or create the stencil's package.json
+    // Read or create the document's package.json
     if (packages.length > 0) {
       interface PackageJson {
         dependencies: Record<string, string>
@@ -61,11 +61,11 @@ export async function build(
         packageJson = JSON.parse(json) as PackageJson
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-          // Write out stencil's package.json with the `dependencies` property
+          // Write out document's package.json with the `dependencies` property
           // updated and defaults for other properties (mainly to prevent `npm`
           // warning when they are absent)
           packageJson = {
-            description: 'NPM package for this stencil',
+            description: 'NPM package for this document',
             repository: '-',
             license: 'Apache-2.0',
             dependencies: {},

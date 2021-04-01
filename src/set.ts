@@ -5,11 +5,11 @@ import { session } from './util/session'
 
 export const schema: MethodSchema = {
   title: 'set',
-  description: 'Set a variable in a stencil.',
-  required: ['stencil', 'name', 'value'],
+  description: 'Set a variable in a document.',
+  required: ['document', 'name', 'value'],
   properties: {
-    stencil: {
-      description: 'The id of the stencil to set the variable in.',
+    document: {
+      description: 'The id of the document to set the variable in.',
       type: 'string',
     },
     name: {
@@ -25,11 +25,11 @@ export const schema: MethodSchema = {
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function set(
   this: Jesta,
-  stencil: string,
+  document: string,
   name: string,
   value: Node
 ): Promise<undefined> {
-  session(stencil).context[name] = value
+  session(document).context[name] = value
   return undefined
 }
 set.schema = schema

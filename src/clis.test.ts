@@ -193,7 +193,7 @@ describe('execute', () => {
 })
 
 describe('vars', () => {
-  it('list the variables in a stencil', async () => {
+  it('list the variables in a document', async () => {
     await cli(['vars', one])
     expect(consoleLog).toHaveBeenCalledWith(
       expect.objectContaining({ c: 'Number' })
@@ -206,7 +206,7 @@ describe('vars', () => {
 })
 
 describe('get', () => {
-  it('gets a variable in a stencil', async () => {
+  it('gets a variable in a document', async () => {
     await cli(['get', one, 'c'])
     expect(consoleLog).toHaveBeenCalledWith(3)
   })
@@ -223,7 +223,7 @@ describe('get', () => {
 })
 
 describe('set', () => {
-  it('sets a variable in a stencil', async () => {
+  it('sets a variable in a document', async () => {
     await cli(['set', one, 'foo', 'bar'])
     expect(consoleLog).toHaveBeenCalledWith(undefined)
   })
@@ -252,7 +252,7 @@ describe('run', () => {
   const serveMock = jest.fn(() => Promise.resolve())
   jesta.serve = serveMock
 
-  it('executes and runs the stencil', async () => {
+  it('executes and runs the document', async () => {
     await run.bind(jesta)(['run', one, 'foo', 'bar'])
     expect(executeMock).toHaveBeenCalled()
     expect(serveMock).toHaveBeenCalled()
@@ -274,7 +274,7 @@ describe('pipe', () => {
   const buildMock = jest.fn(() => Promise.resolve(null))
   jesta.build = buildMock
 
-  it.skip('executes and runs the stencil', async () => {
+  it.skip('executes and runs the document', async () => {
     const temp = tempy.file({ extension: 'json' })
     await run.bind(jesta)(['clean+compile+build', one, temp])
     expect(cleanMock).toHaveBeenCalled()

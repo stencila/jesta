@@ -170,7 +170,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case Method.delete:
     case Method.funcs:
     case Method.call: {
-      const stencil = url(args[0])
+      const document = url(args[0])
       const name = args[1]
       const value = args[2] // for set
 
@@ -188,7 +188,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
             text: line,
           })
           this.dispatch(Method.execute, {
-            stencil,
+            document,
             node,
             ...options,
           })
@@ -211,10 +211,10 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       }
 
       const node = await this.dispatch(Method.import, {
-        input: stencil,
+        input: document,
         ...options,
       })
-      await this.dispatch(Method.execute, { stencil, node, ...options })
+      await this.dispatch(Method.execute, { document, node, ...options })
 
       if (method === 'run') await this.serve()
       else {
@@ -229,7 +229,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         }
 
         const result = await this.dispatch(method, {
-          stencil,
+          document,
           name,
           value,
           args: args_,
@@ -262,27 +262,27 @@ Secondary commands (mainly for plugin testing)
 
 help                         Print this message
 
-convert <in> <out>           Convert stencil <in> to <out>
-validate <in> [out]          Validate stencil <in> (save as [out])
-reshape <in> [out]           Reshape stencil <in> (save as [out])
-enrich <in> [out]            Enrich stencil <in> (save as [out])
+convert <in> <out>           Convert document <in> to <out>
+validate <in> [out]          Validate document <in> (save as [out])
+reshape <in> [out]           Reshape document <in> (save as [out])
+enrich <in> [out]            Enrich document <in> (save as [out])
 
-select <in> <query> [out]    Select nodes from stencil <in> (save as [out])
+select <in> <query> [out]    Select nodes from document <in> (save as [out])
 
-compile <in> [out]           Compile stencil <in> (save as [out]) 
-build <in> [out]             Build stencil <in> (save as [out])
-execute <in> [out]           Execute stencil <in> (save as [out])
-clean <in> [out]             Clean stencil <in> (save as [out])
+compile <in> [out]           Compile document <in> (save as [out]) 
+build <in> [out]             Build document <in> (save as [out])
+execute <in> [out]           Execute document <in> (save as [out])
+clean <in> [out]             Clean document <in> (save as [out])
 
-vars <in>                    List variables in stencil <in>
-get <in> <name>              Get a variable from stencil <in>
-set <in> <name> <value>      Set a variable in stencil <in>
-delete <in> <name>           Delete a variable from stencil <in>
+vars <in>                    List variables in document <in>
+get <in> <name>              Get a variable from document <in>
+set <in> <name> <value>      Set a variable in document <in>
+delete <in> <name>           Delete a variable from document <in>
 
-funcs <in>                   List functions in stencil <in>
-call <in> [func] [name=val]  Call stencil <in> (or a function within it)
+funcs <in>                   List functions in document <in>
+call <in> [func] [name=val]  Call document <in> (or a function within it)
 
-run <in>                     Run stencil <in> (execute and serve)
+run <in>                     Run document <in> (execute and serve)
 
 Notes:
 
@@ -337,7 +337,7 @@ function url(value: string | undefined): string | undefined {
 }
 
 /**
- * Change the working directory to directory of a stencil.
+ * Change the working directory to directory of a document.
  */
 function cd(url?: string): void {
   if (url?.startsWith('file://')) process.chdir(path.dirname(url.slice(7)))

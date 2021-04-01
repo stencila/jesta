@@ -6,17 +6,17 @@ import { session } from './util/session'
 const globals = Object.keys(globalThis)
 
 /**
- * List functions of the current stencil.
+ * List functions of the current document.
  *
- * Returns a map of the name and type signature of the current stencil's functions.
+ * Returns a map of the name and type signature of the current document's functions.
  * See `vars` for an analogous method returning variables and their types.
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function funcs(
   this: Jesta,
-  stencil: string
+  document: string
 ): Promise<Record<string, string>> {
-  return Object.entries(session(stencil).context).reduce(
+  return Object.entries(session(document).context).reduce(
     (prev, [name, value]) =>
       !globals.includes(name) && typeof value === 'function'
         ? { ...prev, [name]: funcType(value) }

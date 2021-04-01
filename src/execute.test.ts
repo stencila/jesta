@@ -5,7 +5,7 @@ const jesta = new Jesta()
 
 async function executeCodeChunk(text: string): Promise<CodeChunk> {
   return jesta.execute(
-    'some/stencil.json',
+    'some/document.json',
     codeChunk({
       text,
       programmingLanguage: 'javascript',
