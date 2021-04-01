@@ -77,9 +77,9 @@ describe('errors', () => {
         message: "Parameter 'content' is required.",
         data: [
           {
-            dataPath: '',
+            instancePath: '',
             keyword: 'required',
-            message: "should have required property 'content'",
+            message: "must have required property 'content'",
             params: {
               missingProperty: 'content',
             },
@@ -100,12 +100,12 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'content' is invalid: should be string.",
+        message: "Parameter 'content' is invalid: must be string.",
         data: [
           {
-            dataPath: '/content',
+            instancePath: '/content',
             keyword: 'type',
-            message: 'should be string',
+            message: 'must be string',
             params: {
               type: 'string',
             },
@@ -126,12 +126,12 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'format' is invalid: should be equal to constant.",
+        message: "Parameter 'format' is invalid: must be equal to constant.",
         data: [
           {
-            dataPath: '/format',
+            instancePath: '/format',
             keyword: 'const',
-            message: 'should be equal to constant',
+            message: 'must be equal to constant',
             params: {
               allowedValue: 'json',
             },

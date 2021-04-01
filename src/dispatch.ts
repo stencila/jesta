@@ -35,11 +35,11 @@ export function dispatch(
       for (const error of errors) {
         // Convert error message into something that is more easily digestible
         // by humans
-        const { dataPath, message, params } = error
-        if (dataPath !== '' && message !== undefined) {
+        const { instancePath, message, params } = error
+        if (instancePath !== '' && message !== undefined) {
           messages = [
             ...messages,
-            `Parameter '${dataPath.slice(1)}' is invalid: ${message}.`,
+            `Parameter '${instancePath.slice(1)}' is invalid: ${message}.`,
           ]
         } else if (params.missingProperty !== undefined) {
           messages = [
