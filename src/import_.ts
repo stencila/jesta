@@ -14,7 +14,7 @@ export const schema: MethodSchema = {
     input,
     format: {
       description:
-        "Format to import the node from. Defaults to the URL's media type or file extension.",
+        'Format to import the node from. Defaults to the file extension or media type.',
       type: 'string',
       const: 'json',
     },

@@ -26,7 +26,7 @@ export const schema: MethodSchema = {
  * Write content to a URL.
  *
  * @param content The content to write
- * @param output The URL to write to
+ * @param output The URL to write to (including `file` and `stdio` URLs)
  */
 export async function write(content: string, output: string): Promise<string> {
   const match = /^([a-z]{2,6}):\/\//.exec(output)
