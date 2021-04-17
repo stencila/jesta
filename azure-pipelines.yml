@@ -58,7 +58,11 @@ jobs:
         inputs:
           versionSpec: '5.x'
 
-      - script: npm ci && npx semantic-release
+      - script: |
+          set -e
+          npm ci
+          make build docs
+          npx semantic-release
         env:
           GIT_AUTHOR_NAME: Stencila CI Bot
           GIT_AUTHOR_EMAIL: ci@stenci.la
