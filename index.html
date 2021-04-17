@@ -61,9 +61,7 @@
 				<a href="#🃏-jesta" id="🃏-jesta" style="color: inherit; text-decoration: none;">
 					<h1>🃏 Jesta</h1>
 				</a>
-				<a href="#stencila-plugin-for-executable-documents-that-use-nodejs" id="stencila-plugin-for-executable-documents-that-use-nodejs" style="color: inherit; text-decoration: none;">
-					<h4>Stencila plugin for executable documents that use Node.js</h4>
-				</a>
+				<p><strong>Stencila plugin for executable documents using JavaScript</strong></p>
 				<br>
 				<p><a href="https://dev.azure.com/stencila/stencila/_build/latest?definitionId=13&amp;branchName=main"><img src="https://dev.azure.com/stencila/stencila/_apis/build/status/stencila.jesta?branchName=main" alt="Build Status"></a>
 					<a href="https://codecov.io/gh/stencila/jesta"><img src="https://codecov.io/gh/stencila/jesta/branch/main/graph/badge.svg" alt="Coverage"></a>
@@ -73,25 +71,22 @@
 				<a href="#✨-features" id="✨-features" style="color: inherit; text-decoration: none;">
 					<h2>✨ Features</h2>
 				</a>
-				<blockquote>
-					<p>Features that are not yet implemented or only partially implemented are indicated by a unicorn emoji 🦄</p>
-				</blockquote>
 				<ul>
-					<li><p>Implements <code>compile</code>, <code>build</code> and <code>execute</code> methods for <code>CodeChunk</code> and <code>CodeExpression</code> nodes with Javascript as their <code>programmingLanguage</code> 🦄.</p>
+					<li><p>Implements <code>compile</code>, <code>build</code> and <code>execute</code> methods for <code>CodeChunk</code> and <code>CodeExpression</code> nodes with Javascript as their <code>programmingLanguage</code>.</p>
 					</li>
-					<li><p>Implements <code>vars</code>, <code>get</code>, <code>set</code> and <code>delete</code> methods for managing variables in Node.js sessions.</p>
+					<li><p>Implements <code>vars</code>, <code>get</code>, <code>set</code> and <code>delete</code> methods for managing variables in Node.js.</p>
 					</li>
-					<li><p>Implements <code>funcs</code>, and <code>call</code> methods for using functions defined in Node.js sessions 🦄.</p>
+					<li><p>Implements <code>funcs</code>, and <code>call</code> methods for using functions defined in Node.js.</p>
 					</li>
-					<li><p>Implements <code>decode</code> and <code>encode</code> methods for <code>format</code> <code>json</code>.</p>
+					<li><p>Implements <code>decode</code> and <code>encode</code> methods for document format <code>json</code>.</p>
 					</li>
-					<li><p>Implements <code>select</code> for <code>lang</code> <code>simplepath</code>.</p>
+					<li><p>Implements <code>select</code> for query language <code>simplepath</code>.</p>
 					</li>
 					<li><p>Implements <code>read</code> and <code>write</code> for protocols <code>file://</code>, <code>http://</code> (with <a href="http://httpwg.org/specs/rfc7234.html">RFC 7234</a> compliant caching), and <code>stdio://</code>.</p>
 					</li>
 					<li><p>Implements the <code>validate</code> method to validate documents against Stencila <a href="https://github.com/stencila/schema">JSON Schema</a>. By default, coerces inputs to meet the schema (e.g. dropping unknown properties, parsing dates) but this can be turned off with <code>--force=false</code>.</p>
 					</li>
-					<li><p>A base for other plugins written in Javascript or Typescript (implements <code>register</code> and <code>serve</code> methods required for integration with Stencila CLI and Desktop)</p>
+					<li><p>A base for other plugins written in Javascript or Typescript (implements <code>manifest</code> and <code>serve</code> methods required for integration with Stencila CLI and Desktop)</p>
 					</li>
 					<li><p>A simple command line interface, including interactive modes, for running and testing plugins.</p>
 					</li>
@@ -122,13 +117,12 @@
 				<a href="#via-stencila" id="via-stencila" style="color: inherit; text-decoration: none;">
 					<h3>Via <code>stencila</code></h3>
 				</a>
-				<p>It is envisioned that this will be the default plugin for Node.js and that you will be able to install it using the <a href="https://github.com/stencila/stencila">Stencila CLI</a>,</p>
-				<pre><code class="language-sh"><span style="color: #000000">stencila install javascript</span>
+				<p>This is the default plugin for using Javascript with Stencila. Install it using the <a href="https://github.com/stencila/stencila">Stencila CLI</a>,</p>
+				<pre><code class="language-sh"><span style="color: #000000">stencila plugins install javascript</span>
 </code></pre>
 				<p>Or using the name of this repo directly,</p>
 				<pre><code class="language-sh"><span style="color: #000000">stencila install jesta</span>
 </code></pre>
-				<p>But neither of those options is available right now 🦄.</p>
 				<a href="#via-npm" id="via-npm" style="color: inherit; text-decoration: none;">
 					<h3>Via <code>npm</code></h3>
 				</a>
@@ -156,14 +150,14 @@
 				</a>
 				<p>Jesta is designed to be extended so that you can create your own Stencila plugins using Javascript or Typescript.</p>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
-					<h4>Getting started</h4>
+					<h3>Getting started</h3>
 				</a>
 				<p>Initialize your package and add Jesta as a dependency:</p>
 				<pre><code class="language-sh"><span style="color: #000000">npm init</span>
 <span style="color: #000000">npm install @stencila/jesta</span>
 </code></pre>
 				<a href="#override-one-or-more-method" id="override-one-or-more-method" style="color: inherit; text-decoration: none;">
-					<h4>Override one or more method</h4>
+					<h3>Override one or more method</h3>
 				</a>
 				<p>Override any of Jesta&#39;s methods e.g. <code>compile</code> and in your <code>index.ts</code> or <code>index.js</code>, call Jesta&#39;s <code>cli</code> function e.g.</p>
 				<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Jesta</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@stencila/jesta&#039;</span>
@@ -176,7 +170,7 @@
 <span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">require</span><span style="color: #000000">.</span><span style="color: #001080">main</span><span style="color: #000000"> === </span><span style="color: #267F99">module</span><span style="color: #000000">) </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MyPlugin</span><span style="color: #000000">().</span><span style="color: #795E26">cli</span><span style="color: #000000">()</span>
 </code></pre>
 				<a href="#write-a-codemetajson-file" id="write-a-codemetajson-file" style="color: inherit; text-decoration: none;">
-					<h4>Write a <code>codemeta.json</code> file</h4>
+					<h3>Write a <code>codemeta.json</code> file</h3>
 				</a>
 				<p>The <code>codemeta.json</code> file contains metadata (based on the <a href="https://codemeta.github.io/">Codemeta</a> and schema.org standards) about your plugin including how it can be installed and it&#39;s capabilities. This metadata is used by Stencila to determine how it should install your plugin, how to run it, and what functions should be delegated to it.</p>
 				<p>A good place to start is by copying Jesta&#39;s <a href="codemeta.json"><code>codemeta.json</code></a> file and modifying it. At a minimum, the <code>codemeta.json</code> file should include a <code>name</code>, <code>description</code>, a <code>installUrl</code> array containing the NPM URL of the package, and a <code>featureList</code> array.</p>
@@ -192,7 +186,7 @@
 <span style="color: #000000">}</span>
 </code></pre>
 				<a href="#publish-standalone-binaries" id="publish-standalone-binaries" style="color: inherit; text-decoration: none;">
-					<h4>Publish standalone binaries</h4>
+					<h3>Publish standalone binaries</h3>
 				</a>
 				<p>Not everyone has Node.js installed. To make your plugin available to as many possible users as possible we encourage you to create standalone binaries for major operating systems.</p>
 				<p>This repo provides an example of how to create standalone binaries for Linux, MacOS and Windows using <a href="https://github.com/vercel/pkg"><code>pkg</code></a>. These binaries are published for each <a href="https://github.com/stencila/jesta/releases">release</a> with a <a href="https://wiki.osdev.org/Target_Triplet">target triplet</a> name that is suitable for download by Stencila. Check out the <code>build.sh</code> script and the <code>pkg</code> property in the <a href="package.json"><code>package.json</code></a> to see how to reuse this approach for your own plugin.</p>
@@ -203,7 +197,7 @@
 <span style="color: #000000">  ]</span>
 </code></pre>
 				<a href="#publish-a-docker-image" id="publish-a-docker-image" style="color: inherit; text-decoration: none;">
-					<h4>Publish a Docker image</h4>
+					<h3>Publish a Docker image</h3>
 				</a>
 				<p>Some users may prefer to use your plugin as a Docker image.</p>
 				<p>This repo contains a <a href="Dockerfile"><code>Dockerfile</code></a> that shows how you can create a Docker image for your plugin based on the Linux binary. Once it is published add the Docker Hub URL to <code>installUrl</code> so that Stencila knows that is an installation option:</p>
@@ -212,6 +206,9 @@
 <span style="color: #000000">    </span><span style="color: #A31515">&quot;https://hub.docker.com/r/me/myplugin&quot;</span>
 <span style="color: #000000">  ]</span>
 </code></pre>
+				<blockquote>
+					<p>💬 Tip: Stencila will attempt to install a plugin based on the order of URLs in <code>installUrl</code>. So, for example, if it&#39;s best that your users use a Docker image, put it first and that method will be used, if possible, and if the user hasn&#39;t specified a installation preference.</p>
+				</blockquote>
 				<a href="#🛠️-develop" id="🛠️-develop" style="color: inherit; text-decoration: none;">
 					<h2>🛠️ Develop</h2>
 				</a>
