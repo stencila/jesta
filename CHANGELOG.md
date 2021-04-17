@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/stencila/jesta/compare/v1.9.1...v1.9.2) (2021-04-17)
+
+
+### Bug Fixes
+
+* **Deps:** Update dependencies ([b18bfd8](https://github.com/stencila/jesta/commit/b18bfd828915208953e2920d48d40cedce2562c4))
+
 ## [1.9.1](https://github.com/stencila/jesta/compare/v1.9.0...v1.9.1) (2021-04-01)
 
 
