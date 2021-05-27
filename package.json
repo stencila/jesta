@@ -33,15 +33,15 @@
   "author": "Stencila <hello@stenci.la>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@stencila/schema": "^1.2.1",
-    "acorn": "^8.1.0",
-    "acorn-walk": "^8.0.2",
-    "ajv": "^8.1.0",
-    "ajv-formats": "^2.0.2",
+    "@stencila/schema": "^1.7.2",
+    "acorn": "^8.2.4",
+    "acorn-walk": "^8.1.0",
+    "ajv": "^8.5.0",
+    "ajv-formats": "^2.1.0",
     "content-type": "^1.0.4",
     "got": "^11.8.2",
     "keyv": "^4.0.3",
-    "mime": "^2.5.0",
+    "mime": "^2.5.2",
     "minimist": "^1.2.5",
     "parse-author": "^2.0.0",
     "parse-full-name": "^1.2.5"
@@ -64,7 +64,7 @@
     "ts-jest": "27.0.1",
     "ts-node": "10.0.0",
     "typedoc": "0.20.36",
-    "typescript": "4.2.4"
+    "typescript": "4.3.2"
   },
   "jest": {
     "preset": "ts-jest",
