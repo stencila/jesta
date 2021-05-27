@@ -65,7 +65,10 @@ export type ParameterSchema = JSONSchema7
 
 export type ParameterSchemas = Record<string, ParameterSchema>
 
-export type MethodSchema = JSONSchema7 & { interruptible?: boolean }
+export type MethodSchema = JSONSchema7 & {
+  properties: Record<string, JSONSchema7>
+  interruptible?: boolean
+}
 
 /**
  * A plugin manifest

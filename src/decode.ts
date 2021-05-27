@@ -13,8 +13,8 @@ export const schema: MethodSchema = {
       type: 'string',
     },
     format: {
-      description: 'The format of the content',
-      const: 'json',
+      description: 'The format to be decoded from',
+      enum: ['json'],
     },
   },
   interruptible: false,

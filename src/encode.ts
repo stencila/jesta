@@ -12,8 +12,8 @@ export const schema: MethodSchema = {
       description: 'The node to be encoded',
     },
     format: {
-      description: 'The format of the content',
-      const: 'json',
+      description: 'The format to be encoded to',
+      enum: ['json'],
     },
   },
   interruptible: false,

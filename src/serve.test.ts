@@ -126,16 +126,17 @@ describe('errors', () => {
       id: 1,
       error: {
         code: -32602,
-        message: "Parameter 'format' is invalid: must be equal to constant.",
+        message:
+          "Parameter 'format' is invalid: must be equal to one of the allowed values.",
         data: [
           {
             instancePath: '/format',
-            keyword: 'const',
-            message: 'must be equal to constant',
+            keyword: 'enum',
+            message: 'must be equal to one of the allowed values',
             params: {
-              allowedValue: 'json',
+              allowedValues: ['json'],
             },
-            schemaPath: '#/properties/format/const',
+            schemaPath: '#/properties/format/enum',
           },
         ],
       },
