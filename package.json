@@ -1,6 +1,6 @@
 {
   "name": "@stencila/jesta",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "Stencila plugin for executable documents using JavaScript",
   "bin": "dist/src/index.js",
   "main": "dist/src/index.js",

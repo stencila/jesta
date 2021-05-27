@@ -1,3 +1,11 @@
+## [1.9.3](https://github.com/stencila/jesta/compare/v1.9.2...v1.9.3) (2021-05-27)
+
+
+### Bug Fixes
+
+* **Deps:** Upgrade dependencies ([fa45b3e](https://github.com/stencila/jesta/commit/fa45b3ed612c4ed2129fcc48808e82509f7579d7))
+* **Vars:** Add performance to list of non vars ([0c513e4](https://github.com/stencila/jesta/commit/0c513e49016f4f54efd64dad7b649eb5f08b8a45))
+
 ## [1.9.2](https://github.com/stencila/jesta/compare/v1.9.1...v1.9.2) (2021-04-17)
 
 
