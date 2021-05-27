@@ -37,18 +37,6 @@ describe('manifest', () => {
   })
 })
 
-describe('register', () => {
-  it('registers the plugin', async () => {
-    // Mock to avoid actual registration
-    const registerMock = jest.fn(() => Promise.resolve())
-    jesta.register = registerMock
-
-    await cli(['register'])
-    expect(registerMock).toHaveBeenCalledTimes(1)
-    expect(consoleLog).toHaveBeenCalledTimes(0)
-  })
-})
-
 describe('serve', () => {
   it('serves the plugin', async () => {
     // Mock to avoid actual blocking serve

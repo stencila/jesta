@@ -66,8 +66,6 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       const manifest = this.manifest(options.update ?? false)
       return console.log(JSON.stringify(manifest, null, '  '))
     }
-    case 'register':
-      return await this.register()
     case 'serve':
       return this.serve()
 
@@ -255,7 +253,6 @@ ${pluginName} <command>
 Primary commands (required for plugin integration)
 
 manifest                     Get ${pluginName}'s manifest
-register                     Register ${pluginName}
 serve                        Serve ${pluginName} over stdio
 
 Secondary commands (mainly for plugin testing)

@@ -20,7 +20,6 @@ import { import_ } from './import_'
 import { manifest } from './manifest'
 import { pipe } from './pipe'
 import { read } from './read'
-import { register } from './register'
 import { select } from './select'
 import { serve } from './serve'
 import { set } from './set'
@@ -30,8 +29,6 @@ import { vars } from './vars'
 import { write } from './write'
 
 export class Jesta {
-  manifest = manifest
-
   read = read
   write = write
 
@@ -63,13 +60,15 @@ export class Jesta {
   funcs = funcs
   call = call
 
-  pipe = pipe
   dispatch = dispatch
-  register = register
+  pipe = pipe
+
+  manifest = manifest
   serve = serve
   cli = cli
 }
 
+export * as logga from '@stencila/logga'
 export * as schema from '@stencila/schema'
 export * from './types'
 export * as util from './util'
