@@ -81,9 +81,10 @@ export const compileCode = (
   // If the user uses one of these comments then code analysis for that property is ignores
   for (const comment of comments) {
     const { value } = comment
-    const match = /^\s*@(?:stencila-)?(alters|assigns|declares|imports|reads|uses)\s+(.+)/.exec(
-      value
-    )
+    const match =
+      /^\s*@(?:stencila-)?(alters|assigns|declares|imports|reads|uses)\s+(.+)/.exec(
+        value
+      )
     if (match) {
       const prop = match[1]
       const values = match[2].trim().split(/\s+/)

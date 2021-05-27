@@ -23,7 +23,7 @@ function send(request: string | unknown): void {
 
 // Mock receive a message from the server
 function receive(): unknown {
-  return JSON.parse((stdout.mock.calls.slice(-1)[0] as unknown) as string)
+  return JSON.parse(stdout.mock.calls.slice(-1)[0] as unknown as string)
 }
 
 // Mock a send-receive round trip to server
