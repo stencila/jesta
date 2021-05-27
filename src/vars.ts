@@ -12,7 +12,7 @@ import { session } from './util/session'
 export async function vars(this: Jesta): Promise<Record<string, string>> {
   return Object.entries(session().context).reduce(
     (prev, [name, value]) =>
-      name !== 'global' && typeof value !== 'function'
+      name !== 'global' && name !== 'performance' && typeof value !== 'function'
         ? { ...prev, [name]: nodeType(value) }
         : prev,
     {}

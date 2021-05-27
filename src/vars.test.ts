@@ -21,7 +21,7 @@ test('vars can be added using set', async () => {
   expect(await jesta.vars()).toEqual({
     a: 'Boolean',
     b: 'Number',
-    c: 'Text',
+    c: 'String',
   })
   expect(await jesta.get('c')).toEqual('a string')
 
@@ -29,7 +29,7 @@ test('vars can be added using set', async () => {
   expect(await jesta.vars()).toEqual({
     a: 'Boolean',
     b: 'Number',
-    c: 'Text',
+    c: 'String',
     d: 'Datatable',
   })
   expect(await jesta.get('d')).toEqual(datatable({ columns: [] }))
