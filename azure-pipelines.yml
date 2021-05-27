@@ -2,13 +2,13 @@ jobs:
   - job: Test
     strategy:
       matrix:
-        linux:
+        Linux:
           image_name: ubuntu-latest
           node_version: 14.x
-        mac:
+        Mac:
           image_name: macOS-latest
           node_version: 14.x
-        windows:
+        Windows:
           image_name: windows-latest
           node_version: 14.x
     pool:
