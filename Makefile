@@ -1,29 +1,31 @@
 all: format lint cover build docs
 
-setup:
+node_modules: package.json
 	npm install
 
-format:
+setup: node_modules
+
+format: setup
 	npm run format
 
-lint:
+lint: setup
 	npm run lint
 
-test:
+test: setup
 	npm test
 
-cover:
+cover: setup
 	npm run test:cover
 
-build:
+build: setup
 	npm run build
 
 image: build
 	docker build --tag stencila/jesta . 
 
-docs:
+docs: setup
 	npm run docs
 .PHONY: docs
 
-clean:
+clean: setup
 	npm run clean
