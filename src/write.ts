@@ -33,6 +33,8 @@ export async function write(content: string, output: string): Promise<string> {
   if (match) {
     const protocol = match[1]
     switch (protocol) {
+      case 'string':
+        return writeString(content)
       case 'stdio':
       case 'stdout':
         writeStdio(content)
@@ -49,6 +51,15 @@ export async function write(content: string, output: string): Promise<string> {
   return output
 }
 write.schema = schema
+
+/**
+ * Write content to a string URL
+ *
+ * @param content The content to write
+ */
+export function writeString(content: string): string {
+  return `string://${content}`
+}
 
 /**
  * Write content to standard output
