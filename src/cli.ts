@@ -9,9 +9,12 @@ import { persist } from './util/readline'
 /**
  * Expose a command line interface for the plugin.
  *
- * This function is a simple wrapper around the `run` function that
- * passes it the args vector and exits on error. It is thus difficult
- * to test.
+ * The command line interface is intended to be simple and mainly
+ * for use by plugin developers and users that want to use
+ * plugins standalone.
+ *
+ * Note: This function is a simple wrapper around the `run` function that
+ * passes it the args vector and exits on error.
  */
 // istanbul ignore next
 export function cli(this: Jesta): void {
@@ -31,7 +34,7 @@ export function cli(this: Jesta): void {
 /**
  * Run a command.
  *
- * This function is separate from the `cli` function to facilitate testing
+ * Note: This function is separate from the `cli` function to facilitate testing.
  *
  * @param plugin The plugin to run the command on (Jesta or a derived plugin)
  * @param argv The vector of string arguments
@@ -243,6 +246,22 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
 
     case 'help':
     case undefined:
+      const methodName = args[0]
+
+      // Method-specific help
+      if (methodName !== undefined) {
+        // Just print out the schema for the method
+        // @ts-ignore
+        const schema = this[methodName].schema
+        if (schema === undefined) {
+          return console.log(
+            `No schema yet defined for method "${methodName}", sorry.`
+          )
+        }
+        return console.log(JSON.stringify(schema, null, '  '))
+      }
+
+      // Generic help
       return console.log(
         `
 ${pluginName} ${softwareVersion}: ${description}
@@ -258,6 +277,7 @@ serve                        Serve ${pluginName} over stdio
 Secondary commands (mainly for plugin testing)
 
 help                         Print this message
+help <command>               Print the JSON Schema for a command
 
 convert <in> <out>           Convert document <in> to <out>
 validate <in> [out]          Validate document <in> (save as [out])
