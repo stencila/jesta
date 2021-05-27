@@ -12,11 +12,8 @@ const globals = Object.keys(globalThis)
  * See `vars` for an analogous method returning variables and their types.
  */
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function funcs(
-  this: Jesta,
-  document: string
-): Promise<Record<string, string>> {
-  return Object.entries(session(document).context).reduce(
+export async function funcs(this: Jesta): Promise<Record<string, string>> {
+  return Object.entries(session().context).reduce(
     (prev, [name, value]) =>
       !globals.includes(name) && typeof value === 'function'
         ? { ...prev, [name]: funcType(value) }

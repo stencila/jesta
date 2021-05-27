@@ -25,11 +25,10 @@ export const schema: MethodSchema = {
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function set(
   this: Jesta,
-  document: string,
   name: string,
   value: Node
 ): Promise<undefined> {
-  session(document).context[name] = value
+  session().context[name] = value
   return undefined
 }
 set.schema = schema

@@ -8,7 +8,6 @@ import { mutate } from './util/walk'
 
 export async function execute(
   this: Jesta,
-  document: string,
   node: Node,
   force: boolean
 ): Promise<Node> {
@@ -21,7 +20,7 @@ export async function execute(
       const start = timer.start()
 
       // Enter code into REPL
-      const [outputs, errors] = session(document).enter(text)
+      const [outputs, errors] = session().enter(text)
 
       // Update outputs
       if (isA('CodeChunk', node)) {
@@ -50,5 +49,5 @@ export async function execute(
     }
   }
 
-  return mutate(node, (node) => this.execute(document, node, force))
+  return mutate(node, (node) => this.execute(node, force))
 }

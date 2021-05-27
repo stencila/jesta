@@ -61,13 +61,14 @@ export class Session {
   }
 }
 
-const sessions: Record<string, Session> = {}
+let sessionInstance: Session
 
-export function session(document: string): Session {
-  let session = sessions[document]
-  if (session === undefined) {
-    session = new Session()
-    sessions[document] = session
+/**
+ * Get the session for the current document
+ */
+export function session(): Session {
+  if (sessionInstance === undefined) {
+    sessionInstance = new Session()
   }
-  return session
+  return sessionInstance
 }

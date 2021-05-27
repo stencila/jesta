@@ -60,7 +60,6 @@ export function dispatch(
     //  return this.build(params.node as Node, params.force as boolean)
     case Method.call:
       return this.call(
-        params.document as string,
         params.name as string,
         params.args as Record<string, Node>
       )
@@ -82,7 +81,7 @@ export function dispatch(
     case Method.decode:
       return this.decode(params.content as string, params.format as string)
     case Method.delete:
-      return this.delete(params.document as string, params.name as string)
+      return this.delete(params.name as string)
     case Method.downcast:
       return this.downcast(params.node as Node)
     case Method.encode:
@@ -90,11 +89,7 @@ export function dispatch(
     case Method.enrich:
       return this.enrich(params.node as Node, params.force as boolean)
     case Method.execute:
-      return this.execute(
-        params.document as string,
-        params.node as Node,
-        params.force as boolean
-      )
+      return this.execute(params.node as Node, params.force as boolean)
     case Method.export:
       return this.export(
         params.node as Node,
@@ -104,9 +99,9 @@ export function dispatch(
         params.validate as boolean
       )
     case Method.funcs:
-      return this.funcs(params.document as string)
+      return this.funcs()
     case Method.get:
-      return this.get(params.document as string, params.name as string)
+      return this.get(params.name as string)
     case Method.import:
       return this.import(
         params.input as string,
@@ -126,17 +121,13 @@ export function dispatch(
         params.lang as string
       )
     case Method.set:
-      return this.set(
-        params.document as string,
-        params.name as string,
-        params.value as Node
-      )
+      return this.set(params.name as string, params.value as Node)
     case Method.upcast:
       return this.upcast(params.node as Node)
     case Method.validate:
       return this.validate(params.node as Node, params.force as boolean)
     case Method.vars:
-      return this.vars(params.document as string)
+      return this.vars()
     case Method.write:
       return this.write(params.content as string, params.output as string)
   }

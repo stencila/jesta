@@ -10,11 +10,10 @@ import { session } from './util/session'
  */
 export async function call(
   this: Jesta,
-  document: string,
   name: string,
   args: Record<string, Node>
 ): Promise<Node> {
-  const func = session(document).context[name] as unknown
+  const func = session().context[name] as unknown
   // @ts-expect-error TODO check args against func type signature
   return (await func(...Object.values(args))) as Node
 }
