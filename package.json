@@ -106,6 +106,28 @@
   "renovate": {
     "extends": [
       "@stencila"
+    ],
+    "packageRules": [
+      {
+        "matchDepTypes": [
+          "dependencies"
+        ],
+        "rangeStrategy": "bump",
+        "semanticCommitType": "fix",
+        "semanticCommitScope": "Dependencies",
+        "automerge": false
+      },
+      {
+        "groupName": "Dev dependencies",
+        "groupSlug": "dev",
+        "matchDepTypes": [
+          "devDependencies"
+        ],
+        "rangeStrategy": "pin",
+        "semanticCommitType": "chore",
+        "semanticCommitScope": "Dev dependencies",
+        "automerge": true
+      }
     ]
   },
   "pkg": {
