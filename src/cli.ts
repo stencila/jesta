@@ -306,9 +306,7 @@ Notes:
 - some methods can be piped together, e.g. \`clean+compile+build+execute\`
 
 For a more advanced command line interface install ${pluginName} as a Stencila plugin
-and use it from there:
-
-  stencila install ${pluginName}
+and use it from there: \`stencila plugins install ${pluginName}\`.
       `.trim()
       )
 
