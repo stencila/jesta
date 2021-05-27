@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TupleValidator | @stencila/jesta</title>
+	<title>Validator | @stencila/jesta</title>
 	<meta name="description" content="Documentation for @stencila/jesta">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,10 +58,10 @@
 					<a href="../modules/schema.html">schema</a>
 				</li>
 				<li>
-					<a href="schema.tuplevalidator.html">TupleValidator</a>
+					<a href="schema.validator.html">Validator</a>
 				</li>
 			</ul>
-			<h1>Interface TupleValidator</h1>
+			<h1>Interface Validator</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A validator specifying constraints on an array of heterogeneous items.</p>
+						<p>A base for all validator types.</p>
 					</div>
 				</div>
 			</section>
@@ -79,10 +79,36 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="schema.validator.html" class="tsd-signature-type" data-tsd-kind="Interface">Validator</a>
+						<a href="schema.entity.html" class="tsd-signature-type" data-tsd-kind="Interface">Entity</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">TupleValidator</span>
+								<span class="target">Validator</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="schema.arrayvalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">ArrayValidator</a>
+									</li>
+									<li>
+										<a href="schema.booleanvalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">BooleanValidator</a>
+									</li>
+									<li>
+										<a href="schema.constantvalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">ConstantValidator</a>
+									</li>
+									<li>
+										<a href="schema.enumvalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">EnumValidator</a>
+									</li>
+									<li>
+										<a href="schema.integervalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">IntegerValidator</a>
+									</li>
+									<li>
+										<a href="schema.numbervalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">NumberValidator</a>
+									</li>
+									<li>
+										<a href="schema.stringvalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">StringValidator</a>
+									</li>
+									<li>
+										<a href="schema.tuplevalidator.html" class="tsd-signature-type" data-tsd-kind="Interface">TupleValidator</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -95,10 +121,9 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="schema.tuplevalidator.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="schema.tuplevalidator.html#items" class="tsd-kind-icon">items</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="schema.tuplevalidator.html#meta" class="tsd-kind-icon">meta</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-external"><a href="schema.tuplevalidator.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="schema.validator.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="schema.validator.html#meta" class="tsd-kind-icon">meta</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-external"><a href="schema.validator.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,19 +136,9 @@
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> id</h3>
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="schema.validator.html">Validator</a>.<a href="schema.validator.html#id">id</a></p>
+						<p>Inherited from <a href="schema.entity.html">Entity</a>.<a href="schema.entity.html#id">id</a></p>
 						<ul>
 							<li>Defined in node_modules/@stencila/schema/dist/ts/types.d.ts:110</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="items" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> items</h3>
-					<div class="tsd-signature tsd-kind-icon">items<span class="tsd-signature-symbol">:</span> <a href="../modules/schema.html#validatortypes" class="tsd-signature-type" data-tsd-kind="Type alias">ValidatorTypes</a><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/@stencila/schema/dist/ts/types.d.ts:1255</li>
 						</ul>
 					</aside>
 				</section>
@@ -132,7 +147,7 @@
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> meta</h3>
 					<div class="tsd-signature tsd-kind-icon">meta<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="schema.validator.html">Validator</a>.<a href="schema.validator.html#meta">meta</a></p>
+						<p>Inherited from <a href="schema.entity.html">Entity</a>.<a href="schema.entity.html#meta">meta</a></p>
 						<ul>
 							<li>Defined in node_modules/@stencila/schema/dist/ts/types.d.ts:111</li>
 						</ul>
@@ -149,11 +164,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-external">
 					<a name="type" class="tsd-anchor"></a>
 					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;TupleValidator&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;ArrayValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;BooleanValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;ConstantValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;EnumValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;IntegerValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;NumberValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;StringValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;TupleValidator&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;Validator&quot;</span></div>
 					<aside class="tsd-sources">
-						<p>Overrides <a href="schema.validator.html">Validator</a>.<a href="schema.validator.html#type">type</a></p>
+						<p>Overrides <a href="schema.entity.html">Entity</a>.<a href="schema.entity.html#type">type</a></p>
 						<ul>
-							<li>Defined in node_modules/@stencila/schema/dist/ts/types.d.ts:1254</li>
+							<li>Defined in node_modules/@stencila/schema/dist/ts/types.d.ts:519</li>
 						</ul>
 					</aside>
 				</section>
@@ -184,19 +199,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace tsd-is-external">
-						<a href="schema.tuplevalidator.html" class="tsd-kind-icon">Tuple<wbr>Validator</a>
+						<a href="schema.validator.html" class="tsd-kind-icon">Validator</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="schema.tuplevalidator.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="schema.tuplevalidator.html#items" class="tsd-kind-icon">items</a>
+								<a href="schema.validator.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="schema.tuplevalidator.html#meta" class="tsd-kind-icon">meta</a>
+								<a href="schema.validator.html#meta" class="tsd-kind-icon">meta</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite tsd-is-external">
-								<a href="schema.tuplevalidator.html#type" class="tsd-kind-icon">type</a>
+								<a href="schema.validator.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
