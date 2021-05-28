@@ -3,7 +3,7 @@ import minimist from 'minimist'
 import path from 'path'
 import readline from 'readline'
 import { Jesta } from '.'
-import { Method } from './types'
+import { Method, MethodSchema } from './types'
 import { persist } from './util/readline'
 
 /**
@@ -245,14 +245,15 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
     case 'help':
-    case undefined:
+    case undefined: {
       const methodName = args[0]
 
       // Method-specific help
       if (methodName !== undefined) {
         // Just print out the schema for the method
-        // @ts-ignore
-        const schema = this[methodName].schema
+        const schema = (
+          this[methodName as keyof Jesta] as { schema: MethodSchema }
+        ).schema
         if (schema === undefined) {
           return console.log(
             `No schema yet defined for method "${methodName}", sorry.`
@@ -326,6 +327,7 @@ For a more advanced command line interface install ${pluginName} as a Stencila p
 and use it from there: \`stencila plugins install ${pluginName}\`.
       `.trim()
       )
+    }
 
     default:
       console.error(`Unknown command "${method}"`)

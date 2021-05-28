@@ -18,18 +18,18 @@ export const schema: MethodSchema = {
     output,
     format: {
       description:
-        "Format to export the node to. Defaults to the URL's file extension.",
+        'Format to export the documents to. Defaults to the file extension.',
       type: 'string',
-      const: 'json',
+      enum: ['json'],
     },
     downcast: {
-      description: 'Downcast the node before it is exported?',
+      description: 'Downcast the document before it is exported?',
       type: 'boolean',
       // Constant `false` because Jesta does not implement the downcast method
       const: false,
     },
     validate: {
-      description: 'Validate the node before it is exported?',
+      description: 'Validate the document before it is exported?',
       type: 'boolean',
       const: true,
     },

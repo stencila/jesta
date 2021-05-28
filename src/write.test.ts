@@ -5,6 +5,10 @@ import { write } from './write'
 const stdout = jest.spyOn(process.stdout, 'write').mockImplementation()
 
 describe('write', () => {
+  it('handles a string:// URLs', async () => {
+    expect(await write('beep', 'string://')).toBe('string://beep')
+  })
+
   it('handles a stdio:// and stdout:// URLs', async () => {
     await write('beep', 'stdio://')
     expect(stdout).toHaveBeenCalledWith('beep')

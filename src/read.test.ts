@@ -33,9 +33,15 @@ describe('read', () => {
     expect(await read('https://example.org')).toEqual(['boop', undefined])
   })
 
-  it('throws a capability error for unhandled protocols', async () => {
+  it('throws a capability error for unknown protocols', async () => {
     await expect(read('foo://bar')).rejects.toThrow(
       /Incapable of read over protocol "foo"/
+    )
+  })
+
+  it('throws a capability error for non URLs', async () => {
+    await expect(read('foo bar')).rejects.toThrow(
+      /Incapable of read from URL "foo bar"/
     )
   })
 })

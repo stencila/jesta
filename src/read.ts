@@ -10,17 +10,16 @@ import { CapabilityError } from './util/errors'
 
 export const schema: MethodSchema = {
   title: 'read',
-  description:
-    'Read content from a URL (including a `file://` or `string://` URL).',
+  description: 'Read content from a URL.',
   required: ['input'],
   properties: {
     input: {
-      description: 'URL to read from.',
+      description: 'The URL to read content from.',
       type: 'string',
-      pattern: '^(file|https?|stdio|string)://.*',
+      pattern: '^(file|https?|stdio|stdin|string)://.*',
     },
     cache: {
-      description: 'Use and store cached content (for http:// URLs).',
+      description: 'Use and store cached content (for http:// URLs only).',
       type: 'boolean',
     },
   },
@@ -35,7 +34,7 @@ export const schema: MethodSchema = {
  *
  * @param input The URL to read.
  * @param cache Should any cached content be ignored? For remote URLs only.
- * @returns A the content that was read.
+ * @returns The content that was read.
  */
 export async function read(
   input: string,

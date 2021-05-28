@@ -5,8 +5,7 @@ import { CapabilityError } from './util/errors'
 
 export const schema: MethodSchema = {
   title: 'write',
-  description:
-    'Write content to a URL (including a `file://` or `string://` URL).',
+  description: 'Write content to a URL.',
   required: ['content', 'output'],
   properties: {
     content: {
@@ -14,10 +13,9 @@ export const schema: MethodSchema = {
       type: 'string',
     },
     output: {
-      description:
-        'The URL to write the content to. Use `string://` to have a string returned.',
+      description: 'The URL to write the content to.',
       type: 'string',
-      pattern: '^(file|stdio|string)://.*',
+      pattern: '^(file|stdio|stdout|string)://.*',
     },
   },
 }
@@ -26,7 +24,8 @@ export const schema: MethodSchema = {
  * Write content to a URL.
  *
  * @param content The content to write
- * @param output The URL to write to (including `file` and `stdio` URLs)
+ * @param output The URL to write to
+ * @returns The URL that was written to (including the `content` for `file://` URLs)
  */
 export async function write(content: string, output: string): Promise<string> {
   const match = /^([a-z]{2,6}):\/\//.exec(output)

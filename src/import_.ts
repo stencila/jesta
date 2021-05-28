@@ -7,26 +7,25 @@ const { input, cache } = readSchema.properties as ParameterSchemas
 
 export const schema: MethodSchema = {
   title: 'import',
-  description:
-    'Import a node from a URL (including a `file://` or `string://` URL).',
+  description: 'Import a document from a URL.',
   required: ['input'],
   properties: {
     input,
     format: {
       description:
-        'Format to import the node from. Defaults to the file extension or media type.',
+        'Format to import the document from. Defaults to the file extension (or media type, for remote URLs).',
       type: 'string',
-      const: 'json',
+      enum: ['json'],
     },
     cache,
     upcast: {
-      description: 'Upcast the imported node.',
+      description: 'Upcast the document after it is imported?',
       type: 'boolean',
       // Constant `false` because Jesta does not implement the upcast method
       const: false,
     },
     validate: {
-      description: 'Validate the imported node.',
+      description: 'Validate the document after it is imported?',
       type: 'boolean',
       const: true,
     },
