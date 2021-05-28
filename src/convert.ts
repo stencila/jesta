@@ -42,9 +42,10 @@ export async function convert(
   cached = true,
   upcast = false,
   downcast = false,
-  validate = false
+  validate = false,
+  theme?: string
 ): Promise<string> {
   const imported = await this.import(input, from, cached, upcast, validate)
-  return this.export(imported, output, to, downcast, validate)
+  return this.export(imported, output, to, downcast, validate, theme)
 }
 convert.schema = schema

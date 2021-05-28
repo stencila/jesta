@@ -4,7 +4,7 @@ import { Jesta } from '.'
 import { MethodSchema, ParameterSchemas } from './types'
 import { schema as writeSchema } from './write'
 
-const { output } = writeSchema.properties as ParameterSchemas
+const { output, theme } = writeSchema.properties as ParameterSchemas
 
 export const schema: MethodSchema = {
   title: 'export',
@@ -33,6 +33,7 @@ export const schema: MethodSchema = {
       type: 'boolean',
       const: true,
     },
+    theme,
   },
 }
 
@@ -43,13 +44,15 @@ export async function export_(
   format?: string,
   // These default to false because Jesta has neither capability
   downcast = false,
-  validate = false
+  validate = false,
+  theme?: string
 ): Promise<string> {
   const downcasted = downcast ? await this.downcast(node) : node
   const validated = validate ? await this.validate(downcasted) : downcasted
   const encoded = await this.encode(
     validated,
-    format ?? path.extname(output).slice(1)
+    format ?? path.extname(output).slice(1),
+    theme
   )
   return this.write(encoded, output)
 }

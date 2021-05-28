@@ -1,7 +1,7 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { MethodSchema } from './types'
-import { CapabilityError } from './util'
+import { CapabilityError } from './util/errors'
 
 export const schema: MethodSchema = {
   title: 'encode',
@@ -15,6 +15,11 @@ export const schema: MethodSchema = {
       description: 'The format to be encoded to',
       enum: ['json'],
     },
+    theme: {
+      description:
+        'The theme for the exported content (only applies to some formats)',
+      type: 'string',
+    },
   },
   interruptible: false,
 }
@@ -22,7 +27,8 @@ export const schema: MethodSchema = {
 export async function encode(
   this: Jesta,
   node: Node,
-  format: string
+  format: string,
+  theme?: string
 ): Promise<string> {
   if (format === 'json') {
     return Promise.resolve(JSON.stringify(node, null, '  '))
