@@ -1,3 +1,19 @@
+# [1.10.0](https://github.com/stencila/jesta/compare/v1.9.3...v1.10.0) (2021-05-28)
+
+
+### Bug Fixes
+
+* **Convert:** From and to should be optional since they can be inferred from input and output URLs ([d5fe6ad](https://github.com/stencila/jesta/commit/d5fe6ad2b116c3d68908525744283a4452835ea9))
+* **Decode & encode:** Use enum for formats for easier extension ([7bebe49](https://github.com/stencila/jesta/commit/7bebe49c22bba9cbda62f074fdb4721a165918a9))
+
+
+### Features
+
+* Add theme parameter ([31d8428](https://github.com/stencila/jesta/commit/31d84284a67f6a0f57768a00f372d8f60122b9f7))
+* **CLI:** Add method specific help ([ac25939](https://github.com/stencila/jesta/commit/ac25939358658e8b16750dfc5472afbdde78eb93))
+* **Pull:** Add pull method for pulling remote content to the file system ([97aab6f](https://github.com/stencila/jesta/commit/97aab6ff19d8a0cdcd1d12e0ddad17d6abce2990))
+* **Write:** Support write to string ([c14d39c](https://github.com/stencila/jesta/commit/c14d39c9c73dc181f385b37068483df57ffdaeb3))
+
 ## [1.9.3](https://github.com/stencila/jesta/compare/v1.9.2...v1.9.3) (2021-05-27)
 
 
