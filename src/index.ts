@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import manifest from '../codemeta.json'
 import { build } from './build'
 import { call } from './call'
 import { clean } from './clean'
@@ -17,19 +18,23 @@ import { export_ } from './export_'
 import { funcs } from './funcs'
 import { get } from './get'
 import { import_ } from './import_'
-import { manifest } from './manifest'
 import { pipe } from './pipe'
 import { pull } from './pull'
 import { read } from './read'
 import { select } from './select'
 import { serve } from './serve'
 import { set } from './set'
+import { Manifest } from './types'
 import { upcast } from './upcast'
+import { update } from './update'
 import { validate } from './validate'
 import { vars } from './vars'
 import { write } from './write'
 
 export class Jesta {
+  manifest: Manifest = manifest as unknown as Manifest
+  update = update
+
   read = read
   write = write
 
@@ -66,16 +71,14 @@ export class Jesta {
   dispatch = dispatch
   pipe = pipe
 
-  manifest = manifest
   serve = serve
   cli = cli
 }
 
-export * from './types'
-export * as http from './util/http'
-
 export * as logga from '@stencila/logga'
 export * as schema from '@stencila/schema'
+export * from './types'
+export * as http from './util/http'
 
 // istanbul ignore next
 if (require.main === module) new Jesta().cli()

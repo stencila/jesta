@@ -40,7 +40,7 @@ export function cli(this: Jesta): void {
  * @param argv The vector of string arguments
  */
 export async function run(this: Jesta, argv: string[]): Promise<void> {
-  const { name: pluginName, softwareVersion, description } = this.manifest()
+  const { name: pluginName, softwareVersion, description } = this.manifest
 
   let {
     _: [method, ...args],
@@ -65,10 +65,12 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     // but we allow these as the dispatch function handles type checking
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-    case 'manifest': {
-      const manifest = this.manifest(options.update ?? false)
-      return console.log(JSON.stringify(manifest, null, '  '))
-    }
+    case 'manifest':
+      return console.log(JSON.stringify(this.manifest, null, '  '))
+
+    case 'update':
+      return console.log(JSON.stringify(this.update(args[0]), null, '  '))
+
     case 'serve':
       return this.serve()
 
@@ -276,10 +278,12 @@ Primary commands (required for plugin integration)
 manifest                     Get ${pluginName}'s manifest
 serve                        Serve ${pluginName} over stdio
 
-Secondary commands (mainly for plugin testing)
+Secondary commands (mainly for plugin testing and development)
 
 help                         Print this message
 help <command>               Print the JSON Schema for a command
+
+update [codemeta.json]       Update and get ${pluginName}'s manifest
 
 pull <in> <out>              Pull content from <in> to <out>
 

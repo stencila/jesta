@@ -78,6 +78,5 @@ export interface Manifest {
   name: string
   description: string
   softwareVersion: string
-  runtimeAlternatives: unknown[]
   featureList: MethodSchema[]
 }
