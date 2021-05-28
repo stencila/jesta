@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/stencila/jesta/compare/v1.10.0...v1.10.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **Manifest:** Improve manifest updates especially for extending plugins ([f69c068](https://github.com/stencila/jesta/commit/f69c0687685e667733c87f396a263ffcabdc6517))
+
 # [1.10.0](https://github.com/stencila/jesta/compare/v1.9.3...v1.10.0) (2021-05-28)
 
 
