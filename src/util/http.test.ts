@@ -10,7 +10,7 @@ describe('get', () => {
 
     // Ensure that there is no cached value from a
     // previous test run
-    await cache.delete('cacheable-request:GET:' + 'https://example.org/cached')
+    cache.delete('cacheable-request:GET:' + 'https://example.org/cached')
 
     let response = await get('https://example.org/cached')
     expect(response.isFromCache).toBe(false)

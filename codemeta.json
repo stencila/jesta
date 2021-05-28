@@ -81,6 +81,10 @@
         "format": {
           "description": "The format to be encoded to",
           "enum": ["json"]
+        },
+        "theme": {
+          "description": "The theme for the exported content (only applies to some formats)",
+          "type": "string"
         }
       },
       "interruptible": false
@@ -128,6 +132,22 @@
           "description": "Validate the document after it is imported?",
           "type": "boolean",
           "const": true
+        }
+      }
+    },
+    {
+      "title": "pull",
+      "description": "Pull file/s from a URL to the file system",
+      "required": ["input", "output"],
+      "properties": {
+        "input": {
+          "description": "The URL to fetch.",
+          "type": "string",
+          "pattern": "^(https?|file|stdio|stdin|string)://.*"
+        },
+        "output": {
+          "description": "The file path to write to",
+          "type": "string"
         }
       }
     },

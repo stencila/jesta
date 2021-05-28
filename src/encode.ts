@@ -28,7 +28,7 @@ export async function encode(
   this: Jesta,
   node: Node,
   format: string,
-  theme?: string
+  _theme?: string
 ): Promise<string> {
   if (format === 'json') {
     return Promise.resolve(JSON.stringify(node, null, '  '))

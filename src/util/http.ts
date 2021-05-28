@@ -48,8 +48,11 @@ export async function get(
   try {
     return (await client.get(url, options)) as Response<string>
   } catch (error) {
-    const { message, response = {} } = error
-    const { body = '' } = response
+    const { message, response } = error as {
+      message: string
+      response: Response<string>
+    }
+    const body = response?.body ?? ''
     log.warn(`Unable to get ${url}: ${message}: ${body.slice(0, 500)}`)
     return response
   }
