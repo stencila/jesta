@@ -112,6 +112,8 @@ export function dispatch(
       )
     case Method.pipe:
       return this.pipe(params.node as Node, params.calls as Method[])
+    case Method.pull:
+      return this.pull(params.input as string, params.output as string)
     case Method.read:
       return this.read(params.input as string, params.cache as boolean)
     case Method.select:

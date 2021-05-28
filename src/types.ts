@@ -17,6 +17,7 @@ export enum Method {
   get = 'get',
   import = 'import',
   pipe = 'pipe',
+  pull = 'pull',
   read = 'read',
   select = 'select',
   set = 'set',

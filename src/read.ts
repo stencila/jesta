@@ -1,12 +1,11 @@
 import contentType from 'content-type'
 import fs from 'fs'
-import got from 'got'
 import mime from 'mime'
 import path from 'path'
 import { promisify } from 'util'
 import { MethodSchema } from './types'
-import { cache } from './util/cache'
 import { CapabilityError } from './util/errors'
+import { get } from './util/http'
 
 export const schema: MethodSchema = {
   title: 'read',
@@ -107,9 +106,7 @@ export async function readHttp(
   url: string,
   caching = true
 ): Promise<[string, string | undefined]> {
-  const response = await got(url, {
-    cache: caching ? cache : undefined,
-  })
+  const response = await get(url, caching ? {} : { cache: false })
   const content = response.body
 
   let mediaType

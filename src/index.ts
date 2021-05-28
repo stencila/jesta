@@ -19,6 +19,7 @@ import { get } from './get'
 import { import_ } from './import_'
 import { manifest } from './manifest'
 import { pipe } from './pipe'
+import { pull } from './pull'
 import { read } from './read'
 import { select } from './select'
 import { serve } from './serve'
@@ -31,6 +32,8 @@ import { write } from './write'
 export class Jesta {
   read = read
   write = write
+
+  pull = pull
 
   decode = decode
   encode = encode
@@ -68,10 +71,11 @@ export class Jesta {
   cli = cli
 }
 
+export * from './types'
+export * as http from './util/http'
+
 export * as logga from '@stencila/logga'
 export * as schema from '@stencila/schema'
-export * from './types'
-export * as util from './util'
 
 // istanbul ignore next
 if (require.main === module) new Jesta().cli()

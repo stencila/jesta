@@ -72,11 +72,12 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case 'serve':
       return this.serve()
 
-    case Method.convert: {
+    case Method.convert:
+    case Method.pull: {
       const input = url(args[0])
       const output = url(args[1])
 
-      await this.dispatch(Method.convert, {
+      await this.dispatch(method, {
         input,
         output,
         ...options,
@@ -280,6 +281,8 @@ Secondary commands (mainly for plugin testing)
 help                         Print this message
 help <command>               Print the JSON Schema for a command
 
+pull <in> <out>              Pull content from <in> to <out>
+
 convert <in> <out>           Convert document <in> to <out>
 validate <in> [out]          Validate document <in> (save as [out])
 reshape <in> [out]           Reshape document <in> (save as [out])
@@ -307,9 +310,9 @@ Notes:
 - use the --debug option for debug level logging and error stack traces
 
 - \`in\` and \`out\` are file paths or URLs (e.g. http://..., file://...);
-  but only some URL protocols are supported by the plugin (see manifest)
+  but only some URL protocols may be supported (see manifest)
 
-- commands with an \`in\` or \`out\` argument support the \`--format\` option
+- most commands with an \`in\` or \`out\` argument support the \`--format\` option
 
 - commands with both \`in\` and \`out\` arguments support \`--from\` and
   \`--to\` options for the respective formats

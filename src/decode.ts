@@ -1,7 +1,7 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
 import { MethodSchema } from './types'
-import { CapabilityError } from './util'
+import { CapabilityError } from './util/errors'
 
 export const schema: MethodSchema = {
   title: 'decode',
