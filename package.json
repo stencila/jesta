@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@stencila/logga": "^4.0.0",
-    "@stencila/schema": "^1.7.2",
+    "@stencila/schema": "^1.8.1",
     "acorn": "^8.2.4",
     "acorn-walk": "^8.1.0",
     "ajv": "^8.5.0",
