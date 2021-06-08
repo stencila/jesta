@@ -1,3 +1,12 @@
+## [1.10.2](https://github.com/stencila/jesta/compare/v1.10.1...v1.10.2) (2021-06-08)
+
+
+### Bug Fixes
+
+* **dependencies:** update dependency @stencila/schema to ^1.8.1 ([ee368e0](https://github.com/stencila/jesta/commit/ee368e05909e192aa42bef0a729002c7aec99a3b))
+* **dependencies:** update dependency acorn to ^8.3.0 ([c580e8b](https://github.com/stencila/jesta/commit/c580e8b8684ff6ac26b1eb7c066e10a831e8f63c))
+* **Dependencies:** Update Ajv ([1caefd5](https://github.com/stencila/jesta/commit/1caefd504dd8bf92c5f9d2523ce02e6d70e2a023))
+
 ## [1.10.1](https://github.com/stencila/jesta/compare/v1.10.0...v1.10.1) (2021-05-28)
 
 

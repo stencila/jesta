@@ -1,6 +1,6 @@
 {
   "name": "jesta",
-  "softwareVersion": "1.10.1",
+  "softwareVersion": "1.10.2",
   "description": "Stencila plugin for executable documents using JavaScript",
   "installUrl": [
     "https://www.npmjs.com/package/@stencila/jesta",
