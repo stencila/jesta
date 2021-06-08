@@ -1,7 +1,7 @@
 all: format lint cover build docs
 
 node_modules: package.json
-	npm install
+	npm install --legacy-peer-deps
 
 setup: node_modules
 
