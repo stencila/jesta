@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { promisify } from 'util'
-import { MethodSchema } from './types'
+import { MethodSchema } from './manifest'
 import { CapabilityError } from './util/errors'
 
 export const schema: MethodSchema = {

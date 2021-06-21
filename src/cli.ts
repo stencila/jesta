@@ -3,7 +3,8 @@ import minimist from 'minimist'
 import path from 'path'
 import readline from 'readline'
 import { Jesta } from '.'
-import { Method, MethodSchema } from './types'
+import { MethodSchema } from './manifest'
+import { Method } from './types'
 import { persist } from './util/readline'
 
 /**
@@ -40,7 +41,7 @@ export function cli(this: Jesta): void {
  * @param argv The vector of string arguments
  */
 export async function run(this: Jesta, argv: string[]): Promise<void> {
-  const { name: pluginName, softwareVersion, description } = this.manifest
+  const { name: pluginName, softwareVersion, description } = this.manifest()
 
   let {
     _: [method, ...args],
@@ -66,10 +67,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
     case 'manifest':
-      return console.log(JSON.stringify(this.manifest, null, '  '))
-
-    case 'update':
-      return console.log(JSON.stringify(this.update(args[0]), null, '  '))
+      return console.log(JSON.stringify(this.manifest(), null, '  '))
 
     case 'serve':
       return this.serve()

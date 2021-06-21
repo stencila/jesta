@@ -1,6 +1,6 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { MethodSchema, ParameterSchemas } from './types'
+import { MethodSchema, ParameterSchemas } from './manifest'
 import { schema as readSchema } from './read'
 
 const { input, cache } = readSchema.properties as ParameterSchemas

@@ -1,6 +1,6 @@
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { MethodSchema } from './types'
+import { MethodSchema } from './manifest'
 import { session } from './util/session'
 
 export const schema: MethodSchema = {

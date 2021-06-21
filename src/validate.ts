@@ -6,7 +6,7 @@ import { DataValidationCxt } from 'ajv/dist/types'
 import parseAuthor from 'parse-author'
 import { parseFullName } from 'parse-full-name'
 import { Jesta } from '.'
-import { MethodSchema } from './types'
+import { MethodSchema } from './manifest'
 
 export const methodSchema: MethodSchema = {
   title: 'validate',

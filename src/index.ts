@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import manifest from '../codemeta.json'
 import { build } from './build'
 import { call } from './call'
 import { clean } from './clean'
@@ -18,22 +17,32 @@ import { export_ } from './export_'
 import { funcs } from './funcs'
 import { get } from './get'
 import { import_ } from './import_'
+import { Manifest, manifest } from './manifest'
 import { pipe } from './pipe'
 import { pull } from './pull'
 import { read } from './read'
 import { select } from './select'
 import { serve } from './serve'
 import { set } from './set'
-import { Manifest } from './types'
 import { upcast } from './upcast'
-import { update } from './update'
 import { validate } from './validate'
 import { vars } from './vars'
 import { write } from './write'
 
 export class Jesta {
-  manifest: Manifest = manifest as unknown as Manifest
-  update = update
+  manifest(): Manifest {
+    return manifest.call(this, {
+      name: 'jesta',
+      softwareVersion: '1.10.2',
+      description: 'Stencila plugin for executable documents using JavaScript',
+      installUrl: [
+        'https://www.npmjs.com/package/@stencila/jesta',
+        'https://github.com/stencila/jesta/releases',
+        'https://hub.docker.com/r/stencila/jesta',
+      ],
+      featureList: [],
+    })
+  }
 
   read = read
   write = write

@@ -15,5 +15,5 @@ export async function call(
 ): Promise<Node> {
   const func = session().context[name] as unknown
   // @ts-expect-error TODO check args against func type signature
-  return (await func(...Object.values(args))) as Node
+  return (await func(...Object.values(args))) as Promise<Node>
 }

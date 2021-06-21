@@ -1,7 +1,7 @@
 import path from 'path'
 import { Node } from '@stencila/schema'
 import { Jesta } from '.'
-import { MethodSchema, ParameterSchemas } from './types'
+import { MethodSchema, ParameterSchemas } from './manifest'
 import { schema as writeSchema } from './write'
 
 const { output, theme } = writeSchema.properties as ParameterSchemas

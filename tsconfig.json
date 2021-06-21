@@ -1,6 +1,7 @@
 {
   "extends": "@stencila/dev-config/tsconfig.json",
   "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["tests/**/*"],
   "compilerOptions": {
     "module": "CommonJS",
     "outDir": "./dist",

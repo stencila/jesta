@@ -1,7 +1,7 @@
 import { Jesta } from '.'
-import { MethodSchema, ParameterSchemas } from './types'
 import { schema as importSchema } from './import_'
 import { schema as exportSchema } from './export_'
+import { MethodSchema, ParameterSchemas } from './manifest'
 
 const {
   input,

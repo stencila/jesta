@@ -3,7 +3,7 @@ import fs from 'fs'
 import mime from 'mime'
 import path from 'path'
 import { promisify } from 'util'
-import { MethodSchema } from './types'
+import { MethodSchema } from './manifest'
 import { CapabilityError } from './util/errors'
 import { get } from './util/http'
 

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { Jesta } from '.'
-import { MethodSchema } from './types'
+import { MethodSchema } from './manifest'
 import { CapabilityError } from './util/errors'
 import { download } from './util/http'
 
