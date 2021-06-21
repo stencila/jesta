@@ -2,8 +2,8 @@
   "name": "@stencila/jesta",
   "version": "1.10.4",
   "description": "Stencila plugin for executable documents using JavaScript",
-  "bin": "dist/src/index.js",
-  "main": "dist/src/index.js",
+  "bin": "dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "format": "prettier --write 'src/**/*.{js,ts}'",
     "lint": "eslint --fix 'src/**/*.ts'",
