@@ -5,27 +5,27 @@ node_modules: package.json
 
 setup: node_modules
 
-format: setup
+format:
 	npm run format
 
-lint: setup
+lint:
 	npm run lint
 
-test: setup
+test:
 	npm test
 
-cover: setup
+cover:
 	npm run test:cover
 
-build: setup
+build:
 	npm run build
 
 image: build
 	docker build --tag stencila/jesta . 
 
-docs: setup
+docs:
 	npm run docs
 .PHONY: docs
 
-clean: setup
+clean:
 	npm run clean
