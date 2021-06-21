@@ -1,4 +1,4 @@
-import { isEntity, isPrimitive, Node } from '@stencila/schema'
+import { isEntity, Node } from '@stencila/schema'
 import repl from 'repl'
 import stream from 'stream'
 import vm from 'vm'
@@ -31,7 +31,8 @@ export class Session {
       // and that we need to use duck typing instead
       // See https://stackoverflow.com/a/45496068
       if (
-        !isPrimitive(result) &&
+        typeof result === 'object' &&
+        result !== null &&
         !Array.isArray(result) &&
         !isEntity(result) &&
         typeof result?.message === 'string' &&
@@ -39,7 +40,8 @@ export class Session {
       )
         this.errors.push(result as Error)
       else if (
-        !isPrimitive(result) &&
+        typeof result === 'object' &&
+        result !== null &&
         'code' in result &&
         result.code === 'ERR_SCRIPT_EXECUTION_INTERRUPTED'
       ) {
