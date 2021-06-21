@@ -154,7 +154,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "sed -i -e 's!\"softwareVersion\": .*!\"softwareVersion\": \"${nextRelease.version}\",!' codemeta.json && make build docs"
+          "prepareCmd": "sed -i -e \"s!softwareVersion: .*!softwareVersion: '${nextRelease.version}',!\" src/index.ts && make build docs"
         }
       ],
       [
