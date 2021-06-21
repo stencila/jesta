@@ -14,10 +14,10 @@
     "$comment": "The build script builds everything required to publish a release, including binaries and docs",
     "build": "npm run build:codemeta && npm run build:dist && npm run build:bin && npm run build:docs",
     "build:codemeta": "ts-node src manifest > codemeta.json",
-    "build:dist": "tsc -p tsconfig.json && cp codemeta.json dist/",
+    "build:dist": "tsc -p tsconfig.json",
     "build:bin": "bash build.sh",
     "build:docs": "typedoc src/index.ts",
-    "publish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -134,9 +134,6 @@
     ]
   },
   "pkg": {
-    "assets": [
-      "dist/codemeta.json"
-    ],
     "targets": [
       "node16-linux-x64",
       "node16-macos-x64",
