@@ -11,7 +11,10 @@
     {
       "title": "convert",
       "type": "object",
-      "required": ["input", "output"],
+      "required": [
+        "input",
+        "output"
+      ],
       "properties": {
         "input": {
           "description": "The URL to read content from.",
@@ -26,12 +29,16 @@
         "from": {
           "description": "Format to import the document from. Defaults to the file extension (or media type, for remote URLs).",
           "type": "string",
-          "enum": ["json"]
+          "enum": [
+            "json"
+          ]
         },
         "to": {
           "description": "Format to export the documents to. Defaults to the file extension.",
           "type": "string",
-          "enum": ["json"]
+          "enum": [
+            "json"
+          ]
         },
         "cache": {
           "description": "Use and store cached content (for http:// URLs only).",
@@ -57,7 +64,10 @@
     {
       "title": "decode",
       "description": "Decode content of a specific format into a Stencila node.",
-      "required": ["content", "format"],
+      "required": [
+        "content",
+        "format"
+      ],
       "properties": {
         "content": {
           "description": "The content to be decoded",
@@ -65,7 +75,9 @@
         },
         "format": {
           "description": "The format to be decoded from",
-          "enum": ["json"]
+          "enum": [
+            "json"
+          ]
         }
       },
       "interruptible": false
@@ -73,14 +85,19 @@
     {
       "title": "encode",
       "description": "Encode a Stencila node to content of a specific format.",
-      "required": ["node", "format"],
+      "required": [
+        "node",
+        "format"
+      ],
       "properties": {
         "node": {
           "description": "The node to be encoded"
         },
         "format": {
           "description": "The format to be encoded to",
-          "enum": ["json"]
+          "enum": [
+            "json"
+          ]
         },
         "theme": {
           "description": "The theme for the exported content (only applies to some formats)",
@@ -92,7 +109,9 @@
     {
       "title": "get",
       "description": "Get a variable from a document.",
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
       "properties": {
         "name": {
           "description": "The name of the variable.",
@@ -103,7 +122,9 @@
     {
       "title": "import",
       "description": "Import a document from a URL.",
-      "required": ["input"],
+      "required": [
+        "input"
+      ],
       "properties": {
         "input": {
           "description": "The URL to read content from.",
@@ -113,7 +134,9 @@
         "format": {
           "description": "Format to import the document from. Defaults to the file extension (or media type, for remote URLs).",
           "type": "string",
-          "enum": ["json"]
+          "enum": [
+            "json"
+          ]
         },
         "cache": {
           "description": "Use and store cached content (for http:// URLs only).",
@@ -134,7 +157,10 @@
     {
       "title": "pull",
       "description": "Pull file/s from a URL to the file system",
-      "required": ["input", "output"],
+      "required": [
+        "input",
+        "output"
+      ],
       "properties": {
         "input": {
           "description": "The URL to fetch.",
@@ -150,7 +176,9 @@
     {
       "title": "read",
       "description": "Read content from a URL.",
-      "required": ["input"],
+      "required": [
+        "input"
+      ],
       "properties": {
         "input": {
           "description": "The URL to read content from.",
@@ -166,7 +194,10 @@
     {
       "title": "select",
       "description": "Select child nodes from a node.",
-      "required": ["node", "query"],
+      "required": [
+        "node",
+        "query"
+      ],
       "properties": {
         "node": {
           "description": "The node to select from."
@@ -177,14 +208,19 @@
         },
         "lang": {
           "description": "The language that the query is written in.",
-          "enum": ["simplepath"]
+          "enum": [
+            "simplepath"
+          ]
         }
       }
     },
     {
       "title": "set",
       "description": "Set a variable in a document.",
-      "required": ["name", "value"],
+      "required": [
+        "name",
+        "value"
+      ],
       "properties": {
         "name": {
           "description": "The name of the variable to set.",
@@ -198,7 +234,9 @@
     {
       "title": "validate",
       "description": "Validate a node against the Stencila Schema.",
-      "required": ["node"],
+      "required": [
+        "node"
+      ],
       "properties": {
         "node": {
           "description": "The node to validate."
@@ -213,7 +251,10 @@
     {
       "title": "write",
       "description": "Write content to a URL.",
-      "required": ["content", "output"],
+      "required": [
+        "content",
+        "output"
+      ],
       "properties": {
         "content": {
           "description": "The content to write",
