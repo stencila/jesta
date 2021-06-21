@@ -1,3 +1,11 @@
+## [1.10.4](https://github.com/stencila/jesta/compare/v1.10.3...v1.10.4) (2021-06-21)
+
+
+### Bug Fixes
+
+* **Build:** Compress binaries ([39330ab](https://github.com/stencila/jesta/commit/39330ab093e4b321622a409350b45ed90a4d830f))
+* **Release:** Add publish script to ensure build is done ([f418ce5](https://github.com/stencila/jesta/commit/f418ce5c5c06eab6a525f90858b55fc3f718ff23))
+
 ## [1.10.3](https://github.com/stencila/jesta/compare/v1.10.2...v1.10.3) (2021-06-21)
 
 
