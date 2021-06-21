@@ -1,3 +1,12 @@
+## [1.10.3](https://github.com/stencila/jesta/compare/v1.10.2...v1.10.3) (2021-06-21)
+
+
+### Bug Fixes
+
+* **dependencies:** update dependency acorn to ^8.4.0 ([f32b49c](https://github.com/stencila/jesta/commit/f32b49cbfb16bdcf904e0e6ab35792ab5fe66a9f))
+* **Deps:** Upgrade to Schema 1.9.0 and make peer dependency ([fa2b900](https://github.com/stencila/jesta/commit/fa2b900c5938dc33ba728a741acae53f63111b45))
+* **Manifest:** Generate rather than update codemeta.json ([b056e79](https://github.com/stencila/jesta/commit/b056e799005fc1bf0fc2dba56b1fa3a2883aba2f)), closes [/github.com/stencila/encoda/pull/957#issuecomment-862719804](https://github.com//github.com/stencila/encoda/pull/957/issues/issuecomment-862719804)
+
 ## [1.10.2](https://github.com/stencila/jesta/compare/v1.10.1...v1.10.2) (2021-06-08)
 
 
