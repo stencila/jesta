@@ -174,7 +174,7 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
     case Method.delete:
     case Method.funcs:
     case Method.call: {
-      const document = url(args[0])
+      const input = url(args[0])
       const name = args[1]
       const value = args[2] // for set
 
@@ -192,7 +192,6 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
             text: line,
           })
           this.dispatch(Method.execute, {
-            document,
             node,
             ...options,
           })
@@ -215,10 +214,10 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
       }
 
       const node = await this.dispatch(Method.import, {
-        input: document,
+        input,
         ...options,
       })
-      await this.dispatch(Method.execute, { document, node, ...options })
+      await this.dispatch(Method.execute, { node, ...options })
 
       if (method === 'run') await this.serve()
       else {
@@ -233,7 +232,6 @@ export async function run(this: Jesta, argv: string[]): Promise<void> {
         }
 
         const result = await this.dispatch(method, {
-          document,
           name,
           value,
           args: args_,

@@ -6,12 +6,8 @@ import { session } from './util/session'
 export const schema: MethodSchema = {
   title: 'set',
   description: 'Set a variable in a document.',
-  required: ['document', 'name', 'value'],
+  required: ['name', 'value'],
   properties: {
-    document: {
-      description: 'The id of the document to set the variable in.',
-      type: 'string',
-    },
     name: {
       description: 'The name of the variable to set.',
       type: 'string',

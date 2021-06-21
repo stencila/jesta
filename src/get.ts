@@ -6,12 +6,8 @@ import { session } from './util/session'
 export const schema: MethodSchema = {
   title: 'get',
   description: 'Get a variable from a document.',
-  required: ['document', 'name'],
+  required: ['name'],
   properties: {
-    document: {
-      description: 'The id of the document to get the variable from.',
-      type: 'string',
-    },
     name: {
       description: 'The name of the variable.',
       type: 'string',
