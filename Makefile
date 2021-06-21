@@ -1,4 +1,4 @@
-all: format lint cover build docs
+all: format lint cover build
 
 node_modules: package.json
 	npm install --legacy-peer-deps
@@ -23,9 +23,5 @@ build:
 image: build
 	docker build --tag stencila/jesta . 
 
-docs:
-	npm run docs
-.PHONY: docs
-
 clean:
-	npm run clean
+	rm -rf bin coverage dist docs
