@@ -51,7 +51,7 @@ jobs:
     steps:
       - task: NodeTool@0
         inputs:
-          versionSpec: 14.x
+          versionSpec: $(node_version)
         displayName: Install Node.js
 
       - task: gitversion/setup@0
