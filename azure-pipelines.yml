@@ -62,6 +62,7 @@ jobs:
       - script: |
           set -e
           npm ci
+          mkdir -p docs
           npx semantic-release
         env:
           GIT_AUTHOR_NAME: Stencila CI Bot
