@@ -1,3 +1,12 @@
+## [1.10.5](https://github.com/stencila/jesta/compare/v1.10.4...v1.10.5) (2021-06-21)
+
+
+### Bug Fixes
+
+* **Build:** Exclude tests and point to right file ([8c4ff01](https://github.com/stencila/jesta/commit/8c4ff017f7652330489d64edbb074da511267aa3))
+* **Build:** Use a tsconfig.prod.json so that linting does not fail ([7f73983](https://github.com/stencila/jesta/commit/7f73983da6af9510d0b6054c6fe2f024d996ea2a))
+* **Release:** Run prepublishOnly; don't need to distribute codemeta.json ([29eab30](https://github.com/stencila/jesta/commit/29eab309fb6b9e45c2646b7cc28f2c949fd2f4f5))
+
 ## [1.10.4](https://github.com/stencila/jesta/compare/v1.10.3...v1.10.4) (2021-06-21)
 
 
