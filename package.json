@@ -44,7 +44,7 @@
     "mime": "^2.5.2",
     "minimist": "^1.2.5",
     "parse-author": "^2.0.0",
-    "parse-full-name": "^1.2.5"
+    "parse-full-name": "^1.2.6"
   },
   "peerDependencies": {
     "@stencila/schema": "^1.9.0"
