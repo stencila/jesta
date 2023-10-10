@@ -40,7 +40,7 @@
     "ajv-formats": "^2.1.0",
     "content-type": "^1.0.4",
     "got": "^11.8.2",
-    "keyv": "^4.0.3",
+    "keyv": "^4.5.4",
     "mime": "^2.5.2",
     "minimist": "^1.2.5",
     "parse-author": "^2.0.0",
