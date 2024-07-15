@@ -36,7 +36,7 @@
     "@stencila/logga": "^4.0.0",
     "acorn": "^8.4.0",
     "acorn-walk": "^8.1.0",
-    "ajv": "^8.6.0",
+    "ajv": "^8.17.1",
     "ajv-formats": "^2.1.0",
     "content-type": "^1.0.4",
     "got": "^11.8.2",
